@@ -1,0 +1,416 @@
+---
+title: "exp1_00_raw_to_tidy"
+author: "anjie"
+date: "`r Sys.Date()`"
+output: html_document
+---
+# loading packages 
+
+```{r}
+library(tidyverse)
+library(here)
+library(jsonlite)
+library(DT)
+library(Dict)
+library(ggforce)
+library(ggimage)
+library(stringr)
+library(showtext)
+library(tidyverse)
+
+```
+
+# sourcing helper functions 
+
+```{r setup, include=FALSE}
+helper_dir <- here("processing_pipelines/helper/exp1_preprocessing/")
+
+sapply(list.files(paste0(helper_dir,"exclude/")),
+       function(x){source(paste0(paste0(helper_dir,"exclude/"), x))})
+
+sapply(list.files(paste0(helper_dir,"extract/")), 
+       function(x){source(paste0(paste0(helper_dir,"extract/"), x))})
+
+sapply(list.files(paste0(helper_dir,"task/")), 
+       function(x){source(paste0(paste0(helper_dir,"task/"), x))})
+
+```
+
+# setting up the directory path
+
+```{r setup_paths}
+US_PATH <- here("data/00_raw_data/exp1/US/")
+CN_PATH <- here("data/00_raw_data/exp1/CN/")
+
+MERGED_DATA_PATH <- here("data/01_merged_data/exp1/merged_data.csv")
+MERGED_DEMOGS_PATH <- here("data/01_merged_data/exp1/merged_demogs.csv")
+
+# not relevant, for setting up human coding sheets 
+
+# US_TBA_FD_PATH <- here("data/to_be_annotated/US/us_tba_fd.csv")
+# US_TBA_CA_PATH <- here("data/to_be_annotated/US/us_tba_ca.csv")
+# US_SYMS_LABEL_PATH <- here("data/to_be_annotated/US/us_syms_label.csv")
+# #funnel debriefing and sanity check 
+# US_HUMANREAD_PATH <- here("data/to_be_annotated/US/us_hr.csv")
+# US_CIRCLE_DIR <- here("data/to_be_annotated/US/Circle/")
+# US_CIRCLE_CODING_PATH <- here("data/to_be_annotated/US/Circle/us_tba_si.csv")
+# CN_TBA_FD_PATH <- here("data/to_be_annotated/CN/cn_tba_fd.csv")
+# CN_TBA_CA_PATH <- here("data/to_be_annotated/CN/cn_tba_ca.csv")
+# CN_SYMS_LABEL_PATH <- here("data/to_be_annotated/CN/cn_syms_label.csv")
+# CN_HUMANREAD_PATH <- here("data/to_be_annotated/CN/cn_hr.csv")
+# CN_CIRCLE_DIR <- here("data/to_be_annotated/CN/Circle/")
+# CN_CIRCLE_CODING_PATH <- here("data/to_be_annotated/CN/Circle/cn_tba_si.csv")
+
+
+
+# task-based exclusion and completion based exclusion
+TRIMMED_DATA_PATH <- here("data/02_trimmed_data/exp1/trimmed_all.csv")
+
+# tidy data 
+PROCESSED_DEMOGS_PATH <-  here("data/03_processed_data/exp1/tidy_demog.csv")
+PROCESSED_MAIN_PATH <- here("data/03_processed_data/exp1/tidy_main.csv")
+ATTRITION_PATH <- here("data/03_processed_data/exp1/attrition_table.csv")
+```
+
+
+
+# Read in raw data 
+
+
+
+
+
+```{r message=FALSE}
+us_files <- str_c(US_PATH, dir(here(US_PATH), "*.csv"))
+cn_files <- str_c(CN_PATH, dir(here(CN_PATH), "*.csv"))
+
+
+us_data_RAW <- map_df(us_files, function(file) {
+  d <- read_csv(file) %>% 
+    count() %>% 
+    mutate(
+      file_name = file 
+    )
+  }) 
+
+
+cn_data_RAW <- map_df(cn_files, function(file) {
+  d <- read_csv(file) %>% 
+    count() %>% 
+    mutate(
+      file_name = file, 
+    )
+  }) 
+
+#Tentatively setting minimum row to be 180, so we only read in files with more than 180 rows
+
+MIN_ROW = 180
+
+us_data <- map_df((us_data_RAW %>% filter(n > MIN_ROW))$file_name,
+                  function(file){
+                    d <- read_csv(file)
+                  }) %>% 
+  mutate(culture = "US") %>%
+  # for version compatibility issue 
+  mutate(labels_locations = NA_character_) %>% 
+  filter(trial_type != "prolific-id")
+
+
+cn_data <- map_df((cn_data_RAW %>% filter(n > MIN_ROW))$file_name,
+                  function(file){
+                    d <- read_csv(file) %>% 
+                      mutate(labels = as.character(labels))
+                  })%>% 
+  mutate(culture = "CN") %>% 
+  # for version compatibility issue
+  mutate(labels_locations = as.character(labels_locations), 
+         ) %>% 
+  filter(trial_type != "prolific-id")
+
+# count number of raw participants: 
+fun.count_s <- function(df){
+  num_s <- df %>% distinct(subject) %>% count()
+  return(num_s)
+}
+
+fun.count_s(us_data)
+fun.count_s(cn_data)
+
+```
+
+
+There are `r fun.count_s(us_data)` US participants and `r fun.count_s(cn_data)` CN participants. 
+
+
+
+# Merging data and extracting demogs and write to `2_merged` folder 
+
+Here we combine the US data and CN data together
+```{r message=FALSE, warning=FALSE}
+#combine US and CN 
+merged_data <- bind_rows(us_data,cn_data) 
+  
+
+#extract demographic and combine them together
+us_demogs <- extract_demog(us_data, "US")
+cn_demogs <- extract_demog(cn_data, "CN")  
+merged_demogs <- bind_rows(us_demogs, cn_demogs)
+
+write_csv(merged_data, MERGED_DATA_PATH)
+write_csv(merged_demogs, MERGED_DEMOGS_PATH)
+
+#take a look at the tables
+#merged_data %>% datatable()
+#merged_demogs %>% datatable()
+```
+
+# START HERE IF NO RAW DATA
+```{r}
+
+merged_data <- read_csv(MERGED_DATA_PATH)
+
+```
+
+# Exclusion 
+
+
+## completion based 
+
+```{r}
+df.all_complete_ex <- complete_exclusion_by_task(merged_data)
+```
+
+## demographics based 
+
+```{r}
+df.us_demog_ex<- demog_exclusion(filter(merged_demogs, culture == "US"),
+                                  culture = "US", 
+                                  check_exclusion = FALSE, 
+                                  detail_table = TRUE) 
+df.cn_demog_ex <- demog_exclusion(filter(merged_demogs, culture == "CN"),
+                                  culture = "CN", 
+                                  check_exclusion = FALSE, 
+                                  detail_table = TRUE) 
+```
+
+
+## task-based  
+
+```{r}
+df.us_task_ex <- task_exclusion(filter(merged_data, culture == "US"), 
+                                culture = "US", 
+                                include_annotation = TRUE, 
+                                check_exclusion = TRUE, 
+                                detail_table = TRUE)
+
+df.cn_task_ex <- task_exclusion(filter(merged_data, culture == "CN"), 
+                                culture = "CN", 
+                                include_annotation = TRUE, 
+                                check_exclusion = TRUE, 
+                                detail_table = TRUE)
+```
+
+
+## putting everything together 
+
+```{r}
+df.us_all_ex <- left_join(df.us_demog_ex, 
+                          df.us_task_ex, by = "subject")
+df.cn_all_ex <- left_join(df.cn_demog_ex, 
+                          df.cn_task_ex, by = "subject")
+
+df.all_ex <- bind_rows(df.us_all_ex, 
+                       df.cn_all_ex) %>% 
+  left_join(df.all_complete_ex, by = "subject") %>% 
+  rename(culture = culture.x)
+
+ex_id <- df.all_ex %>% 
+  # ignore reason_SI for subject level exclusion
+  filter(reason_abroad | reason_EBB | reason_CA | reason_FD | reason_HZ | reason_RMTS | reason_EBB_complete | reason_CA_complete | reason_FD_complete | reason_HZ_complete | reason_RMTS_complete) %>%
+  
+  select(subject) %>% 
+  pull()
+  
+  
+  
+  
+trimmed_d <- merged_data %>%
+     filter(
+       !(subject %in% ex_id))
+
+```
+
+
+## writing the files 
+
+```{r}
+us_trimmed_demogs <- extract_demog(trimmed_d, "US")
+cn_trimmed_demogs <- extract_demog(trimmed_d, "CN") 
+trimmed_demogs <- bind_rows(us_trimmed_demogs, cn_trimmed_demogs) 
+
+write.csv(trimmed_demogs, PROCESSED_DEMOGS_PATH)
+write.csv(trimmed_d, TRIMMED_DATA_PATH)
+write.csv(df.all_ex, ATTRITION_PATH)
+```
+
+
+
+# Tidy up the dataset
+
+clean up the trimmed data into tidy format
+
+```{r message=FALSE}
+TASK <- c("EBB", 
+          "RMTS", 
+          #"SI",
+          "HZ", 
+          "CP", 
+          "RV",
+          "FD",
+          "CA"
+          )
+
+main <- TASK %>% 
+  map_df(~ eval(parse(text = paste0("get_", ., "_main(trimmed_d)"))))
+
+# special treatment for symbolic self inflation task due to the coding pipelines
+
+# get_SI
+SI_ex_id <- df.all_ex %>% 
+  filter(reason_SI == TRUE) %>% 
+    select(subject) %>% 
+  pull()
+
+si_df <- get_SI_main(trimmed_d, SI_ex_id)
+
+
+main <- bind_rows(si_df, main)
+write.csv(main,PROCESSED_MAIN_PATH)
+
+```
+
+
+
+# Appendix 
+
+This section contains scripts that were useful for coding 
+but not useful for getting the data relevant to the pipeline 
+
+## Extract human-coder required information
+
+### Create spreadsheet for human coders (after first round of exclusion)
+
+- Features to have: automatically detected already coded ones and transferred to the newer 
+First detect subjects who have been coded 
+```{r}
+CODED_US_FD_PATH <- here("data/annotated/US/us_fd_coded.csv")
+CODED_US_CA_PATH <- here("data/annotated/US/us_ca_coded.csv")
+CODED_US_SI_PATH <- here("data/annotated/US/us_si_coded.csv")
+
+# no new stuff for CN participants 
+#CODED_CN_FD_PATH <- here("data/annotated/CN/cn_fd_merged_coded.csv")
+#CODED_CN_CA_PATH <- here("data/annotated/CN/cn_ca_merged_coded.csv")
+#CODED_CN_SI_PATH <- here("data/annotated/CN/cn_si_merged_coded.csv")
+
+get_coded_sbj <- function(PATH){
+  coded_df <- read_csv(PATH)
+  coded_sbj <- coded_df %>% 
+  select(subject) %>% 
+  distinct() %>% 
+  pull()
+  return(coded_sbj)
+}
+
+# get all the subjects who have been coded 
+
+us_ca_coded_sbj <- get_coded_sbj(CODED_US_CA_PATH)
+us_fd_coded_sbj <- get_coded_sbj(CODED_US_FD_PATH)
+us_si_coded_sbj <- get_coded_sbj(CODED_US_SI_PATH)
+
+#cn_ca_coded_sbj <- get_coded_sbj(CODED_CN_CA_PATH)
+#cn_fd_coded_sbj <- get_coded_sbj(CODED_CN_FD_PATH)
+#cn_si_coded_sbj <- get_coded_sbj(CODED_CN_SI_PATH)
+
+```
+
+
+first round getting all the raw ones: 
+```{r}
+#cn_tba_fd_table <- extract_HIT_table(TRIMMED_DATA_PATH,CN_TBA_FD_PATH, "CN", "FD")
+#cn_tba_ca_table <- extract_HIT_table(TRIMMED_DATA_PATH,CN_TBA_CA_PATH, "CN", "CA")
+
+us_tba_fd_table <- extract_HIT_table(TRIMMED_DATA_PATH,US_TBA_FD_PATH, "US", "FD") 
+us_tba_ca_table <- extract_HIT_table(TRIMMED_DATA_PATH,US_TBA_CA_PATH, "US", "CA") 
+```
+
+
+
+we need to filter out the already coded us data in the newer spreadsheet
+```{r}
+# this won't work when all the participants have been coded 
+#cn_tba_fd_table <- extract_HIT_table(TRIMMED_DATA_PATH,CN_TBA_FD_PATH, "CN", "FD", 
+                                     #coded_subject = coded_cn_fd_sbj) 
+
+#cn_tba_ca_table <- extract_HIT_table(TRIMMED_DATA_PATH, CN_TBA_CA_PATH, "CN", "CA")
+
+us_tba_fd_table <- extract_HIT_table(TRIMMED_DATA_PATH,US_TBA_FD_PATH, "US", "FD",
+                                     coded_subject = us_fd_coded_sbj) 
+us_tba_ca_table <- extract_HIT_table(TRIMMED_DATA_PATH,US_TBA_CA_PATH, "US", "CA", 
+                                     coded_subject = us_ca_coded_sbj) 
+
+save_SymS_circle(TRIMMED_DATA_PATH %>% filter(subject != us_si_coded_sbj), 
+                 )
+
+```
+
+
+## Extract information relevant to SSI
+
+### draw all circles 
+
+```{r}
+# note that now we exlcude the ones already coded!
+us_si <- map_df((us_data_RAW %>% filter(n > MIN_ROW))$file_name,
+                  function(file){
+                    d <- read_csv(file) %>% 
+                      mutate(labels = as.character(labels)) %>% 
+                      filter(trial_type == "konva-draw-circle")
+                  }) %>% 
+   filter(
+       !(subject %in% ex_id)
+     ) %>% 
+  mutate(culture = "US") %>% 
+  select(subject, culture, locations, labels, labels_locations) %>% 
+  filter(!is.na(labels)) %>% 
+  filter(!(subject %in% us_si_coded_sbj)) %>% 
+  filter(!subject %in% ex_id)
+
+
+cn_si <- map_df((cn_data_RAW %>% filter(n > MIN_ROW))$file_name,
+                  function(file){
+                    d <- read_csv(file) %>% 
+                      mutate(labels = as.character(labels)) %>% 
+                      filter(trial_type == "konva-draw-circle")
+                  })%>% 
+  filter(
+       !(subject %in% ex_id)
+     ) %>% 
+  mutate(culture = "CN") %>% 
+  select(subject, culture, locations, labels, labels_locations) %>% 
+  filter(!is.na(labels))
+
+save_image_new(us_si, US_CIRCLE_DIR)
+#save_image_new(cn_si, CN_CIRCLE_DIR)
+```
+
+
+### generate coding sheet
+
+```{r}
+
+us_coding_sheet <- generate_coding_sheet(us_si)
+#cn_coding_sheet <- generate_coding_sheet(cn_si)
+
+write_csv(us_coding_sheet, US_CIRCLE_CODING_PATH)
+#write_csv(cn_coding_sheet, CN_CIRCLE_CODING_PATH)
+```

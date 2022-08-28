@@ -1,0 +1,316 @@
+---
+title: "exp2_00_raw_to_tidy"
+author: "anjie"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# loading packages 
+
+```{r}
+library(tidyverse)
+library(here)
+library(jsonlite)
+library(kableExtra)
+library(DT)
+library(Dict)
+library(ggforce) # for geom_circle 
+library(ggimage)
+library(stringr)
+library(showtext)# for displaying chinese characters
+```
+
+# loading helper functions 
+
+```{r}
+helper_dir <- here("processing_pipelines/helper/exp2_preprocessing/")
+sapply(list.files(paste0(helper_dir,"exclude/")),
+       function(x){source(paste0(paste0(helper_dir,"exclude/"), x))})
+
+sapply(list.files(paste0(helper_dir,"extract/")), 
+       function(x){source(paste0(paste0(helper_dir,"extract/"), x))})
+
+sapply(list.files(paste0(helper_dir,"task/")), 
+       function(x){if(grepl(".R", x)){source(paste0(paste0(helper_dir,"task/"), x))}})
+```
+
+
+# setting up the directory path
+
+```{r}
+US_PATH <- here("data/00_raw_data/exp2/US/")
+CN_PATH <-  here("data/00_raw_data/exp2/CN/")
+us_files <- str_c(US_PATH, dir(US_PATH))
+cn_files <- str_c(CN_PATH, dir(CN_PATH))
+
+
+MERGED_DATA_PATH <- here("data/01_merged_data/exp2/merged_data.csv")
+
+MAIN_TIDY_PATH <- here("data/03_processed_data/exp2/tidy_main.csv")
+MAIN_DEMOG_PATH <- here("data/03_processed_data/exp2/tidy_demog.csv")
+MAIN_ATTRITION_PATH <- here("data/03_processed_data/exp2/attrition_table.csv")
+
+```
+
+
+# Merge raw data
+
+```{r}
+
+us_data_RAW <- map_df(us_files, function(file) {
+   d <- read_csv(file) %>%
+     count() %>%
+     mutate(
+       file_name = file
+     )
+   })
+
+
+cn_data_RAW <- map_df(cn_files, function(file) {
+  d <- read_csv(file) %>% 
+    count() %>% 
+    mutate(
+      file_name = file, 
+    )
+  }) 
+
+#Tentatively setting minimum row to be 180, so we only read in files with more than 180 rows
+
+MIN_ROW = 180
+
+us_data <- map_df((us_data_RAW %>% filter(n > MIN_ROW))$file_name,
+                  function(file){
+                    d <- read_csv(file)
+                  }) %>% 
+  mutate(culture = "US") %>%
+  # for version compatibility issue 
+  mutate(labels_locations = NA_character_) %>% 
+  filter(trial_type != "prolific-id")
+
+
+
+cn_data <- map_df((cn_data_RAW %>% filter(n > MIN_ROW))$file_name,
+                  function(file){
+                    d <- read_csv(file) 
+                  })%>% 
+  mutate(culture = "CN") %>% 
+  filter(trial_type != "prolific-id")
+
+# count number of raw participants: 
+fun.count_s <- function(df){
+  num_s <- df %>% distinct(subject) %>% count()
+  return(num_s)
+}
+
+fun.count_s(us_data)
+fun.count_s(cn_data)
+
+raw_df <- bind_rows(us_data, cn_data)
+write_csv(raw_df, MERGED_DATA_PATH)
+```
+
+
+# Tidy Datframes
+
+we will tidyup all the tasks then apply the exclusion criteria 
+
+note the difference between this processing pipelines vs the previous version
+the difference is due to slight difference in the coding procedure 
+
+```{r}
+TASK <- c( 
+          "RMTS", 
+          "RV",
+          "triads",
+          "semantic_intuition_answer",
+          "change_detection_RT",
+          "CA"
+          )
+
+main <- TASK %>% 
+  map_df(~ eval(parse(text = paste0("get_", ., "_main(raw_df)"))) 
+         %>% mutate(resp = as.character(resp)))
+
+SSI_main <- get_SSI_main()
+FD_main <- get_FD_main()
+
+main_with_human_code <- bind_rows(main, 
+                                  SSI_main %>% mutate(resp = as.character(resp)), 
+                                  FD_main %>% 
+                                    mutate(resp = as.character(resp))) 
+```
+
+# Exclusion: 
+
+## response bias 
+
+Response bias: 
+- If more than 90% of selections by a participant in a 2AFC task were a single response button (left/right in RMTS or top/bottom in taxonomic/thematic similarity), data from this participant in this task will be excluded. 
+  - For RMTS, this translates to 4 responses (out of 4)
+  - For taxonomic/thematic, 29 responses (out of 32). 
+
+- If 100% of selections by a participant in a scalar (e.g., Likert scale used in causal attribution or in the demographics section) or multiple choice task (e.g. Raven’s SPM) used a single response button/value, data from this participant in this task will be excluded. 
+
+```{r}
+exclude_response_bias_df <- exclude_participants_main(raw_df)
+
+```
+
+
+## task based 
+
+1. Change detection: trials where the participant incorrectly identified the change will not be analyzed (but will not be counted as missing data unless a response was not attempted) 
+
+```{r}
+exclude_cd_df <- get_change_detection_excluded()
+```
+
+2. Free description: trials where the response is not code-able will be discarded and considered missing data
+
+```{r}
+exclude_fd_df <- get_FD_exclusion()
+```
+
+3. Causal attribution: none
+
+4. Symbolic self-inflation: data from participants who fail to draw exactly one “self” circle will be excluded, as well as data from participants who draw only a “self” circle
+
+```{r}
+exclude_ssi_df <- get_SSI_excluded()
+```
+
+5. Taxonomic/thematic similarity task: There are two unambiguous catch trials intermixed with regular trials in this task (e.g., Choose cat: cat, dog). If a participant misses either unambiguous catch trial, all triad data from that participant will be excluded.
+
+```{r}
+exclude_td_df <-get_td_exclude(main_with_human_code)
+```
+
+6. Semantic intuition: Participants will be excluded for missing any of the 5 control questions.
+
+note: There was an error in the preregistration, in reality there's 8 control questions, here we exclude anyone who answered 3 and above wrong. 
+
+```{r}
+exclude_sei_df <- get_sei_exclude(main_with_human_code)
+```
+
+
+7. Ambiguous RMTS: none
+
+8. Raven’s SPM: none
+
+### criteria check: 
+  
+If no data/more than 25% missing/data not codeable/side bias/participant did not follow instructions for any one task, then we will exclude all data from that participant, across tasks. If this leads to 20% or more of participants being excluded, we will not apply this exclusion criteria to all data from the participant--only at the level of individual tasks.
+
+```{r}
+full_task_exclude_df <- bind_rows(exclude_response_bias_df, exclude_cd_df, exclude_fd_df, exclude_ssi_df, 
+          exclude_td_df, exclude_sei_df) 
+
+
+full_task_exclude_df%>% 
+  distinct(subject)
+
+```
+
+so we will apply task-based exclusion on task-based criteria 
+
+## demographics based
+
+Demographic exclusions: we will exclude data from
+- [CN/US] participants who report living abroad for more than 2 years in regions with predominantly [European/Asian] populations (respectively).
+- [CN/US] participants who report speaking or understanding [English/any Chinese language or dialect] with proficiency at or above 3 out of 10.
+
+If this leads to 20% or more of participants being excluded from either test population (US/CN), we will drop this exclusion criterion for the relevant population and use exploratory regressions to examine how the factor relates to responding in our tasks.
+
+
+
+
+
+```{r}
+cn_exclusion_table <- demog_exclusion(
+  extract_demog(raw_df, "CN"), 
+  culture = "CN", 
+  check_exclusion = FALSE, 
+  detail_table = TRUE)
+
+us_exclusion_table <- demog_exclusion(
+  extract_demog(raw_df, "US"), 
+  culture = "US", 
+  check_exclusion = FALSE, 
+  detail_table = TRUE)
+
+#the results triggered the criteria to ditch the second exclusion criteria
+
+exclude_demog_df <- bind_rows(cn_exclusion_table, us_exclusion_table) %>% 
+  select(subject, reason_abroad) %>% 
+  filter(reason_abroad) %>% 
+  select(subject) %>% 
+  mutate(exclude_reason = "demog_abroadexp")
+```
+
+## applying exclusion
+
+
+```{r}
+# participant-based: demographics
+main_with_human_code <- main_with_human_code %>% filter(!subject %in% exclude_demog_df$subject)
+
+# task-based: task 
+full_d <- exclude_by_task(main_with_human_code, full_task_exclude_df)
+
+```
+
+
+# Create main datafiles 
+
+## main 
+
+```{r}
+write_csv(full_d, MAIN_TIDY_PATH)
+```
+
+## demog 
+
+```{r}
+main_demog <- bind_rows(extract_demog(raw_df, "CN") %>% 
+                        mutate(culture = "CN") %>% 
+                        filter(!(subject %in% exclude_demog_df$subject)), 
+                        extract_demog(raw_df, "US") %>% 
+                        mutate(culture = "US") %>% 
+                        filter(!(subject %in% exclude_demog_df$subject)))
+
+write_csv(main_demog, MAIN_DEMOG_PATH)
+```
+
+
+## attrition table 
+
+```{r}
+attrition_df <- full_task_exclude_df %>% 
+  separate(exclude_reason, into = c("task", "exclude_reason"), sep = "_") %>% 
+  mutate(exclusion_type = "by_task") %>% 
+  bind_rows(exclude_demog_df %>% mutate(exclusion_type = "whole_participant"))
+
+write_csv(attrition_df, MAIN_ATTRITION_PATH)
+```
+
+
+
+# Appendix
+
+## Create all raw coding materials for human coder needed task 
+
+```{r}
+## CD
+get_change_detection_mc_coding_sheet(raw_df_exlcuded_participants)
+get_change_detection_wr_coding_sheet(raw_df_exlcuded_participants)
+## FD
+get_FD_coding_sheet(raw_df_exlcuded_participants)
+## SSI
+create_SSI_to_be_annotated(raw_df_exlcuded_participants)
+## SeI
+get_semantic_intuition_mc_coding_sheet(raw_df_exlcuded_participants)
+## task familiarity
+get_familiarity_coding(raw_df_exlcuded_participants)
+```
+

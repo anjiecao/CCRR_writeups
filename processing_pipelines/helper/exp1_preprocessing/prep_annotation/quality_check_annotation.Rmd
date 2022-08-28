@@ -1,0 +1,79 @@
+---
+title: "quality_check_human_annotation"
+author: "anjie"
+date: "9/28/2020"
+output: 
+  html_document:
+    number_sections: no
+    toc_float: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+
+#undecided how to divide the jobs, will go into separate spreadsheets? 
+cn_ca <- read_csv(here("data/annotated/CN/cn_ca.csv"))
+cn_fd <- read_csv(here("data/annotated/CN/cn_fd.csv"))
+cn_syms_label <- read_csv(here("data/annotated/CN/cn_syms_label.csv"))
+
+us_ca <- read_csv(here("data/annotated/US/us_ca.csv"))
+us_fd <- read_csv(here("data/annotated/US/us_fd.csv"))
+us_syms_label <- read_csv(here("data/annotated/US/us_syms_label.csv"))
+
+
+syms_circle <- read_csv(here("data/annotated/all_circles.csv"))
+```
+
+# Check inter-coder reliability within culture 
+## FD
+```{r}
+
+```
+
+## CA 
+```{r}
+
+```
+
+## Label 
+```{r}
+
+```
+
+# Check Circles matching of new locations 
+```{r}
+
+```
+
+# Inter-coder reliability solved, then extract people to be excluded 
+this section will be moved to task_exclusion section later 
+
+## helper function 
+```{r}
+summarize_codeable_rate <- function(df){
+  codeable_df <- df %>% 
+    group_by(subject) %>% 
+    summarise(
+      codeable_rate = (sum(codeable) / n()), # 1 = codeable; 0 = uncodeable
+      include = if_else(codeable_rate > 0.75, "yes", "no")
+    )
+  
+  return (codeable_df)
+}
+```
+
+
+## FD
+exclude if >25% unusable 
+```{r}
+cn_fd_summary <- summarize_codeable_rate(cn_fd)
+us_fd_summary <- summarize_codeable_rate(us_fd)
+```
+
+
+
+
+

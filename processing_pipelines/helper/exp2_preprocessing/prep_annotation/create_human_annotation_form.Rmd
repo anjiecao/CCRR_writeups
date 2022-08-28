@@ -1,0 +1,307 @@
+---
+title: "Prep Annotation"
+author: "anjie"
+date: "9/24/2020"
+output: 
+  html_document:
+    number_sections: no
+    toc_float: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(java.parameters = "- Xmx1024m")
+library(rJava)
+library(tidyverse)
+library(here)
+#install.packages("openNLPmodels.en", repos = "http://datacube.wu.ac.at/", type = "source")
+#install.packages("tm")
+
+#CN word segmentation 
+library(jiebaR)
+library(jsonlite)
+library(DT)
+library(ggforce)
+
+
+source(here("preprocessing/task/symbolic_self.R"))
+source(here("preprocessing/task/free_description.R"))
+
+merged_PATH <- here("data/2_merged/merged_all.csv")
+US_TBA_PATH <- here("data/to_be_annotated/US/us_tba.csv")
+CN_TBA_PATH <- here("data/to_be_annotated/CN/cn_tba.csv")
+
+
+
+US_FD_PATH <- here("data/to_be_annotated/US/us_fd.csv")
+US_CA_PATH <- here("data/to_be_annotated/US/us_ca.csv")
+US_SYMS_LABEL_PATH <- here("data/to_be_annotated/US/us_syms_label.csv")
+
+CN_FD_PATH <- here("data/to_be_annotated/CN/cn_fd.csv")
+CN_CA_PATH <- here("data/to_be_annotated/CN/cn_ca.csv")
+CN_SYMS_LABEL_PATH <- here("data/to_be_annotated/CN/cn_syms_label.csv")
+
+SYMS_DIR <- here("data/to_be_annotated/SS_Circles/")
+CIRCLE_FORM_PATH <- here("data/to_be_annotated/all_circles.csv")
+```
+
+
+Question: 
+
+- over-complicated pipelines?
+
+- how many coders? -> structure of the pipelines 
+
+
+![all](/Users/caoanjie/Desktop/projects/CCRR_analysis/misc/all.png)
+
+![all](/Users/caoanjie/Desktop/projects/CCRR_analysis/misc/HIT.png)
+
+
+
+reading data 
+```{r}
+us_d <- read.csv(US_TBA_PATH)
+cn_d <- read.csv(CN_TBA_PATH)
+```
+
+# Free Description
+
+
+## US
+```{r message=FALSE}
+us_fd_form <- us_d %>% 
+  filter(task_name == "FD") %>% 
+  mutate(
+    stimulus = as.character(stimulus), 
+    trial_raw = as.character(trial_raw), 
+    culture = "US") %>% 
+  arrange(stimulus) %>% 
+  mutate(
+    coder = "",
+    codeable = "", 
+    first_mention_focal = 0, 
+    first_mention_backgrd = 0, 
+    descriptive_focal = 0, 
+    descriptive_backgrd = 0, 
+  ) %>% 
+  select(-X, -trial_num)
+
+#currently decide not to parse the keywords becaue they are not very efficient & do not significantly reduce the lengths 
+#system.time(us_fd_form$trial_parsed <- lapply(us_fd_form$trial_raw, parse_key_words))
+
+us_fd_form %>% datatable()
+```
+
+## CN
+
+```{r message=FALSE}
+
+cn_fd_form <- cn_d  %>% 
+  filter(task_name == "FD") %>% 
+  mutate(
+    stimulus = as.character(stimulus), 
+    trial_raw = as.character(trial_raw), 
+    culture = "CN") %>% 
+  arrange(stimulus) %>% 
+  mutate(
+    coder = "",
+    codeable = "", 
+    first_mention_focal = 0, 
+    first_mention_backgrd = 0, 
+    descriptive_focal = 0, 
+    descriptive_backgrd = 0, 
+  ) %>% 
+  select(-X, -trial_num)
+
+
+
+cn_fd_form %>% datatable()
+
+```
+
+## write the forms 
+```{r}
+write.csv(us_fd_form, US_FD_PATH)
+write.csv(cn_fd_form, CN_FD_PATH)
+```
+
+
+
+# Causal Attribution
+
+## US 
+```{r}
+us_ca_form <- us_d %>% 
+  filter(task_name == "CA") %>% 
+  mutate(
+    culture = "US",
+    codeable = "",
+    attribution = "", 
+    coder = "", 
+  ) %>% 
+  select(-X, -trial_num)
+us_ca_form %>% datatable()
+```
+
+## cn
+```{r}
+cn_ca_form <- cn_d %>% 
+  filter(task_name == "CA") %>% 
+  mutate(
+    culture = "CN",
+    codeable = "",
+    attribution = "", 
+    coder = "", 
+  ) %>% 
+  select(-X, -trial_num)
+cn_ca_form %>% datatable()
+```
+
+## write the forms 
+```{r}
+write.csv(us_ca_form, US_CA_PATH)
+write.csv(cn_ca_form, CN_CA_PATH)
+```
+
+
+
+# Symbolic Self Inlfation
+Here we only focus on the cases where circle num >= label num because we already throwing out the case where circle num < label num in exclude_task. R
+
+## First pass: check labels, divide by languages
+```{r}
+syms_df <- read_csv(merged_PATH) 
+
+# summarizing circle numbers for each participant 
+num_circ <- count_circle_number(syms_df) 
+
+# summarizing label numbers for each participant 
+num_lab <- count_label_numbers(syms_df) 
+
+# combine the two dataframe together 
+num_sum <- left_join(num_circ, num_lab, by = "subject")
+
+```
+
+```{r}
+us_lab_check <- extract_label(syms_df) %>% filter(culture == "US")
+cn_lab_check <- extract_label(syms_df) %>% filter(culture == "CN")
+
+us_lab_check$has_basic_label = lapply(us_lab_check$label_all,  check_basic_label,"US")
+cn_lab_check$has_basic_label = lapply(cn_lab_check$label_all,  check_basic_label,"CN")
+
+us_human_check_label <- us_lab_check %>% 
+  filter(has_basic_label == FALSE) %>% 
+  mutate(
+    codeable = "",
+    coder = ""
+  ) %>% 
+  select(
+    -circ_label,
+    -has_basic_label
+  )
+
+cn_human_check_label <- cn_lab_check %>% 
+  filter(has_basic_label == FALSE) %>% 
+  mutate(
+    codeable = "",
+    coder = ""
+  ) %>% 
+  select(
+    -circ_label,
+    -has_basic_label
+  )
+
+us_human_check_label %>% datatable()
+cn_human_check_label %>% datatable()
+write.csv(us_human_check_label, US_SYMS_LABEL_PATH)
+write.csv(cn_human_check_label, CN_SYMS_LABEL_PATH)
+``` 
+  
+  
+  
+## Second if more circles than labels, then deal with visualizations and ask human input on matching circles to labels 
+```{r}
+# Only check when the number of circles is greater than the number of labels, after getting rid of r = 0 and r = 1
+more_circ_sub <- num_sum %>% 
+  filter(label_n < circle_n) %>% 
+  pull(subject)
+
+# filter out the ones need human eyes, prepare for visualizing
+more_circ_check <- syms_df %>% 
+      filter(trial_type == "draw-circles", subject %in% more_circ_sub) %>% 
+      extract_circle()
+
+# prepare forms for human to read and fill in 
+to_check_form <- more_circ_check %>% 
+  select(subject, locations) %>% 
+  distinct(subject, locations) %>% 
+  mutate(
+    codeable = "", 
+    new_locations = "", 
+    coder = ""
+  )
+
+# function that run through all the subject and save the files in the folder 
+save_image <- function(subjects, df){
+  
+  num_id <- subjects
+  
+  for (id in num_id){
+    d_circle <- df %>% 
+      filter(subject == id) 
+    
+    id <- as.character(id)
+    f_name <- paste(SYMS_DIR, id, ".png", sep="")
+    d_circle %>% 
+      ggplot() + 
+      geom_circle(aes(x0 = x, y0 = y, r = radius)) + 
+      geom_text(aes(x = x, y = y, label = label)) + 
+      coord_fixed(xlim = c(0,1024), ylim = c(0, 800)) + 
+      scale_y_reverse()
+    ggsave(f_name)
+  }
+  
+  
+  
+}
+
+#save_image(to_check_form$subject, more_circ_check)
+
+
+#From check visualization: 
+  #if codeable
+    # circles dimension, assert(circles == lables num)
+  # if not codeable: add to exclusion 
+
+# From label visualization: 
+  # if acceptable, nothing 
+  # if not acceptable, add to exclusion 
+
+# make sure all are excluded 
+# make sure human checkers said yes to the labels 
+# make sure the number of labels match the number of circles
+# calculate score! 
+
+
+to_check_form %>% datatable()
+write.csv(to_check_form, CIRCLE_FORM_PATH)
+```
+
+for preview purpose, this is what one of the figures look like: 
+```{r, fig.height= 20, fig.width=20}
+num_id <- to_check_form$subject
+
+more_circ_check %>% 
+      ggplot() + 
+      geom_circle(aes(x0 = x, y0 = y, r = radius)) + 
+      geom_text(aes(x = x, y = y, label = label)) + 
+      coord_fixed(xlim = c(0,1024), ylim = c(0, 800)) + 
+      scale_y_reverse() + 
+      facet_wrap(~subject)
+ 
+```
+
+

@@ -1,0 +1,164 @@
+---
+title: "quality_check_human_annotation"
+author: "anjie"
+date: "9/28/2020"
+output: 
+  html_document:
+    number_sections: no
+    toc_float: yes
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+
+rFD_CN <- read_csv(here("data/annotated/CN/redundant_coding/rFD.csv"))
+rSSI_CN <- read_csv(here("data/annotated/CN/redundant_coding/rSSI.csv"))
+rFD_US <- read_csv(here("data/annotated/US/redundant_coding/rFD.csv")) %>% 
+  rename(stimulus = "stimulus...4")
+rSSI_US <- read_csv(here("data/annotated/US/redundant_coding/rSSI.csv"))
+
+FD_CN <- read_csv(here("data/annotated/CN/FD.csv"))
+SSI_CN <- read_csv(here("data/annotated/CN/SSI.csv"))
+FD_US <- read_csv(here("data/annotated/US/FD.csv"))
+SSI_US <- read_csv(here("data/annotated/US/SSI.csv"))
+```
+
+```{r}
+
+```
+
+
+# Check inter-coder reliability within culture 
+
+## FD
+
+```{r}
+bind_rows(rFD_CN, rFD_US %>% select(-`stimulus...5`)) %>% 
+  rename(r_codeable = codeable, 
+         r_first_mention_focal = first_mention_focal) %>% 
+  select(subject, culture, task_name, stimulus, trial_num, r_codeable, r_first_mention_focal) %>% 
+  left_join(bind_rows(FD_CN, FD_US), by = c("subject", "culture", "task_name", "stimulus", "trial_num")) %>% 
+  mutate(
+    agree_codeable = (r_codeable == codeable), 
+    agree_first_mention_focal = (r_first_mention_focal == first_mention_focal)
+  ) %>% 
+  group_by(culture) %>% 
+  summarise(agree_codeable = mean(agree_codeable), 
+            agree_first_mention_focal = mean(agree_first_mention_focal))
+  
+```
+```{r}
+bind_rows(rFD_CN, rFD_US %>% select(-`stimulus...5`)) %>% 
+  rename(r_codeable = codeable, 
+         r_first_mention_focal = first_mention_focal) %>% 
+  select(subject, culture, task_name, stimulus, trial_num, r_codeable, r_first_mention_focal) %>% 
+  left_join(bind_rows(FD_CN, FD_US), by = c("subject", "culture", "task_name", "stimulus", "trial_num")) %>% 
+  mutate(
+    agree_codeable = (r_codeable == codeable), 
+    agree_first_mention_focal = (r_first_mention_focal == first_mention_focal)
+  ) %>% 
+  group_by(culture) %>% 
+  summarise(
+    agree_codeable = mean(agree_codeable), 
+    agree_first_mention_focal = mean(agree_first_mention_focal)
+  )
+
+bind_rows(rFD_CN, rFD_US %>% select(-`stimulus...5`)) %>% 
+  rename(r_codeable = codeable, 
+         r_first_mention_focal = first_mention_focal) %>% 
+  select(subject, culture, task_name, stimulus, trial_num, r_codeable, r_first_mention_focal) %>% 
+  left_join(bind_rows(FD_CN, FD_US), by = c("subject", "culture", "task_name", "stimulus", "trial_num")) %>% 
+  mutate(
+    agree_codeable = (r_codeable == codeable), 
+    agree_first_mention_focal = (r_first_mention_focal == first_mention_focal)
+  ) %>% 
+  filter(codeable == 1) %>% 
+  group_by(culture) %>% 
+  summarise(
+    #agree_codeable = mean(agree_codeable), 
+    agree_first_mention_focal = mean(agree_first_mention_focal)
+  )
+```
+
+
+```{r}
+disagree_df <- bind_rows(rFD_CN, rFD_US %>% select(-`stimulus...5`)) %>% 
+  rename(r_codeable = codeable, 
+         r_first_mention_focal = first_mention_focal) %>% 
+  select(subject, culture, task_name, stimulus, trial_num, r_codeable, r_first_mention_focal) %>% 
+  left_join(bind_rows(FD_CN, FD_US), by = c("subject", "culture", "task_name", "stimulus", "trial_num")) %>% 
+  filter(r_codeable != codeable | r_first_mention_focal != first_mention_focal) %>% 
+  filter(culture == "CN") %>% 
+  arrange(stimulus)
+  
+write_csv(disagree_df, here("df_disagree.csv"))
+```
+
+
+
+## SSI
+```{r}
+bind_rows(rSSI_CN, rSSI_US) %>% 
+  rename(r_codeable = codeable, 
+         r_me_circle = me_circle) %>% 
+  select(subject, culture, ssi_id,circle_number, r_codeable, r_me_circle ) %>% 
+  left_join(bind_rows(SSI_CN, SSI_US), by = c("subject", "culture", "ssi_id","circle_number")) %>% 
+   mutate(
+    agree_codeable = (r_codeable == codeable), 
+    agree_me_circle = (r_me_circle == me_circle)
+  ) %>% 
+  group_by(culture) %>% 
+  summarise(agree_codeable = mean(agree_codeable), 
+            agree_me_circle = mean(agree_me_circle))
+```
+
+
+
+
+## CA 
+```{r}
+
+```
+
+## Label 
+```{r}
+
+```
+
+# Check Circles matching of new locations 
+```{r}
+
+```
+
+# Inter-coder reliability solved, then extract people to be excluded 
+this section will be moved to task_exclusion section later 
+
+## helper function 
+```{r}
+summarize_codeable_rate <- function(df){
+  codeable_df <- df %>% 
+    group_by(subject) %>% 
+    summarise(
+      codeable_rate = (sum(codeable) / n()), # 1 = codeable; 0 = uncodeable
+      include = if_else(codeable_rate > 0.75, "yes", "no")
+    )
+  
+  return (codeable_df)
+}
+```
+
+
+## FD
+exclude if >25% unusable 
+```{r}
+cn_fd_summary <- summarize_codeable_rate(cn_fd)
+us_fd_summary <- summarize_codeable_rate(us_fd)
+```
+
+
+
+
+

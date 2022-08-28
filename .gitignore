@@ -1,3 +1,14 @@
+
+# data files that can't live publicly
+data/00_raw_data/exp1/
+data/00_raw_data/exp2/
+
+data/01_merged_data/exp1/
+data/01_merged_data/exp2/
+
+data/02_trimmed_data/exp1/
+data/02_trimmed_data/exp2/
+
 # History files
 .Rhistory
 .Rapp.history

@@ -1,0 +1,61 @@
+stimulus ,change answer,change type,original number (see appendix for cross-ref) in ms table,prompt
+1a,front plane's color,focal,1,Description0
+1b,front plane's color,focal ,1,Description0
+2a,helicopter location,context,6,Description1
+2b,helicopter location,context,6,Description1
+3a,background control tower's shape,context,4,Description2
+3b,background control tower's shape,context,4,Description2
+4a,cloud's shape,context,5,Description3
+4b,cloud's shape,context,5,Description3
+5a,size of the front plane's engine ,focal ,3,Description4
+5b,size of the front plane's engine ,focal,3,Description4
+6a,number of window of the plane ,focal ,2,Description5
+6b,number of window of the plane ,focal,2,Description5
+7a,Front bulldozer’’s line color,focal,9,Description6
+7b,Front bulldozer’’s line color,focal,9,Description6
+8a,Bulldozer’s location,context,12,Description7
+8b,Bulldozer’s location,context,12,Description7
+9a, Electric lines in background,context,11,Description8
+9b, Electric lines in background,context,11,Description8
+10a,Number of construction frames,context,10,Description9
+10b,Number of construction frames,context,10,Description9
+11a, Front bulldozer’s shape of gear,focal,8,Description10
+11b, Front bulldozer’s shape of gear,focal,8,Description10
+12a,Front bulldozer’s lights (on/off),focal,7,Description11
+12b,Front bulldozer’s lights (on/off),focal,7,Description11
+13a, Front tractor’s prow,focal,14,Description12
+13b, Front tractor’s prow,focal,14,Description12
+14a,Airplane’s location,context,17,Description13
+14b,Airplane’s location,context,17,Description13
+15a,Height of the background field,context,16,Description14
+15b,Height of the background field,context,16,Description14
+16a,Background barn’s location,context,18,Description15
+16b,Background barn’s location,context,18,Description15
+17a,Pickup truck’s door color,focal,13,Description16
+17b,Pickup truck’s door color,focal,13,Description16
+18a,Size of loads on the front tractor,focal,15,Description17
+18b,Size of loads on the front tractor,focal,15,Description17
+19a,Logo of the front tag boat,focal,20,Description18
+19b,Logo of the front tag boat,focal,20,Description18
+20a,Ferry’s location,context,24,Description19
+20b,Ferry’s location,context,24,Description19
+21a,Color of water,context,23,Description20
+21b,Color of water,context,23,Description20
+22a,Location of church steeple,context,22,Description21
+22b,Location of church steeple,context,22,Description21
+23a,Front boat’s shape of window,focal ,21,Description22
+23b,Front boat’s shape of window,focal ,21,Description22
+24a,Front steamship’s pedal color,focal ,19,Description23
+24b,Front steamship’s pedal color,focal ,19,Description23
+25a,Front car’s wheel shape,focal ,27,Description24
+25b,Front car’s wheel shape,focal ,27,Description24
+26a,Track’s location,context,30,Description25
+26b,Track’s location,context,30,Description25
+27a,Shape of the background building,context,28,Description26
+27b,Shape of the background building,context,28,Description26
+28a,Shape of the sidewalk,context,29,Description27
+28b,Shape of the sidewalk,context,29,Description27
+29a,Front bicycle’s wheel,focal,26,Description28
+29b,Front bicycle’s wheel,focal,26,Description28
+30a,Front track’s color,focal,25,Description29
+30b,Front track’s color,focal,25,Description29

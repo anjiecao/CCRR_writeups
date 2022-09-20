@@ -1,0 +1,52 @@
+State,State Code,Region,Coast,Division
+Alaska,AK,West,west_coast,Pacific
+Alabama,AL,South,inland,East South Central
+Arkansas,AR,South,inland,West South Central
+Arizona,AZ,West,inland,Mountain
+California,CA,West,west_coast,Pacific
+Colorado,CO,West,inland,Mountain
+Connecticut,CT,Northeast,east_coast,New England
+District of Columbia,DC,South,inland,South Atlantic
+Delaware,DE,South,east_coast,South Atlantic
+Florida,FL,South,east_coast,South Atlantic
+Georgia,GA,South,east_coast,South Atlantic
+Hawaii,HI,West,west_coast,Pacific
+Iowa,IA,Midwest,inland,West North Central
+Idaho,ID,West,inland,Mountain
+Illinois,IL,Midwest,inland,East North Central
+Indiana,IN,Midwest,inland,East North Central
+Kansas,KS,Midwest,inland,West North Central
+Kentucky,KY,South,inland,East South Central
+Louisiana,LA,South,inland,West South Central
+Massachusetts,MA,Northeast,east_coast,New England
+Maryland,MD,South,east_coast,South Atlantic
+Maine,ME,Northeast,east_coast,New England
+Michigan,MI,Midwest,inland,East North Central
+Minnesota,MN,Midwest,inland,West North Central
+Missouri,MO,Midwest,inland,West North Central
+Mississippi,MS,South,inland,East South Central
+Montana,MT,West,inland,Mountain
+North Carolina,NC,South,east_coast,South Atlantic
+North Dakota,ND,Midwest,inland,West North Central
+Nebraska,NE,Midwest,inland,West North Central
+New Hampshire,NH,Northeast,east_coast,New England
+New Jersey,NJ,Northeast,east_coast,Middle Atlantic
+New Mexico,NM,West,inland,Mountain
+Nevada,NV,West,inland,Mountain
+New York,NY,Northeast,east_coast,Middle Atlantic
+Ohio,OH,Midwest,inland,East North Central
+Oklahoma,OK,South,inland,West South Central
+Oregon,OR,West,west_coast,Pacific
+Pennsylvania,PA,Northeast,inland,Middle Atlantic
+Rhode Island,RI,Northeast,east_coast,New England
+South Carolina,SC,South,east_coast,South Atlantic
+South Dakota,SD,Midwest,inland,West North Central
+Tennessee,TN,South,inland,East South Central
+Texas,TX,South,inland,West South Central
+Utah,UT,West,inland,Mountain
+Virginia,VA,South,east_coast,South Atlantic
+Vermont,VT,Northeast,inland,New England
+Washington,WA,West,west_coast,Pacific
+Wisconsin,WI,Midwest,inland,East North Central
+West Virginia,WV,South,inland,South Atlantic
+Wyoming,WY,West,inland,Mountain

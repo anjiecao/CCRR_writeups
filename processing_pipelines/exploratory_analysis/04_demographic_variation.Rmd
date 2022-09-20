@@ -2,30 +2,43 @@
 title: "04_demographics_variation"
 author: "anjie"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  html_document:
+    code_folding: hide
+    number_sections: no
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
 ---
 
 ```{r}
 library(tidyverse)
 library(here)
+library(broom)
 
 
 d1 <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv"))
 d2 <- read_csv(here("data/03_processed_data/exp2/tidy_main.csv"))
+
+d1_demog <- read_csv(here("data/03_processed_data/exp1/tidy_demog.csv"))
 d2_demog <- read_csv(here("data/03_processed_data/exp2/tidy_demog.csv"))
 
+us_regions <- read_csv(here("data/03_processed_data/us_regions.csv"))
+cn_regions <- read_csv(here("data/03_processed_data/cn_regions.csv"))
 
 ```
 
-# task scale relationship 
+# Task-global identity relationships 
 
-study 2 only 
+
+
+
+Since we only collected scales for study 2, here we are only running the test with study 2
 
 ```{r}
-# reverse scoring local 
-# higher score = global 
-# lower score = global 
-demog_d_scale <- d2_demog %>% 
+d2_with_scale <- d2 %>% 
+  left_join(d2_demog %>% 
   mutate(scale_type = case_when(
     grepl("identity_local", demog_question) ~ "identity_local",
     grepl("identity_global", demog_question) ~ "identity_global",
@@ -35,204 +48,441 @@ demog_d_scale <- d2_demog %>%
     TRUE ~ "non_scale"
   )) %>% 
   filter(!(scale_type == "non_scale")) %>% 
-  mutate(demog_response = as.numeric(demog_response) + 1) %>% 
-  mutate(demog_response = case_when(
-    grepl("identity_local", demog_question) ~ -demog_response, 
-    grepl("consumption_local", demog_question) ~ -demog_response,
+  mutate(demog_response = as.numeric(demog_response) + 1, 
+         demog_response = case_when(
+           grepl("local", scale_type) ~ -demog_response, 
+           TRUE ~ demog_response
+         )) %>% 
+  group_by(subject, culture) %>% 
+  summarise(scale_sum_score = sum(demog_response)), 
+  by = c("subject", "culture"))
+
+
+```
+
+```{r}
+
+# RMTS, FD, CD, SSI, CA, TD, SeI, RV
+# cleaning 
+clean_d2_CD <- d2_with_scale %>% 
+  filter(task_name == "CD", task_info == "context") %>% 
+  group_by(subject, culture, task_name, scale_sum_score) %>% 
+  filter(!resp == "null") %>% 
+  summarise(resp_num = mean(as.numeric(resp)))
+
+clean_d2_SSI <- d2_with_scale %>% 
+  filter(task_name == "SSI", resp_type == "task_score_ratio") %>%
+  mutate(resp_num = as.numeric(resp))
+
+clean_d2_CA <- d2_with_scale %>% 
+  filter(task_name == "CA", task_info == "situational") %>% 
+  group_by(subject, culture, task_name, scale_sum_score) %>% 
+  filter(!is.na(resp)) %>% 
+  summarise(resp_num = mean(as.numeric(resp)))
+
+clean_d2_TD <- d2_with_scale %>% 
+  filter(task_name == "TD", task_info == "triads") %>% 
+  group_by(subject, culture, task_name, scale_sum_score) %>% 
+  filter(!is.na(resp)) %>% 
+  summarise(resp_num = mean(as.numeric(as.logical(resp))))
+
+clean_d2_SeI <- d2_with_scale %>% 
+  filter(task_name == "SeI", task_info == "critical") %>% 
+  mutate(resp = case_when(
+    resp == "causal_historical" ~ 1, 
+    TRUE ~ 0)) %>% 
+  group_by(subject, culture, task_name, scale_sum_score) %>% 
+  summarise(resp_num = mean(as.numeric(resp)))
+
+
+d2_task_giscale <- d2_with_scale  %>% 
+  filter(task_name %in% c("RMTS","RV","FD"))  %>% 
+  mutate(resp_num = as.numeric(resp))  %>% 
+  group_by(subject, culture, task_name, scale_sum_score) %>% 
+  summarise(resp_num = mean(resp_num)) %>% 
+  bind_rows(clean_d2_CD, clean_d2_SSI, clean_d2_CA, 
+            clean_d2_TD, clean_d2_SeI) %>% 
+  group_by(task_name) %>% 
+  nest() |>
+  mutate(mod = map(data, 
+                   function (df) lm(resp_num ~ scale_sum_score * culture, 
+                                    data = df)), 
+         tidy = map(mod, tidy)) |>
+  select(-mod, -data) |>
+  unnest(cols = c(tidy)) |>
+  filter(term %in% c("scale_sum_score","scale_sum_score:cultureUS")) 
+
+d2_task_giscale$adjusted = p.adjust(d2_task_giscale$p.value, method = "bonferroni")
+
+saveRDS(d2_task_giscale, here("cached_results/ea/task_giscale_df.RDS"))
+
+d2_task_giscale|>
+  knitr::kable(digits = 3)
+```
+
+
+
+
+
+# Regional differences 
+
+```{r}
+
+toneless_dict <- pinyin::pydic("toneless")
+demog_province_cleaned <- 
+  bind_rows(d1_demog %>% mutate(study = "d1"), 
+            d2_demog %>% mutate(study = "d2")) %>% 
+  filter(demog_question == "state_grewup") %>% 
+  rowwise() %>% 
+  mutate(demog_response_clean = case_when(
+    culture == "CN" ~ as.character(pinyin::py(demog_response, toneless_dict, 
+                                              sep = "",
+                                       other_replace = NULL)), 
     TRUE ~ demog_response
   )) %>% 
-  group_by(subject, culture) %>% 
-  summarise(scale_sum_score = sum(demog_response))
+  mutate(demog_response_clean = case_when(
+  demog_response_clean == "hena" ~ "Henan",
+  demog_response_clean == "jita" ~ "Others",
+  demog_response_clean == "haina" ~ "Hainan",
+  demog_response_clean == "huna" ~ "Hunan",
+  demog_response_clean == "andong" ~ "Guangdong",
+  demog_response_clean == "namenggu" ~ "Inner Mongolia",
+  demog_response_clean == "jinghai" ~ "Qinghai",
+  demog_response_clean == "angxi" ~ "Guangxi",
+  demog_response_clean == "anxi" ~ "Guangxi",
+  demog_response_clean == "yunna" ~ "Yunnan",
+  demog_response == "山西" ~ "Shanxi",
+  demog_response == "宁夏" ~ "Ningxia",
+  demog_response == "陕西" ~ "Shaanxi",
+  TRUE ~ demog_response_clean
+)) %>% 
+  mutate(demog_response_clean = tolower(demog_response_clean)) %>% 
+  left_join(us_regions %>% 
+              mutate(demog_response_clean = tolower(State)) %>% 
+              select(Region, Coast, demog_response_clean), by = "demog_response_clean"
+            ) %>% 
+  left_join(cn_regions %>% 
+              mutate(demog_response_clean = tolower(Province)) %>% 
+              select(PercentPaddy, RiceCat, demog_response_clean), 
+            by = "demog_response_clean") %>% 
+    janitor::clean_names() %>% 
+   mutate(rice_cat = case_when(rice_cat == 1 ~ "wheat", 
+                              rice_cat == 2 ~ "rice"))
 
-d2_with_scale <- d2 %>% 
-    left_join(demog_d_scale, by = c("subject", "culture")) 
 
+
+
+us_d1_region_d <- demog_province_cleaned %>% 
+  filter(study == "d1", culture == "US") %>% 
+  select(subject, study, culture, study, coast, region)
+
+us_d2_region_d <- demog_province_cleaned %>% 
+  filter(study == "d2", culture == "US") %>% 
+  select(subject, study, culture, study, coast, region)
+
+cn_d1_region_d <- demog_province_cleaned %>% 
+  filter(study == "d1", culture == "CN") %>% 
+  select(subject, study, culture, study, rice_cat)
+
+cn_d2_region_d <- demog_province_cleaned %>% 
+  filter(study == "d2", culture == "CN") %>% 
+  select(subject, study, culture, study, rice_cat)
+ 
 ```
 
+## study 1
 
-## RMTS 
-
-### figure 
 
 ```{r}
-d2_with_scale %>% 
+clean_d1_ssi <- d1 %>% 
+  filter(task_name == "SI") %>% 
+  filter(resp_type == "inflation_score_ratio") %>% 
+  mutate(resp_num = as.numeric(resp)) %>% 
+  select(subject, culture, task_name, resp_num)
+
+clean_d1_ebb <- d1 %>% 
+  filter(task_name == "EBB", task_info == "IL") %>% 
+  group_by(subject, culture, task_name) %>% 
+  summarise(resp_num = mean(resp))
+
+clean_d1_rmts <- d1 %>% 
   filter(task_name == "RMTS") %>% 
-  group_by(subject, culture, scale_sum_score) %>% 
-  summarise(relational_match = mean(as.numeric(resp))) %>% 
-  ggplot(aes(x = scale_sum_score,  
-             y = relational_match, 
-             color = culture)) + 
-  geom_jitter(alpha = .3) + 
-  geom_smooth(method = "lm") + 
-  labs(title = "rmts with scale")
-```
-### model - needs controlling for the demographic effect 
+   group_by(subject, culture, task_name) %>% 
+  summarise(resp_num = mean(resp))
 
-```{r}
-rmts_d <- d2_with_scale %>% 
-  filter(task_name == "RMTS") %>% 
-  group_by(subject, culture, scale_sum_score) %>% 
-  summarise(relational_match = mean(as.numeric(resp)))
+clean_d1_hz <- d1 %>% 
+  filter(task_name == "HZ", resp_type == "hz_height") %>% 
+  mutate(resp_num = resp) %>% 
+  select(subject, culture, task_name, resp_num)
 
-rmts_scale_m <- lm(relational_match ~ scale_sum_score, data = rmts_d)
-summary(rmts_scale_m)
-```
+clean_d1_up <- d1 %>% 
+  filter(task_name == "CP") %>% 
+  mutate(resp_num = resp) %>% 
+  select(subject, culture, task_name, resp_num)
 
-
-## Free Description (FD)
-
-### figure 
-
-```{r}
-d2_with_scale %>% 
-  filter(task_name == "FD") %>% 
-  group_by(subject, culture, scale_sum_score) %>% 
-  summarise(first_mention_rate = mean(as.numeric(resp))) %>% 
-  ggplot(aes(x = scale_sum_score,  
-             y = first_mention_rate, 
-             color = culture)) + 
-  geom_jitter(alpha = .3) + 
-  geom_smooth(method = "lm") + 
-  labs(title = "Free description with scale")
-```
-
-### model 
-
-
-```{r}
-fd_d <- d2_with_scale %>% 
-  filter(task_name == "FD") %>% 
-  group_by(subject, culture, scale_sum_score) %>% 
-  summarise(first_mention_rate = mean(as.numeric(resp)))
-
-rmts_scale_m <- lm(first_mention_rate ~ scale_sum_score, data = fd_d)
-summary(rmts_scale_m)
-```
-
-
-## Change Detection (CD): only with trials in which changes occur in the background 
-
-### figure 
-
-
-```{r}
-d2_with_scale %>% 
-  filter(task_name == "CD", task_info == "context") %>% 
-  group_by(subject, culture, scale_sum_score) %>% 
-  filter(resp != "null") %>% 
-  summarise(rt_at_context_condition = mean(as.numeric(resp)), na.rm = TRUE) %>% 
-  ggplot(aes(x = scale_sum_score,  
-             y = log(rt_at_context_condition), 
-             color = culture)) + 
-  geom_jitter(alpha = .3) + 
-  geom_smooth(method = "lm") + 
-  labs(title = "RT at context condition with scale")
-```
-
-### model 
-
-```{r}
-cd_d <- d2_with_scale %>% 
-  filter(task_name == "CD", task_info == "context") %>% 
-  group_by(subject, culture, scale_sum_score) %>% 
-  filter(resp != "null") %>% 
-  summarise(rt_at_context_condition = mean(as.numeric(resp)), na.rm = TRUE) 
-
-cd_scale_m <- lm(log(rt_at_context_condition) ~ scale_sum_score, data = cd_d)
-summary(cd_scale_m)
-```
-
-## Causal Attribution 
-
-### figure
-
-```{r}
-d2_with_scale %>% 
-  filter(task_name == "CA", task_info == "situational") %>% 
-  group_by(subject, culture, scale_sum_score) %>% 
-  summarise(rating_at_situational = mean(as.numeric(resp)), na.rm = TRUE) %>% 
-  ggplot(aes(x = scale_sum_score,  
-             y = rating_at_situational, 
-             color = culture)) + 
-  geom_jitter(alpha = .3) + 
-  geom_smooth(method = "lm") + 
-  labs(title = "Rating at situational condition with scale")
-```
-
-### model 
-
-```{r}
-ca_d <- d2_with_scale %>% 
-  filter(task_name == "CA", task_info == "situational") %>% 
-  group_by(subject, culture, scale_sum_score) %>% 
-  summarise(rating_at_situational = mean(as.numeric(resp), na.rm = TRUE)) 
-
-ca_scale_m <- lm(rating_at_situational ~ scale_sum_score, data = ca_d)
-summary(ca_scale_m)
-```
-
-## Triads 
-
-### figure 
-```{r}
-d2_with_scale %>% 
-  filter(task_name == "TD", task_info == "triads") %>% 
-  group_by(subject, culture, scale_sum_score) %>% 
-  summarise(proportion_tax_match = mean(as.numeric(as.logical(resp))), na.rm = TRUE) %>% 
-  ggplot(aes(x = scale_sum_score,  
-             y = proportion_tax_match, 
-             color = culture)) + 
-  geom_jitter(alpha = .3) + 
-  geom_smooth(method = "lm") + 
-  labs(title = "Proportion tax match with scale")
-```
-
-### model - needs controls
-
-```{r}
-td_d <- d2_with_scale %>% 
-  filter(task_name == "TD", task_info == "triads") %>% 
-  group_by(subject, culture, scale_sum_score) %>% 
-  summarise(proportion_tax_match = mean(as.numeric(as.logical(resp))), na.rm = TRUE) 
-
-td_scale_m <- lm(proportion_tax_match ~ scale_sum_score, data = td_d)
-summary(td_scale_m)
-```
-
-## Ravens
-
-### figure 
-
-```{r}
-d2_with_scale %>% 
+clean_d1_rv <- d1 %>% 
   filter(task_name == "RV") %>% 
-  group_by(subject, culture, scale_sum_score) %>% 
-  summarise(proportion_correct = mean(as.numeric(resp)), na.rm = TRUE) %>% 
-  ggplot(aes(x = scale_sum_score,  
-             y = proportion_correct, 
-             color = culture)) + 
-  geom_jitter(alpha = .3) + 
-  geom_smooth(method = "lm") + 
-  labs(title = "RV Proportion correct with scale")
+   group_by(subject, culture, task_name) %>% 
+  summarise(resp_num = mean(resp)) %>% 
+  select(subject, culture, task_name, resp_num)
+
+clean_d1_fd <- d1 %>% 
+  filter(task_name == "FD", resp_type == "first_mention_focal") %>% 
+   group_by(subject, culture, task_name) %>% 
+  summarise(resp_num = mean(resp)) %>% 
+  select(subject, culture, task_name, resp_num)
+
+clean_d1_ca <- d1 %>% 
+  filter(task_name == "CA", resp_type == "situation_attribution")%>% 
+  group_by(subject, culture, task_name) %>% 
+  summarise(resp_num = mean(resp)) %>% 
+  select(subject, culture, task_name, resp_num)
+
+
+d1_region_df <- bind_rows(clean_d1_ca, 
+          clean_d1_ebb, 
+          clean_d1_fd, 
+          clean_d1_hz, 
+          clean_d1_rmts, 
+          clean_d1_rv, 
+          clean_d1_ssi, 
+          clean_d1_up) %>% 
+  left_join(us_d1_region_d %>% select(subject, culture, coast, region), by = c("subject", "culture")) %>% 
+  left_join(cn_d1_region_d %>% select(subject, culture, rice_cat), by = c("subject", "culture")) %>% 
+   select(subject, culture, task_name, resp_num, rice_cat, coast,region) %>% 
+  pivot_longer(cols = c("rice_cat", "coast", "region"), 
+               names_to = "region_type", 
+               values_to = "region") %>% 
+  mutate(region = as.factor(region)) %>% 
+  group_by(culture, task_name, region_type) %>% 
+  nest() %>% 
+  filter(!(culture == "CN" & region_type %in% c("coast", "region")), 
+         !(culture == "US"& region_type == "rice_cat")) %>% 
+  mutate(mod = case_when(
+    region_type == "rice_cat" ~ map(data, function (df) lm(resp_num ~ relevel(region, 
+                                                                              ref = 
+                                                                              "wheat"),
+                                  data = df)),
+    region_type == "region" ~ map(data, function (df) lm(resp_num ~ relevel(region, 
+                                                                              ref = 
+                                                                          "West"),
+                                  data = df)),
+    region_type == "coast" ~ map(data, function (df) lm(resp_num ~ relevel(region, 
+                                                                              ref = 
+                                                                          "west_coast"),
+                                  data = df))
+  ), 
+  tidy = map(mod, tidy)) %>% 
+  select(-mod, -data) |>
+  unnest(cols = c(tidy)) %>% 
+  filter(grepl("region", term)) 
+
+
+d1_region_df$p.adjusted = p.adjust(d1_region_df$p.value,
+                                    method = "bonferroni")
+
+d1_region_df %>% 
+  knitr::kable(digits = 3)
 ```
 
 
-### model 
+## study 2
 
 ```{r}
-rv_d <- d2_with_scale %>% 
-  filter(task_name == "RV") %>% 
-  group_by(subject, culture, scale_sum_score) %>% 
-  summarise(proportion_correct = mean(as.numeric(resp)), na.rm = TRUE) 
+# here we are recycling the code snippet from above so that we can run batch models
+d2_region_df <- d2_with_scale  %>% 
+  filter(task_name %in% c("RMTS","RV","FD"))  %>% 
+  mutate(resp_num = as.numeric(resp))  %>% 
+  group_by(subject, culture, task_name, scale_sum_score) %>% 
+  summarise(resp_num = mean(resp_num)) %>% 
+  bind_rows(clean_d2_CD, clean_d2_SSI, clean_d2_CA, 
+            clean_d2_TD, clean_d2_SeI) %>% 
+  select(-scale_sum_score) %>% 
+# start combining the demographic information   
+  left_join(cn_d2_region_d %>% select(subject, 
+                                      culture, 
+                                      rice_cat), by = c("subject", "culture")) %>% 
+  left_join( us_d2_region_d %>% select(subject, culture, coast, region), 
+             by = c("subject", "culture")) %>% 
+  select(subject, culture, task_name, resp_num, rice_cat, coast,region) %>% 
+  pivot_longer(cols = c("rice_cat", "coast", "region"), 
+               names_to = "region_type", 
+               values_to = "region") %>% 
+  mutate(region = as.factor(region)) %>% 
+  group_by(culture, task_name, region_type) %>% 
+  nest() %>% 
+  filter(!(culture == "CN" & region_type %in% c("coast", "region")), 
+         !(culture == "US"& region_type == "rice_cat")) %>% 
+  mutate(mod = case_when(
+    region_type == "rice_cat" ~ map(data, function (df) lm(resp_num ~ relevel(region, 
+                                                                              ref = 
+                                                                              "wheat"),
+                                  data = df)),
+    region_type == "region" ~ map(data, function (df) lm(resp_num ~ relevel(region, 
+                                                                              ref = 
+                                                                          "West"),
+                                  data = df)),
+    region_type == "coast" ~ map(data, function (df) lm(resp_num ~ relevel(region, 
+                                                                              ref = 
+                                                                          "west_coast"),
+                                  data = df))
+  ), 
+  tidy = map(mod, tidy)) %>% 
+  select(-mod, -data) |>
+  unnest() %>% 
+  filter(grepl("region", term)) 
 
-rv_scale_m <- lm(proportion_correct ~ scale_sum_score, data = rv_d)
-summary(rv_scale_m)
+d2_region_df$p.adjusted = p.adjust(d2_region_df$p.value,
+                                    method = "bonferroni")
+
+
+d2_region_df %>% 
+  knitr::kable(digits = 3)
 ```
 
 
-# demographic realtionship (rice/wheat)
 
-# within culure relationship 
+# Basic demog
+
+first putting the two clean df together 
+```{r}
+d1_clean <- bind_rows(clean_d1_ca, 
+          clean_d1_ebb, 
+          clean_d1_fd, 
+          clean_d1_hz, 
+          clean_d1_rmts, 
+          clean_d1_rv, 
+          clean_d1_ssi, 
+          clean_d1_up) %>% 
+  select(subject, culture, task_name, resp_num) 
+
+d2_clean <- d2_with_scale  %>% 
+  filter(task_name %in% c("RMTS","RV","FD"))  %>% 
+  mutate(resp_num = as.numeric(resp))  %>% 
+  group_by(subject, culture, task_name, scale_sum_score) %>% 
+  summarise(resp_num = mean(resp_num)) %>% 
+  bind_rows(clean_d2_CD, clean_d2_SSI, clean_d2_CA, 
+            clean_d2_TD, clean_d2_SeI) %>% 
+  select(subject, culture, task_name, resp_num) 
+
+d12_joint_df <- bind_rows(d1_clean %>% mutate(study = "d1"), 
+          d2_clean %>% mutate(study = "d2")) 
+
+```
+
+
+```{r}
+cleaned_basic_demog_df <- 
+bind_rows(d1_demog %>% mutate(study = "d1"),
+          d2_demog %>% mutate(study = "d2")) %>% 
+  mutate(demog_response = case_when(
+    demog_response == "没有国际经历" ~ "No experiences",
+    demog_response == "一段国际经历" ~ "One experience",
+    demog_response == "两段国际经历" ~ "Two experiences",
+    demog_response == "三到五段国际经历" ~ "Three to five experiences",
+    demog_response == "六段或更多国际经历" ~ "Six or more experiences", 
+    TRUE ~ demog_response
+  )) %>% 
+  mutate(demog_response = case_when(
+    demog_response == "No experiences" ~ "0", 
+    demog_response ==  "One experience" ~ "1",
+    demog_response == "Two experiences" ~ "2",
+    demog_response ==  "Three to five experiences" ~ "3",
+    demog_response ==  "Six or more experiences" ~ "4", 
+    
+    demog_response %in% c('8th grade/junior high or less', 
+                          "九年级/初中及以下") ~ "0",
+      
+    demog_response %in% c('Some high school', 
+                           "上过一部分高中") ~ "1",
+      
+    demog_response %in% c('High school graduate/GED', 
+                          "普通高中或职业高中毕业/高中等级学历") ~"2",
+    
+    
+    demog_response %in% c('One or more years of college, no degree', 
+                          "一年或多年大学教育，无学位") ~ "3",
+    
+    demog_response %in% c('Two-year college degree/vocational school', 
+                          "大专学历") ~ "4",
+    
+    demog_response %in% c("Four-/Five-year college Bachelor's degree", 
+                          "四年/五年制大学本科学位") ~ "5", 
+    
+     demog_response %in% c("At least some graduate school", 
+                          "有过一些研究生经历") ~ "6", 
+    
+    TRUE ~ demog_response
+  ))
+```
+
+
+- numeric: 
+resimobinum - response too noisy
+overseaexpnum
+objectiveses - s1 only
+subjectiveses 
+age
+
+- category:
+gender 
+stem_or_not s2 only
+
+## numeric demog 
+
+```{r}
+demog_d12_numeric_df <- d12_joint_df %>% 
+  left_join(cleaned_basic_demog_df, 
+            by = c("subject", "culture", "study")) %>% 
+  rename(demog_type = demog_question) %>% 
+  filter(demog_type %in% c("overseaexpnum", "objectiveses","subjectiveses", "age")) %>% 
+  mutate(demog_resp = as.numeric(demog_response))
+
+
+demog_d12_numeric_mod <- demog_d12_numeric_df %>% 
+  group_by(culture, task_name, study, demog_type) %>% 
+  nest() %>% 
+  mutate(mod = map(data, function (df) lm(resp_num ~ demog_resp, data = df)), 
+         tidy = map(mod, tidy)) %>% 
+  select(-mod, -data) %>% 
+  unnest(cols = c(tidy))
+
+demog_d12_numeric_mod$p.adjusted = p.adjust(demog_d12_numeric_mod$p.value,
+          method = "bonferroni")
+
+
+demog_d12_numeric_mod %>% 
+  filter(term != "(Intercept)") %>% 
+  knitr::kable(digits = 3)
+```
+
+## categorical demog 
+
+```{r}
+demog_d12_cat_df <- d12_joint_df %>% 
+  left_join(cleaned_basic_demog_df, 
+            by = c("subject", "culture", "study")) %>% 
+  rename(demog_type = demog_question) %>% 
+  filter(demog_type %in% c("gender", "stem_or_not"))
+
+
+demog_d12_cat_mod <- demog_d12_cat_df %>% 
+  group_by(culture, task_name, study, demog_type) %>% 
+  nest() %>% 
+  mutate(mod = map(data, function (df) lm(resp_num ~ demog_response, data = df)), 
+         tidy = map(mod, tidy)) %>% 
+  select(-mod, -data) %>% 
+  unnest(cols = c(tidy))
+
+demog_d12_cat_mod$p.adjusted = p.adjust(demog_d12_cat_mod$p.value, 
+          method = "bonferroni")
+
+
+demog_d12_cat_mod %>% 
+  filter(term != "(Intercept)") %>% 
+  knitr::kable(digits = 3)
+```
+
 
 
 

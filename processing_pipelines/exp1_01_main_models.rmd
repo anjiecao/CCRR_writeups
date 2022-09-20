@@ -1,0 +1,533 @@
+---
+title: "exp1_01_main_models"
+author: "anjie"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+Note that since running bayes models are extremely time-intensive, we are not expecting anyone to rerun the code chunk that produced the model. Therefore, I commented out all the code chunks with brms calls. We are going to go directly to the last part of the rmarkdown where we tidy up the model results from the cached model 
+
+
+If you do with to run the model by yourself, please note: 
+- there will be slight numeric difference in the models given the probabilistic nature of the brms 
+- you might need to change the file path propertly 
+
+
+
+```{r}
+library(here)
+library(tidyverse)
+library(lme4)
+library(stringr)
+library(lmerTest)
+library(brms)
+source(here("processing_pipelines/helper/tidy_model_helper.R"))
+
+d <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv"))
+```
+
+
+```{r}
+GLMER_MODEL_DIR <- here("cached_results/exp1/raw_models/glmer_models/")
+BAYES_MODEL_DIR <- here("cached_results/exp1/raw_models/bayes_models/")
+
+GLMER_SUMMARY_PATH <- here("cached_results/exp1/glmer_model_summary.RDS")
+```
+
+
+# Run models 
+
+## RMTS
+
+### glmer
+
+```{r}
+rmts_df <- d %>% 
+  filter(task_name == "RMTS") %>% 
+  mutate(choice = case_when(
+    resp == "1" ~ 1, # rel
+    resp == "0" ~ 0 # obj
+         )) %>%
+  group_by(subject) %>% 
+  mutate(trial_num = row_number()) %>% 
+  select(-resp, -task_info, -trial_info, -resp_type)
+
+# model 0: not converging 
+#rmts_model <- glmer(choice ~ culture + (trial_num | subject), family = binomial, data = rmts_df)
+#unable to evaluate scaled gradientModel failed to converge: degenerate  Hessian with 1 negative eigenvalues
+
+# model 1: 
+rmts_model <- glmer(choice ~ culture + (1 | subject), family = binomial, data = rmts_df)
+
+save_model(rmts_model, GLMER_MODEL_DIR)
+```
+
+### bayes 
+
+
+```{r}
+
+full_b_rmts_model <- brm(choice ~ culture + (trial_num | subject), family = binomial, 
+                          save_pars = save_pars(all = TRUE), 
+                         control = list(adapt_delta = .999, 
+                                    max_treedepth = 15),
+                      iter = 9000, seed = 11111,
+                         data = rmts_df, 
+                         file= here("cached_results/exp1/raw_models/bayes_models/full_b_rmts_model.Rds"),
+                          cores=3)
+null_b_rmts_model <- brm(choice ~ 1 + (trial_num | subject), family = binomial, 
+                          save_pars = save_pars(all = TRUE), 
+                         control = list(adapt_delta = .999, 
+                                    max_treedepth = 15),
+                      iter = 9000, seed = 11111,
+                         data = rmts_df, 
+                         file= here("cached_results/exp1/raw_models/bayes_models/null_b_rmts_model.Rds"),
+                          cores=3)
+```
+
+
+## Picture free description 
+
+### glmer
+
+```{r}
+
+fd_mention_df <- d %>% 
+  filter(task_name == "FD", resp_type == "first_mention_focal") %>% 
+    mutate(first_mention = case_when(
+    resp == "1" ~ 1, # focal
+    resp == "0" ~ 0), # background
+    scene = trial_info) %>% 
+  select(-resp, -task_info, -resp_type, -trial_info)
+
+fd_mention_model <- glmer(first_mention ~ culture + (1 | subject)+(culture | scene), family = binomial, data = fd_mention_df)
+
+fd_descriptive_df <- d %>% 
+  filter(task_name == "FD") %>%
+  filter(grepl("imada", resp_type)) %>%
+  mutate(description_num = as.numeric(resp),
+         scene = trial_info,
+         description_type = factor(resp_type)) %>% 
+  select(-resp, -task_info, -resp_type, -trial_info)
+
+fd_descriptive_model <- glmer(description_num ~ description_type * culture + (description_type | subject) + (culture | scene), family=poisson, data = fd_descriptive_df)
+
+
+save_model(fd_mention_model, GLMER_MODEL_DIR)
+save_model(fd_descriptive_model, GLMER_MODEL_DIR)
+
+```
+
+### bayes
+
+```{r}
+#BF analysis
+full_b_fd_firstmention_model <- brm(first_mention ~ culture + (1 | subject)+(culture | scene) ,
+                   save_pars = save_pars(all = TRUE), control = list(adapt_delta = .999, max_treedepth = 15),
+                   iter = 5000, seed = 11111, data = fd_mention_df, 
+                    file= here("cached_results/exp1/raw_models/bayes_models/full_b_fd_firstmention_model.Rds"),
+                          cores=3)
+null_b_fd_firstmention_model <- brm(first_mention ~ 1 + (1 | subject)+(culture | scene) ,
+                   save_pars = save_pars(all = TRUE), control = list(adapt_delta = .999, max_treedepth = 15),
+                   iter = 5000, seed = 11111, data = fd_mention_df, 
+                    file= here("cached_results/exp1/raw_models/bayes_models/null_b_fd_firstmention_model.Rds"),
+                          cores=3)
+
+full_b_fd_descriptives_model <- brm(description_num ~ description_type * culture + (description_type | subject) + (culture | scene),
+                             family = gaussian, control = list(adapt_delta = 0.995, max_treedepth = 15),
+                             iter = 5000, seed = 11111, 
+                             save_pars = save_pars(all = TRUE),
+                             data = fd_descriptive_df, cores=3, 
+                             file= here("cached_results/exp1/raw_models/bayes_models/full_b_fd_descriptives_model.Rds"))
+  
+
+# the null model for the interaction effect will contain the main effect of the model 
+null_b_fd_descriptives_model <- brm(description_num ~ description_type + culture + (description_type | subject) + (culture | scene),
+                             family = gaussian, control = list(adapt_delta = 0.995, max_treedepth = 15),
+                             iter = 5000, seed = 11111, 
+                             save_pars = save_pars(all = TRUE),
+                             data = fd_descriptive_df, cores=3, 
+                             file= here("cached_results/exp1/raw_models/bayes_models/null_b_fd_descriptives_model.Rds"))
+  
+
+
+```
+
+
+## Ebbinghaus 
+
+### glmer
+
+```{r}
+ebb_df <- d %>% 
+  filter(task_name == "EBB", task_info != "HELPFUL") %>% 
+  mutate(correct = case_when(
+    resp == "1" ~ 1, #correct
+    resp == "0" ~ 0), #incorrect
+         context = task_info, 
+         size_diff = as.numeric(trial_info), 
+         ) %>% 
+  select(-resp, -task_info, -trial_info)
+
+#full model
+#Model failed to converge with max|grad| = 1.79464 (tol = 0.001, component 1)
+
+#ebb_model <- glmer(correct ~ culture * context * size_diff + (size_diff * context | subject), family = binomial, data = ebb_df, control=glmerControl(optimizer="bobyqa"))
+#convergence code 1 from bobyqa: bobyqa -- maximum number of function evaluations exceededModel failed to converge with max|grad| = 0.00144634 (tol = 0.001, component 1)> 
+
+
+#model 2 (if full does not converge)
+ebb_model <- glmer(correct ~ culture * context * size_diff + (context | subject), family = binomial, data = ebb_df, control=glmerControl(optimizer="bobyqa"))
+save_model(ebb_model, GLMER_MODEL_DIR)
+
+
+```
+
+### bayes
+
+```{r}
+
+
+full_b_ebb_model <- brm(correct ~ culture * context * size_diff + (size_diff * context | subject),
+                        family = binomial, save_pars = save_pars(all = TRUE), iter = 5000, seed = 11111,
+                         control = list(adapt_delta = 0.995, max_treedepth = 15),
+                        data = ebb_df, cores=3, 
+                        file = here("cached_results/exp1/raw_models/bayes_models/full_b_ebb_model.Rds"))
+
+null_b_ebb_model <- brm(correct ~  context * size_diff + (size_diff * context | subject),
+                        family = binomial, save_pars = save_pars(all = TRUE), iter = 5000, seed = 11111,
+                         control = list(adapt_delta = 0.995, max_treedepth = 15),
+                        data = ebb_df, cores=3, 
+                        file = here("cached_results/exp1/raw_models/bayes_models/null_b_ebb_model.Rds"))
+
+```
+
+
+## Horizon 
+
+### glmer 
+
+```{r}
+HZ_height_df <- d %>% 
+  filter(task_name == "HZ", resp_type == "hz_height") %>% 
+  mutate(
+    height = resp
+         ) %>% 
+  select(-resp, -task_info, -trial_info)
+
+
+HZ_stkr_area_df <- d %>% 
+  filter(task_name == "HZ", resp_type == "stkr_area") %>% 
+  mutate(
+    stkr_area = (resp/(75*75*3*3)),2) %>% 
+#3 from scaling, 75 from conversion: http://auctionrepair.com/pixels.html, 
+
+  select(-resp, -task_info, -trial_info)
+
+hz_stkr_area_model <- lm(stkr_area ~ culture, 
+                      data = HZ_stkr_area_df)
+
+hz_height_model <- lm(height ~ culture, 
+                      data = HZ_height_df)
+
+
+hz_stkr_n_df <- d %>% 
+  filter(task_name == "HZ", resp_type == "stkr_count") %>% 
+  mutate(
+    stkr_count = resp
+         ) %>% 
+  select(-resp, -task_info, -trial_info)
+
+hz_stkr_n_model <- lm(stkr_count ~ culture, 
+                      data = hz_stkr_n_df)
+
+save_model(hz_height_model, GLMER_MODEL_DIR)
+save_model(hz_stkr_area_model, GLMER_MODEL_DIR)
+save_model(hz_stkr_n_model, GLMER_MODEL_DIR)
+```
+
+### bayes
+
+```{r}
+# HZ_height BF 
+full_b_hz_height_model <- brm(height ~ culture, family = gaussian, save_pars = save_pars(all = TRUE),
+                              data = HZ_height_df, cores=3, 
+                        file = here("cached_results/exp1/raw_models/bayes_models/full_b_hz_height_model.Rds"))
+
+
+null_b_hz_height_model <- brm(height ~ 1, family = gaussian, save_pars = save_pars(all = TRUE),
+                              data = HZ_height_df, cores=3, 
+                        file = here("cached_results/exp1/raw_models/bayes_models/null_b_hz_height_model.Rds"))
+
+
+#HZ_number BF analysis
+full_b_hz_n_model <- brm(stkr_count ~ culture, family = gaussian,save_pars = save_pars(all = TRUE),
+                         data = HZ_stkr_n_df, cores=3, 
+                          file = here("cached_results/exp1/raw_models/bayes_models/full_b_hz_n_model.Rds"))
+
+null_b_hz_n_model <- brm(stkr_count ~ culture, family = gaussian,save_pars = save_pars(all = TRUE),
+                         data = HZ_stkr_n_df, cores=3, 
+                          file = here("cached_results/exp1/raw_models/bayes_models/null_b_hz_n_model.Rds"))
+
+
+full_b_hz_area_model <- brm(stkr_area ~ culture, family = gaussian, save_pars = save_pars(all = TRUE),
+                            data = HZ_stkr_area_df, cores=3, 
+                            file=here("cached_results/exp1/raw_models/bayes_models/full_b_hz_area_model.Rds"))
+
+null_b_hz_area_model <- brm(stkr_area ~ 1, family = gaussian, save_pars = save_pars(all = TRUE),
+                            data = HZ_stkr_area_df, cores=3, 
+                            file=here("cached_results/exp1/raw_models/bayes_models/null_b_hz_area_model.Rds"))
+```
+
+
+## Symbolict Self Inflation 
+
+### glmer 
+
+```{r}
+si_df_r <- d %>% 
+  filter(task_name == "SI") %>% 
+  filter(resp_type == "inflation_score_ratio") %>% 
+  mutate(score = resp) %>% 
+  select(-resp, -task_info, -trial_info, -resp_type)
+
+
+si_df_diff <- d %>% 
+  filter(task_name == "SI") %>% 
+  filter(resp_type == "inflation_score_diff") %>% 
+  mutate(score = resp) %>% 
+  select(-resp, -task_info, -trial_info, -resp_type)
+
+ssi_ratio_model <- glm(score ~ culture, family=gaussian, data = si_df_r)
+ssi_diff_model <- glm(score ~ culture, family=gaussian, data = si_df_diff)
+
+save_model(ssi_ratio_model, GLMER_MODEL_DIR)
+save_model(ssi_diff_model, GLMER_MODEL_DIR)
+```
+
+
+### bayes 
+
+```{r}
+full_b_ssi_ratio_model <- brm(score ~ culture, family = gaussian, save_pars = save_pars(all = TRUE),
+                             data = si_df_r, cores=3,
+                        file = here("cached_results/exp1/raw_models/bayes_models/full_b_ssi_ratio_model.Rds"))
+
+null_b_ssi_ratio_model <- brm(score ~ 1, family = gaussian, save_pars = save_pars(all = TRUE),
+                             data = si_df_r, cores=3, 
+                         file = here("cached_results/exp1/raw_models/bayes_models/null_b_ssi_ratio_model.Rds"))
+
+
+full_b_ssi_diff_model <- brm(score ~ culture, family = gaussian, save_pars = save_pars(all = TRUE),
+                            data = si_df_diff, cores=3, 
+                        file = here("cached_results/exp1/raw_models/bayes_models/full_b_ssi_diff_model.Rds"))
+
+null_b_ssi_diff_model <- brm(score ~ 1, family = gaussian, save_pars = save_pars(all = TRUE),
+                            data = si_df_diff, cores=3, 
+                        file = here("cached_results/exp1/raw_models/bayes_models/null_b_ssi_diff_model.Rds"))
+
+```
+
+
+
+## Unqiue preference 
+
+### glmer
+
+```{r}
+up_df <- d %>% 
+  filter(task_name == "CP") %>% 
+  mutate(choice = case_when(
+    resp == "1" ~ 1,       #uniq
+    resp == "0" ~ 0)  #non-uniq
+         ) %>% 
+  select(-resp, -task_info, -trial_info, -resp_type)
+
+up_model <- glm(choice ~ culture, 
+                   family=binomial(link="logit"),
+                  data = up_df)
+
+save_model(up_model, GLMER_MODEL_DIR)
+```
+
+### bayes
+
+```{r}
+full_b_up_model <- brm(choice ~ culture, family = binomial(link="logit"), save_pars = save_pars(all = TRUE),
+                       data = up_df, cores=3, 
+                      file = here("cached_results/exp1/raw_models/bayes_models/full_b_up_model.Rds"))
+
+
+null_b_up_model <- brm(choice ~ 1, family = binomial(link="logit"), save_pars = save_pars(all = TRUE),
+                       data = up_df, cores=3, 
+                      file = here("cached_results/exp1/raw_models/bayes_models/null_b_up_model.Rds"))
+
+```
+
+
+
+
+
+
+## Causal Attribution
+
+### glmer
+
+```{r}
+ca_df <- d %>% 
+  filter(task_name == "CA") %>% 
+  mutate(attrib_num = as.numeric(resp),
+         attrib_binary = replace(attrib_num, attrib_num > 1, 1),
+         trial = trial_info,
+         attrib_type = factor(resp_type)) %>% 
+  select(-resp, -task_info)
+
+```
+
+
+
+```{r}
+#ca_model <- glmer(attrib_num ~ attrib_type * culture + (attrib_type | subject) + (culture | trial), family=poisson, data = ca_df, control=glmerControl(optimizer="bobyqa"))
+#boundary (singular) fit: see ?isSingular
+
+#ca_model_binary <- glmer(attrib_binary ~ attrib_type * culture + (attrib_type | subject) + (culture | trial), family=binomial, data = ca_df, control=glmerControl(optimizer="bobyqa"))
+#boundary (singular) fit: see ?isSingular
+
+#ca_model1 <- glmer(attrib_num ~ attrib_type * culture + (attrib_type | subject) + (1 | trial), family=poisson, data = ca_df, control=glmerControl(optimizer="bobyqa"))
+#boundary (singular) fit: see ?isSingular
+
+#ca_model2 <- glmer(attrib_num ~ attrib_type * culture + (1 | subject) + (1 | trial), family=poisson, data = ca_df, control=glmerControl(optimizer="bobyqa"))
+#boundary (singular) fit: see ?isSingular
+
+#ca_model3 <- glmer(attrib_num ~ attrib_type * culture + (1 | subject), family=poisson, data = ca_df, control=glmerControl(optimizer="bobyqa"))
+#boundary (singular) fit: see ?isSingular
+
+ca_model <- glm(attrib_num ~ attrib_type * culture, family=poisson, data = ca_df)
+
+save_model(ca_model, GLMER_MODEL_DIR)
+```
+
+### bayes 
+
+```{r}
+#BF analysis, full model
+# 12 divergent transitions
+full_b_ca_model <- brm(attrib_num ~ attrib_type * culture + (attrib_type | subject) + (culture | trial),
+                       family = poisson, control = list(adapt_delta = 0.999, max_treedepth = 15),
+                       iter = 5000, seed = 11111,
+                       save_pars = save_pars(all = TRUE), data = ca_df, cores=3, 
+                      file = here("cached_results/exp1/raw_models/bayes_models/full_b_ca_model.Rds"))
+
+null_b_ca_model <-  brm(attrib_num ~ attrib_type  + culture + (attrib_type | subject) + (culture | trial),
+                       family = poisson, control = list(adapt_delta = 0.999, max_treedepth = 15),
+                       iter = 5000, seed = 11111,
+                       save_pars = save_pars(all = TRUE), data = ca_df, cores=3, 
+                      file = here("cached_results/exp1/raw_models/bayes_models/null_b_ca_model.Rds"))
+```
+
+
+
+
+## Ravens
+
+### glmer 
+
+```{r}
+rv_df <- d %>% 
+  filter(task_name == "RV") %>% 
+  mutate(acc = as.numeric(resp)) %>% 
+  group_by(subject) %>% 
+  mutate(trial = as.factor(row_number())) %>% 
+  select(-resp, -task_info, -trial_info, -resp_type)
+
+rv_model <- glmer(acc ~ culture + (1 | subject) + (culture | trial), family = binomial, data = rv_df)
+
+save_model(rv_model, GLMER_MODEL_DIR)
+```
+
+### bayes 
+
+```{r}
+# #BF analysis
+full_rv_model <- brm(acc ~ culture + (1 | subject) + (culture | trial), 
+                     family = binomial(), save_pars = save_pars(all = TRUE),
+                     control = list(adapt_delta = 0.999, max_treedepth = 15),
+                       iter = 5000, seed = 11111,
+                    data = rv_df, cores=3, 
+                  file = here("cached_results/exp1/raw_models/bayes_models/full_b_rv_model.Rds"))
+
+null_rv_model <- brm(acc ~ 1 + (1 | subject) + (culture | trial), 
+                     family = binomial(), save_pars = save_pars(all = TRUE),
+                     control = list(adapt_delta = 0.999, max_treedepth = 15),
+                       iter = 5000, seed = 11111,
+                    data = rv_df, cores=3, 
+                  file = here("cached_results/exp1/raw_models/bayes_models/null_b_rv_model.Rds"))
+```
+
+
+# tidy up model results 
+
+## glmer 
+
+```{r}
+all_models_str <- list.files(GLMER_MODEL_DIR)
+all_model_results <- lapply(all_models_str, tidy_model_main) %>% bind_rows()
+saveRDS(all_model_results, here("cached_results/exp1/glmer_model_summary.RDS"))
+```
+
+## bayes 
+
+```{r}
+all_bayes_models_str <- list.files(BAYES_MODEL_DIR, pattern = "*.Rds")
+
+# find pairings 
+str_match(all_bayes_models_str[1], "(full|null)_b_\\s*(.*?)\\s*.Rds")
+
+
+key_words <- unique(sapply(all_bayes_models_str, 
+                           function(s){str_match(s,
+                                        "(full|null)_b_\\s*(.*?)\\s*.Rds")[,3]}))
+                             
+# saving each BF calculation because this function crashes R very frequently 
+lapply(key_words, function(kw){
+  print(kw)
+  for (m_name in all_bayes_models_str){
+    if (grepl(kw, m_name) & grepl("full", m_name)){
+      full_model_name = m_name
+      print(full_model_name)
+    }
+  }
+   for (m_name in all_bayes_models_str){
+    if (grepl(kw, m_name) & grepl("null", m_name)){
+      null_model_name = m_name
+      print(null_model_name)
+    }
+  }
+  
+  bf <- bayes_factor(readRDS(paste0(BAYES_MODEL_DIR, full_model_name)), 
+               readRDS(paste0(BAYES_MODEL_DIR, null_model_name)))
+  print(bf)
+  
+  saveRDS(bf, file = paste0(here("cached_results/exp1/raw_models/bayes_models/bfs/"), kw, ".rds"))
+  
+})
+
+## read in all the bayes factor and make a nice summary df 
+
+all_bayes_factor_str <- list.files(paste0(BAYES_MODEL_DIR, "bfs/"), pattern = "*.rds")
+bfs_df <- tibble(
+  bfs_type = rep(NA_character_, length(all_bayes_factor_str)),
+  bf = rep(NA_real_, length(all_bayes_factor_str))
+)
+
+for (i in seq(1, length(all_bayes_factor_str), 1)){
+  bfs_df$bfs_type[i] <- str_match(all_bayes_factor_str[i], "(.*?)\\s*_model.rds")[,2]
+  bfs_df$bf[i] <- readRDS(paste0(BAYES_MODEL_DIR, "bfs/", all_bayes_factor_str[i]))$bf
+}
+
+bfs_df <- bfs_df %>% 
+  mutate(bf_print = round(bf, 2))
+    
+saveRDS(bfs_df, here("cached_results/exp1/bfs_summary.RDS"))
+```
+

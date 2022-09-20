@@ -1,0 +1,163 @@
+---
+title: "01_mini_MA"
+author: "anjie"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(here)
+source(here("processing_pipelines/helper/calculate_es.R"))
+source(here("processing_pipelines/helper/plotting/plot_es.R"))
+
+d1 <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv"))
+d2 <- read_csv(here("data/03_processed_data/exp2/tidy_main.csv"))
+```
+
+# ES for study 1
+
+```{r}
+# read in all the cached model
+List_RDS <- list.files(here("cached_results/exp1/raw_models/glmer_models/"))
+res <- lapply(List_RDS, function(x){
+                      readRDS(paste0(here("cached_results/exp1/raw_models/glmer_models/"), 
+                                                    x))
+
+                })
+                  
+for (i in seq(1, length(List_RDS))){
+  assign(gsub(".RDS", "",List_RDS[i]), res[[i]])
+}
+
+  
+# calculate the es
+s1_df_pp <- bind_rows(
+  get_d_partial_pooling(d1, rmts_model, "RMTS"), 
+  get_d_partial_pooling(d1, rv_model, "RV"),
+  get_d_no_pooling(d1, "CP"),
+  get_d_no_pooling(d1, "SI"),
+  get_d_no_pooling(d1, "CA"),
+  get_d_no_pooling(d1, "HZ"),
+  get_d_partial_pooling(d1, ebb_model, "EBB"),
+  get_d_partial_pooling(d1, fd_mention_model, "FD")
+) %>% 
+  mutate(study_num = "Study 1")             
+```
+
+# ES for study 2
+
+
+```{r}
+# read in all the cached model
+
+List_RDS <- list.files(here("cached_results/exp2/raw_models/glmer_models/"))
+res <- lapply(List_RDS, function(x){
+                      readRDS(paste0(here("cached_results/exp2/raw_models/glmer_models/"), 
+                                                    x))
+
+                })
+                  
+for (i in seq(1, length(List_RDS))){
+  assign(gsub(".RDS", "",List_RDS[i]), res[[i]])
+}
+
+# calculate the es
+s2_df_pp <- bind_rows(
+  get_d_partial_pooling(d2, cd_model, "CD"), 
+  get_d_partial_pooling(d2, fd_mention_model, "FD"),
+  get_d_partial_pooling(d2, ca_model, "CA") , 
+  get_d_no_pooling(d2,  "SSI") , 
+  get_d_partial_pooling(d2, td_model, "TD"), 
+  get_d_partial_pooling(d2, SeI_model, "SeI"), 
+  get_d_partial_pooling(d2, rmts_model, "RMTS"), 
+  get_d_partial_pooling(d2, rv_model, "RV")) %>% 
+  mutate(study_num = "Study 2")
+```
+
+# Putting everything together 
+
+```{r}
+# combine two effect sizes
+# and take absolute values 
+d_abs <- bind_rows(
+ s1_df_pp, 
+ s2_df_pp
+) %>% 
+  mutate(d_abs = abs(d), 
+         d_abs_ci_lower = case_when(
+            d < 0 ~ -d_ci_upper,
+            TRUE ~ d_ci_lower
+         ), 
+         d_abs_ci_upper = case_when(
+            d < 0 ~ -d_ci_lower,
+            TRUE ~ d_ci_upper
+         )
+         )
+
+saveRDS(d_abs, here("cached_results/ea/effect_sizes.RDS"))
+
+d_abs_df <- readRDS(here("cached_results/ea/effect_sizes.RDS"))
+
+
+
+
+d_abs_df <- d_abs %>% 
+  mutate(
+    task_name_print = case_when(
+        grepl("RMTS", task_name) ~ "RMTS", 
+        grepl("RV", task_name) ~ "Ravens", 
+        grepl("SI", task_name) | grepl("SSI", task_name) ~ "Symbolic Self Inflation", 
+        grepl("FD", task_name) ~ "Free Description (first mention)", 
+        grepl("CP", task_name) ~ "Uniqueness Preference", 
+        grepl("CA", task_name) & study_num == "Study 1" ~ "Children Causal Attribution", 
+        grepl("CA", task_name) & study_num == "Study 2" ~ "Adult Causal Attribution", 
+        grepl("HZ", task_name) ~ "Horizon (Height)", 
+        grepl("EBB", task_name) ~ "Ebbinghaus Illusion", 
+        grepl("CD", task_name) ~ "Change Detection", 
+        grepl("TD", task_name) ~ "Triads", 
+        grepl("SeI", task_name) ~ "Semantic Intuition"
+    )) %>% 
+  mutate(significance =  !(d_ci_lower < 0 & d_ci_upper > 0), 
+         consistent_with_prediction = case_when(
+           task_name_print %in% c("Free Description (first mention)", "Adult Causal Attribution", 
+                                  "Ravens","Semantic Intuition", "Triads") & significance ~ "Consistent",
+           task_name_print == "Symbolic Self Inflation" & significance~ "Inconsistent",
+           TRUE ~ "No difference"
+         ),
+         advantage = case_when(
+           d > 0 & significance ~ "US", 
+           d < 0 & significance ~ "CN", 
+           TRUE ~ "No Difference"
+         ))
+
+d_abs_df %>% 
+ arrange(-d_abs) %>% 
+  ggplot(aes(x = reorder(task_name_print,d_abs), y = d_abs, 
+             ymin = d_abs_ci_lower, ymax = d_abs_ci_upper, 
+             color = consistent_with_prediction, 
+             fill = consistent_with_prediction, 
+             shape = study_num)) + 
+  geom_hline(yintercept = 0, lty = 2) + 
+  geom_pointrange(aes( 
+    x = reorder(task_name_print,d_abs), y = d_abs, 
+             ymin = d_abs_ci_lower, ymax = d_abs_ci_upper, group = study_num
+    ), position = position_dodge(width = .6)) + 
+   scale_shape_manual(values = c(16, 17)) + 
+  scale_color_manual(values = c("darkolivegreen", "darkorange1", "grey")) + 
+  scale_fill_manual(values = c("darkolivegreen", "darkorange1", "grey")) + 
+  coord_flip() + 
+  theme_classic() + 
+  ylab("Standardized Mean Differences") + 
+  xlab("") + 
+  theme(legend.title = element_blank())
+```
+
+# function preview 
+
+```{r}
+plot_es(d_abs_df)
+```
+
+
+

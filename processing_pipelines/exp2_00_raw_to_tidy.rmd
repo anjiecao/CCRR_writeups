@@ -212,6 +212,13 @@ full_task_exclude_df%>%
 
 ```
 
+```{r}
+full_task_exclude_df %>% 
+  group_by(exclude_reason) %>% 
+  count()
+```
+
+
 so we will apply task-based exclusion on task-based criteria 
 
 ## demographics based

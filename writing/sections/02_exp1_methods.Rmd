@@ -1,0 +1,154 @@
+
+
+```{r include=FALSE}
+
+knitr::opts_knit$set(here())
+
+
+# read in data for counting 
+df.main <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv"))
+df.demog <- read_csv(here("data/03_processed_data/exp1/tidy_demog.csv"))
+df.attrition <- read_csv(here("data/03_processed_data/exp1/attrition_table.csv"))
+
+# preprocessing for counting 
+# to make sure each participant is only counted once
+# first exclude based on demographic information 
+
+# demographic exclusion: 
+# abroad experience
+# drop language exclusion for both US and CN because > 20%
+num_us_exclusion_demog <- df.attrition %>% 
+  filter(culture == "US") %>% 
+  filter(reason_abroad == TRUE) %>% 
+  count() %>% 
+  pull()
+
+num_cn_exclusion_demog <- df.attrition  %>% 
+  filter(culture == "CN") %>% 
+  filter(reason_abroad == TRUE) %>% 
+  count() %>% 
+  pull()
+  
+
+# then exclude based on task-related reasons
+num_us_exclusion_task <- df.attrition %>% 
+  filter(culture == "US") %>% 
+  filter(reason_abroad == FALSE) %>%
+  filter(reason_EBB | reason_CA | reason_FD | reason_HZ | reason_RMTS   
+        | reason_EBB_complete | reason_CA_complete | reason_FD_complete | 
+         reason_HZ_complete | reason_RMTS_complete
+         ) %>% 
+  count() %>% 
+  pull()
+
+num_cn_exclusion_task <- df.attrition %>% 
+  filter(culture == "CN") %>% 
+  filter(reason_abroad == FALSE) %>%
+  filter(reason_EBB | reason_CA | reason_FD | reason_HZ | reason_RMTS  
+         | reason_EBB_complete | reason_CA_complete | reason_FD_complete | 
+         reason_HZ_complete | reason_RMTS_complete
+         ) %>% 
+  count() %>% 
+  pull()
+
+post_exclusion_sample <- df.main %>% 
+  distinct(subject, .keep_all = TRUE) %>% 
+  group_by(culture) %>% 
+  count()
+
+post_exclusion_si <- df.main %>% 
+  filter(task_name == "SI") %>% 
+  distinct(subject, .keep_all = TRUE) %>% 
+  group_by(culture) %>% 
+  count() %>% 
+  rename(remaining = n)
+
+si_exclude <- left_join(post_exclusion_sample, post_exclusion_si, 
+                        by = "culture") %>% 
+  mutate(exclude_n = n - remaining)
+
+gender_summary <- df.demog %>% 
+  filter(demog_question == "gender") %>% 
+  group_by(culture, demog_response) %>% 
+  count()
+
+age_summary <- df.demog %>% 
+  filter(demog_question == "age") %>% 
+  group_by(culture) %>% 
+  summarise(
+    mean_age = round(mean(as.numeric(demog_response)),2)
+  )
+```
+
+
+
+
+### Participants 
+
+We recruited participants through snowball sampling seeded at large universities in the US and China, in which participants directly recruited by the researchers were encouraged to recruit their friends and family members through email forwarding and social media sharing. Participants in the US were compensated with $5 gift certificates (USD) and participants in China received ¥35 (CNY).
+
+We recruited `r filter(df.attrition, culture == "US") %>% count() %>% pull()` and `r filter(df.attrition, culture == "CN") %>% count() %>% pull()` participants each from the US and China, respectively. Since we did not have strong a priori expectations about specific effect sizes, our overall preregistered sample size was chosen to meet or exceed the sample sizes used in prior reports in the literature from which our tasks were drawn.
+
+Our original preregistered exclusion plan was to exclude people from the full dataset if they failed quality checks on any one task. However, due to a task demand associated with the Symbolic Self-Inflation task, this criterion would have led to the exclusion of `r sum(si_exclude$exclude_n)` people (US: `r filter(si_exclude, culture == "US")$exclude_n`, CN: `r filter(si_exclude, culture == "CN")$exclude_n`) due to this task alone. As a result, we deviate from our preregistration and include participants in the broader dataset even if they failed the quality check for the Symbolic Self-Inflation task.
+
+After exclusions, the US sample included `r filter(post_exclusion_sample, culture == "US")$n` participants (`r filter(gender_summary, culture == "US", demog_response == "Male")$n` Male, `r filter(gender_summary, culture == "US", demog_response == "Female")$n` Female, `r filter(gender_summary, culture == "US", demog_response == "Non-binary")$n` Non-binary, `r filter(gender_summary, culture == "US", demog_response == "Decline to answer")$n` Declined to answer), with a mean age of `r filter(age_summary, culture == "US")$mean_age` years old, all of whom were native English speakers. The China sample included `r filter(post_exclusion_sample, culture == "CN")$n` participants (`r filter(gender_summary, culture == "CN", demog_response == "男性")$n` Male, `r filter(gender_summary, culture == "CN", demog_response == "女性")$n` Female, `r filter(gender_summary, culture == "CN", demog_response == "非二元性别者")$n` Non-binary, `r filter(gender_summary, culture == "CN", demog_response == "拒绝回答")$n` Declined to answer), with a mean age of `r filter(age_summary, culture == "CN")$mean_age` years old, who were all native speakers of Mandarin Chinese. This sample size is shared among all tasks except for the Symbolic Self-inflation task, which included `r filter(si_exclude, culture == "US")$remaining` US participants and `r filter(si_exclude, culture == "CN")$remaining` CN participants.
+
+In addition to age, gender and linguistic background, we collected a range of demographic information including subjective socioeconomic status measured using the MacArthur Ladder [@adler2000relationship], level of maternal education, the state or province the participant grew up in, residential mobility, and number of overseas experiences.
+
+### Procedure 
+
+Participants completed an online, browser-based sequence of eight tasks (see Table 1) and a brief demographic questionnaire. All tasks were implemented in a combination of jsPsych [@de2015jspsych] and custom HTML/JavaScript code. Tasks were administered in English for the US sample and in Mandarin Chinese for the China sample. To control for the impact of order-related inattention, task order was randomized across participants with two exceptions: (1) the two drawing tasks (Symbolic Self-Inflation and Horizon Collage) were always back-to-back in random order, and (2) Uniqueness Preference was always the penultimate task (in keeping with the task cover story, which congratulated participants on being nearly done with the experiment). In total, the experiment took about 30 minutes to complete. 
+
+### Measures 
+
+Below, we give a short description of the methods for each task; further details are available in Supplemental Materials and code for tasks is available at FIXME.
+
+#### Ambiguous cRMTS
+
+@carstensen2019context observed cross-culturally distinct developmental trajectories in a causal relational match-to-sample (cRMTS) task, and different preferences in an ambiguous formulation of this task. Specifically, when 3-year-olds saw evidence consistent with both object-based (e.g., blue cubes make a machine play music) and relational (pairs of different objects, AB, make a machine play music) solutions, children in the US sample preferentially chose the object-based solution, while those in China chose the relational solution. Because (US) adults perform near ceiling on the standard causal relational match-to-sample task, we used an ambiguous version of the task [@carstensen2019context, Experiment 3] to explore whether adults in the US and China also show differing preferences for object-based or relational solutions. Our participants saw two pairs of objects, AB and AC, activate a machine, and were given a forced choice between an object-based solution (a *same* pair of A objects, AA) and a relational solution (*different* pair BC). 
+
+
+#### Picture Free descriptions
+
+@imada2013east found that children around the age of 6 showed cultural differences in describing pictures to others. Relative to US children, Japanese children tended to mention the objects in the background first, as opposed to the focal objects in the picture. They also tended to provide more descriptive accounts of the background objects than their US counterparts. In our version of the task, we used a subset of seven images from the original study and adapted the task for adult participants, who studied each image for 5 seconds and then typed a description. We coded the first mentioned item (focal or background) and counted descriptors for focal and background elements. 
+
+
+#### Ebbinghaus Illusion
+
+Both Japanese adults and children have been found to be more susceptible to the Ebbinghaus Illusion -- in which context alters the perceived size of a circle -- than Western participants in the US and UK [@imada2013east;@doherty2008context]. In this task, we followed the @imada2013east implementation of the task, with two testing blocks: the No Context block (10 trials) and Illusion block (24 trials). The No Context block establishes baseline accuracy for discriminating which of two orange circles is larger. In the Illusion trials, the two orange circles are flanked by a grid of 8 gray circles, which are all smaller or larger than the center circle. The illusion occurs because the orange circles appear larger when flanked by smaller gray circles, leading to distortions in comparing the sizes of the two orange circles with differing contexts (i.e., small or large flankers). Across the 24 Illusion trials, we measured accuracy of circle size judgments as a function of the actual size difference and flanker context (helpful or misleading). 
+
+#### Horizon Collage 
+
+@senzaki2014holistic found that school-age children in Japan and Canada showed culture-specific patterns when creating a collage of an outdoor scene. Japanese children would draw the horizon higher and put more collage items in the picture, relative to Canadian children.  We adapted the task from @senzaki2014holistic study 2, in which participants were prompted to make a collage with stickers. Our participants could drag any of thirty images (line-drawings of people, animals, houses, etc.) onto a rectangular "canvas" in the middle of the screen. There was also a sticker “horizon,” a horizontal line that spanned the length of the canvas. All stickers, including the horizon, could be clicked and dragged to the canvas to produce  “a picture of the outside." Participants were asked to include a horizon and any number of other stickers to create their image. We measured the height of the horizon, the number of stickers used, and the total area occupied by stickers [@senzaki2014holistic].
+
+
+#### Symbolic Self-Inflation 
+
+@kitayama2009cultural found a difference between Western and East Asian cultures in the size of circles participants drew to represent themselves relative to other people in their social networks. Japanese participants drew circles of similar sizes to represent themselves and others, while those from Western countries (US, UK, Germany) tended to draw their “self” circles larger than those representing others, indicating a symbolic self-inflation in the three western cultures compared to Japan. We adapted this task, asking participants to draw themselves and the family members they grew up with as circles by clicking and dragging the mouse on a rectangular “canvas” to draw circles of varying sizes. They then labeled each circle for the person it represented. We measured the diameter of each circle and calculated a percent inflation score for each participant by dividing the diameter of the self circle by the average diameter of circles for all others.
+
+
+#### Uniqueness Preference 
+
+@kim1999deviance tested East Asians’ and Americans’ preferences for harmony or uniqueness by asking them to pick one gift pen from five options. In the condition that we replicated, the options differed only in the barrel colors – four were the same and one was unique. They found that European Americans were more likely to choose the unique colored one than East Asian participants. We adapted our task to better fit the format of our online experiment by showing a virtual “sticker book” to measure progress through all tasks in our study. At the end of each task, participants received a virtual sticker. For the uniqueness preference task, we let them select one of five dinosaur stickers: four blue dinosaurs and one yellow. Choice of the unique vs. repeated color was recorded.
+
+
+#### Causal Attribution 
+
+Previous work has shown that participants from South Korea and the U.S. attribute behaviors differently in situations where there is evidence in favor of situational explanations [ @choi1999causal]. Similarly, Chinese media is more likely than U.S. media to attribute a person’s behaviors to situational context as opposed to  individual traits  [@morris1994culture; @morris1995causal]. To create a child-friendly version of the causal attribution task, we adapted our study from the deterministic situation condition in @seiver2013did, in which two children both engage in one activity and avoid another, suggesting that situational constraints (e.g., the latter activity being dangerous) may be guiding their decisions. Participants watched a series of four short, animated vignettes in which two children both played in a pool and neither child played on a bicycle. We then asked participants to explain in text why each child did not play on the bicycle, making for two test trials per participant. We used the prompt question from @seiver2013did, which explicitly pits person attributions against situational ones: “Why didn’t Sally play on the bicycle? Is it because she’s the kind of person who gets scared, or because the bicycle is dangerous to play on?” We coded each response for per-trial count of (a) person and (b) situation attributions.
+
+
+#### Raven's Standard Progressive Matrices 
+
+As an additional attention check as well as an exploratory measure of relational reasoning assessing performance rather than preference, we included the 12 questions from Set E of Raven's Standard Progressive Matrices. @su2020analogical found cross-cultural differences between adults in the US and China in performance on this set. This set of questions was selected because it was the most difficult subset and also the one most dependent on true analogical reasoning (without alternative heuristic approaches like visual pattern completion).
+
+
+### Analyitic approach
+
+Our sample size, methods, and main analyses were pre-registered and are available at https:// aspredicted.org/37y6a.pdf. Data and analysis scripts are available at FIXME
+
+The specific papers that we drew on for our tasks used a heterogeneous set of analytic methods. Rather than planning to replicate these specific analyses, we instead attempted to follow current best practices by using linear mixed effects models with maximal random effect structure as a unified analytic framework [@barr2013random]. We fit a separate model to each task. In case of convergence failure, we followed standard operating procedure of pruning random slopes first and then random intercepts, always maintaining random intercepts by participant. We report p-values derived from approximating t-scores from z-scores, which is appropriate for relatively large samples [@blouin2004difference]. Our key tests of interest were typically either the coefficient for a main effect of country (US/China) or an interaction of country and condition. 
+
+While our main analyses used our preregistered models, described above, we also computed Bayes Factors (BFs) for each model to evaluate evidence for null hypotheses relative to test hypotheses. In each case, we fit a Bayesian linear mixed effects model with the maximal random effect structure and default priors using the brms package in R and evaluated evidence for this model as compared to one without the key culture term (either main effect or interaction) using the bridge sampling method [@burkner2017brms]. We adopt a conventional threshold of >3 of <.3 for interpreting the BF ratio as evidence for the test or null hypothesis, respectively. 
+
+
+

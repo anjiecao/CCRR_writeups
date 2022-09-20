@@ -1,0 +1,239 @@
+---
+title: "04_demographics_variation"
+author: "anjie"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(here)
+
+
+d1 <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv"))
+d2 <- read_csv(here("data/03_processed_data/exp2/tidy_main.csv"))
+d2_demog <- read_csv(here("data/03_processed_data/exp2/tidy_demog.csv"))
+
+
+```
+
+# task scale relationship 
+
+study 2 only 
+
+```{r}
+# reverse scoring local 
+# higher score = global 
+# lower score = global 
+demog_d_scale <- d2_demog %>% 
+  mutate(scale_type = case_when(
+    grepl("identity_local", demog_question) ~ "identity_local",
+    grepl("identity_global", demog_question) ~ "identity_global",
+    grepl("consumption_local", demog_question) ~ "consumption_local",
+    grepl("consumption_global", demog_question) ~ "consumption_global",
+    grepl("cosmopolitanism", demog_question) ~ "cosmopolitanism", 
+    TRUE ~ "non_scale"
+  )) %>% 
+  filter(!(scale_type == "non_scale")) %>% 
+  mutate(demog_response = as.numeric(demog_response) + 1) %>% 
+  mutate(demog_response = case_when(
+    grepl("identity_local", demog_question) ~ -demog_response, 
+    grepl("consumption_local", demog_question) ~ -demog_response,
+    TRUE ~ demog_response
+  )) %>% 
+  group_by(subject, culture) %>% 
+  summarise(scale_sum_score = sum(demog_response))
+
+d2_with_scale <- d2 %>% 
+    left_join(demog_d_scale, by = c("subject", "culture")) 
+
+```
+
+
+## RMTS 
+
+### figure 
+
+```{r}
+d2_with_scale %>% 
+  filter(task_name == "RMTS") %>% 
+  group_by(subject, culture, scale_sum_score) %>% 
+  summarise(relational_match = mean(as.numeric(resp))) %>% 
+  ggplot(aes(x = scale_sum_score,  
+             y = relational_match, 
+             color = culture)) + 
+  geom_jitter(alpha = .3) + 
+  geom_smooth(method = "lm") + 
+  labs(title = "rmts with scale")
+```
+### model - needs controlling for the demographic effect 
+
+```{r}
+rmts_d <- d2_with_scale %>% 
+  filter(task_name == "RMTS") %>% 
+  group_by(subject, culture, scale_sum_score) %>% 
+  summarise(relational_match = mean(as.numeric(resp)))
+
+rmts_scale_m <- lm(relational_match ~ scale_sum_score, data = rmts_d)
+summary(rmts_scale_m)
+```
+
+
+## Free Description (FD)
+
+### figure 
+
+```{r}
+d2_with_scale %>% 
+  filter(task_name == "FD") %>% 
+  group_by(subject, culture, scale_sum_score) %>% 
+  summarise(first_mention_rate = mean(as.numeric(resp))) %>% 
+  ggplot(aes(x = scale_sum_score,  
+             y = first_mention_rate, 
+             color = culture)) + 
+  geom_jitter(alpha = .3) + 
+  geom_smooth(method = "lm") + 
+  labs(title = "Free description with scale")
+```
+
+### model 
+
+
+```{r}
+fd_d <- d2_with_scale %>% 
+  filter(task_name == "FD") %>% 
+  group_by(subject, culture, scale_sum_score) %>% 
+  summarise(first_mention_rate = mean(as.numeric(resp)))
+
+rmts_scale_m <- lm(first_mention_rate ~ scale_sum_score, data = fd_d)
+summary(rmts_scale_m)
+```
+
+
+## Change Detection (CD): only with trials in which changes occur in the background 
+
+### figure 
+
+
+```{r}
+d2_with_scale %>% 
+  filter(task_name == "CD", task_info == "context") %>% 
+  group_by(subject, culture, scale_sum_score) %>% 
+  filter(resp != "null") %>% 
+  summarise(rt_at_context_condition = mean(as.numeric(resp)), na.rm = TRUE) %>% 
+  ggplot(aes(x = scale_sum_score,  
+             y = log(rt_at_context_condition), 
+             color = culture)) + 
+  geom_jitter(alpha = .3) + 
+  geom_smooth(method = "lm") + 
+  labs(title = "RT at context condition with scale")
+```
+
+### model 
+
+```{r}
+cd_d <- d2_with_scale %>% 
+  filter(task_name == "CD", task_info == "context") %>% 
+  group_by(subject, culture, scale_sum_score) %>% 
+  filter(resp != "null") %>% 
+  summarise(rt_at_context_condition = mean(as.numeric(resp)), na.rm = TRUE) 
+
+cd_scale_m <- lm(log(rt_at_context_condition) ~ scale_sum_score, data = cd_d)
+summary(cd_scale_m)
+```
+
+## Causal Attribution 
+
+### figure
+
+```{r}
+d2_with_scale %>% 
+  filter(task_name == "CA", task_info == "situational") %>% 
+  group_by(subject, culture, scale_sum_score) %>% 
+  summarise(rating_at_situational = mean(as.numeric(resp)), na.rm = TRUE) %>% 
+  ggplot(aes(x = scale_sum_score,  
+             y = rating_at_situational, 
+             color = culture)) + 
+  geom_jitter(alpha = .3) + 
+  geom_smooth(method = "lm") + 
+  labs(title = "Rating at situational condition with scale")
+```
+
+### model 
+
+```{r}
+ca_d <- d2_with_scale %>% 
+  filter(task_name == "CA", task_info == "situational") %>% 
+  group_by(subject, culture, scale_sum_score) %>% 
+  summarise(rating_at_situational = mean(as.numeric(resp), na.rm = TRUE)) 
+
+ca_scale_m <- lm(rating_at_situational ~ scale_sum_score, data = ca_d)
+summary(ca_scale_m)
+```
+
+## Triads 
+
+### figure 
+```{r}
+d2_with_scale %>% 
+  filter(task_name == "TD", task_info == "triads") %>% 
+  group_by(subject, culture, scale_sum_score) %>% 
+  summarise(proportion_tax_match = mean(as.numeric(as.logical(resp))), na.rm = TRUE) %>% 
+  ggplot(aes(x = scale_sum_score,  
+             y = proportion_tax_match, 
+             color = culture)) + 
+  geom_jitter(alpha = .3) + 
+  geom_smooth(method = "lm") + 
+  labs(title = "Proportion tax match with scale")
+```
+
+### model - needs controls
+
+```{r}
+td_d <- d2_with_scale %>% 
+  filter(task_name == "TD", task_info == "triads") %>% 
+  group_by(subject, culture, scale_sum_score) %>% 
+  summarise(proportion_tax_match = mean(as.numeric(as.logical(resp))), na.rm = TRUE) 
+
+td_scale_m <- lm(proportion_tax_match ~ scale_sum_score, data = td_d)
+summary(td_scale_m)
+```
+
+## Ravens
+
+### figure 
+
+```{r}
+d2_with_scale %>% 
+  filter(task_name == "RV") %>% 
+  group_by(subject, culture, scale_sum_score) %>% 
+  summarise(proportion_correct = mean(as.numeric(resp)), na.rm = TRUE) %>% 
+  ggplot(aes(x = scale_sum_score,  
+             y = proportion_correct, 
+             color = culture)) + 
+  geom_jitter(alpha = .3) + 
+  geom_smooth(method = "lm") + 
+  labs(title = "RV Proportion correct with scale")
+```
+
+
+### model 
+
+```{r}
+rv_d <- d2_with_scale %>% 
+  filter(task_name == "RV") %>% 
+  group_by(subject, culture, scale_sum_score) %>% 
+  summarise(proportion_correct = mean(as.numeric(resp)), na.rm = TRUE) 
+
+rv_scale_m <- lm(proportion_correct ~ scale_sum_score, data = rv_d)
+summary(rv_scale_m)
+```
+
+
+# demographic realtionship (rice/wheat)
+
+# within culure relationship 
+
+
+
+

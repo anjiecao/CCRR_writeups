@@ -1,0 +1,239 @@
+---
+title: "03_relations_between_tasks.rmd"
+author: "anjie"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: hide
+    number_sections: no
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+---
+
+ˆ
+```{r}
+library(tidyverse)
+library(here)
+library(reshape2)
+library(psych)
+library(corrplot)
+library(psych)
+library(ggplot2)
+library(car)
+
+d1 <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv"))
+d2 <- read_csv(here("data/03_processed_data/exp2/tidy_main.csv"))
+
+```
+
+Now after establishing the reliability of multi-trial tasks, we would like to consider the correlations. Below are the tasks that we are going to consider
+
+For study 1, this includes: 
+
+- RMTS
+- Free Description (FD)
+- Ebbignhaus Illusion (EBB): only with trials in the illusional context. 
+- Ravens (RV)
+
+For study 2, this includes: 
+
+- RMTS 
+- Free Description (FD)
+- Change Detection (CD): only with trials in which changes occur in the background 
+- Causal Attribution (CA): only with items on the scale for situational attribution 
+- Triads (TD)
+- Ravens (RV)
+
+
+# study 1
+
+```{r}
+d1_task_summary <- d1 %>% 
+  filter(task_name == "RMTS"| task_name == "FD" | (task_name == "EBB" & task_info == "IL") 
+         | task_name == "RV") %>% 
+  group_by(subject, task_name) %>% 
+  summarise(mean_resp = mean(resp)) %>% 
+  ungroup() %>% 
+  pivot_wider(names_from = task_name, 
+              values_from = mean_resp) %>% 
+  select(-subject)
+
+d1_corr_mat <- cor(d1_task_summary)
+melted_d1_corr_mat <- melt(d1_corr_mat)
+melted_d1_corr_mat %>% 
+  ggplot(aes(x = Var1, y = Var2, fill = value)) + 
+  geom_tile() 
+
+corrplot(d1_corr_mat, method = "number")
+
+```
+For study 2, this includes: 
+- RMTS 
+- Free Description (FD)
+- Change Detection (CD): only with trials in which changes occur in the background 
+- Causal Attribution (CA): only with items on the scale for situational attribution 
+- Triads (TD)
+- Ravens (RV)
+
+
+# study 2
+
+since we are dealing with missing data, two approaches were considered
+
+## imputed with mean value
+
+```{r}
+d2_task_summary <- d2 %>% 
+  filter(task_name == "RMTS"| task_name == "FD" | (task_name == "CD" & task_info == "context") 
+         | (task_name == "CA" & task_info == "situational") | 
+           (task_name == "TD" & task_info == "triads")| task_name == "RV") %>% 
+  mutate(resp = case_when(
+    task_name == "TD" ~ as.numeric(as.logical(resp)), 
+    TRUE ~ as.numeric(resp)
+  )) %>% 
+  group_by(subject, task_name) %>% 
+  summarise(mean_resp = mean(resp, na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  pivot_wider(names_from = task_name, 
+              values_from = mean_resp) %>% 
+  select(-subject)
+
+
+# have many missing data
+
+#imputation mean 
+d2_task_mean <- d2_task_summary %>% 
+  pivot_longer(cols = everything(), 
+               names_to = "task", 
+               values_to = "value") %>% 
+  group_by(task) %>% 
+  summarise(mean = mean(value, na.rm = TRUE))
+
+imputed_d2_task_summary <- d2_task_summary %>% 
+  mutate(
+  CD = case_when(
+    is.na(CD) ~ filter(d2_task_mean, task == "CD")$mean, 
+    TRUE ~ CD
+  ), 
+  RMTS = case_when(
+    is.na(RMTS) ~ filter(d2_task_mean, task == "RMTS")$mean, 
+    TRUE ~ RMTS
+  ),
+  RV = case_when(
+    is.na(RV) ~ filter(d2_task_mean, task == "RV")$mean, 
+    TRUE ~ RV
+  ),
+  TD = case_when(
+    is.na(TD) ~ filter(d2_task_mean, task == "TD")$mean, 
+    TRUE ~ TD
+  ),
+  CA = case_when(
+    is.na(CA) ~ filter(d2_task_mean, task == "CA")$mean, 
+    TRUE ~ CA
+  ),
+  FD = case_when(
+    is.na(FD) ~ filter(d2_task_mean, task == "FD")$mean, 
+    TRUE ~ FD
+  )
+  ) 
+
+
+d2_corr_mat <- cor(imputed_d2_task_summary)
+corrplot(d2_corr_mat, method = "number")
+melted_d2_corr_mat <- melt(d2_corr_mat)
+melted_d2_corr_mat %>% 
+  ggplot(aes(x = Var1, y = Var2, fill = value)) + 
+  geom_tile() 
+
+
+
+
+```
+
+## deletion
+
+```{r}
+
+# or do deletion
+deletion_d2_task_summary <- drop_na(d2_task_summary)
+
+d2_corr_mat <- cor(deletion_d2_task_summary)
+corrplot(d2_corr_mat, method = "number")
+melted_d2_corr_mat <- melt(d2_corr_mat)
+melted_d2_corr_mat %>% 
+  ggplot(aes(x = Var1, y = Var2, fill = value)) + 
+  geom_tile() 
+```
+# cached the correlation matrices 
+
+```{r}
+cor_summary_df <- bind_rows(
+  d1_task_summary %>% mutate(study = "study_1"),
+  d2_task_summary %>% mutate(study = "study_2")
+)
+
+melted_d1_corr_mat <- melt(cor(d1_task_summary)) %>% mutate(study = "study_1") 
+melted_d2_corr_mat_imputed <- melt(cor(imputed_d2_task_summary)) %>% mutate(study = "study_2") %>% 
+  mutate(missing_data = "imputed")
+melted_d2_corr_mat_deletion <- melt(cor(deletion_d2_task_summary)) %>% mutate(study = "study_2") %>% 
+  mutate(missing_data = "deleted")
+
+cor_main_df <- bind_rows(melted_d1_corr_mat, melted_d2_corr_mat_imputed, melted_d2_corr_mat_deletion) %>% 
+  rename(task_1 = Var1, task_2 = Var2)
+
+saveRDS(cor_summary_df, here("cached_results/ea/cor_summary_df.RDS"))
+saveRDS(cor_main_df, here("cached_results/ea/cor_main_df.RDS"))
+```
+
+
+
+# factor analysis 
+
+## check factorability of the data 
+
+Bartlett’s Test of Sphericity
+Small values of the significance level indicate a factor analysis maybe useful
+but apparently it's not the case
+```{r}
+cortest.bartlett(d1_task_summary)
+cortest.bartlett(d2_task_summary)
+
+```
+
+## scree plots
+
+### Study 1
+
+```{r}
+fafitfree <- fa(d1_task_summary, nfactors = ncol(d1_task_summary), rotate = "none")
+n_factors <- length(fafitfree$e.values)
+scree     <- data.frame(
+  Factor_n =  as.factor(1:n_factors), 
+  Eigenvalue = fafitfree$e.values)
+ggplot(scree, aes(x = Factor_n, y = Eigenvalue, group = 1)) + 
+  geom_point() + geom_line() +
+  xlab("Number of factors") +
+  ylab("Initial eigenvalue") +
+  labs( title = "Scree Plot for Study 1", 
+        subtitle = "(Based on the unreduced correlation matrix)")
+```
+
+### Study 2
+
+```{r}
+fafitfree <- fa(d2_task_summary, nfactors = ncol(d2_task_summary), rotate = "none")
+n_factors <- length(fafitfree$e.values)
+scree     <- data.frame(
+  Factor_n =  as.factor(1:n_factors), 
+  Eigenvalue = fafitfree$e.values)
+ggplot(scree, aes(x = Factor_n, y = Eigenvalue, group = 1)) + 
+  geom_point() + geom_line() +
+  xlab("Number of factors") +
+  ylab("Initial eigenvalue") +
+  labs( title = "Scree Plot for study 2", 
+        subtitle = "(Based on the unreduced correlation matrix)")
+```
+
+

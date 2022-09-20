@@ -1,0 +1,121 @@
+---
+title: "02_reliability_assessment"
+author: "anjie"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(here)
+library(splithalf)
+
+d1 <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv"))
+d2 <- read_csv(here("data/03_processed_data/exp2/tidy_main.csv"))
+
+source(here("processing_pipelines/helper/calculate_reliability.R"))
+```
+
+
+Here we only calculate splithalf reliability for tasks with multiple trials (>2 trial) and for trials that provide critical tests on cross cultural differences. Below is a breakdown on how the calculation is done: 
+
+For study 1, this includes: 
+- RMTS
+- Free Description (FD)
+- Ebbignhaus Illusion (EBB): only with trials in the illusional context. 
+- Ravens (RV)
+
+For study 2, this includes: 
+- RMTS 
+- Free Description (FD)
+- Change Detection (CD): only with trials in which changes occur in the background 
+- Causal Attribution (CA): only with items on the scale for situational attribution 
+- Triads (TD)
+- Ravens (RV)
+
+
+
+```{r}
+
+d1_reliability <- get_d1_reliability(d1, tasks = c("RMTS", "EBB", "FD", "RV")) %>% mutate(exp = "exp1")
+d2_reliability <- get_d2_reliability(d2, tasks = c("RMTS", "FD", "CD", "CA", "TD","RV"))
+
+reliability_df <- bind_rows(d1_reliability %>% mutate(exp = "exp1"),
+                            d2_reliability %>% mutate(exp = "exp2")) %>% 
+                  mutate(type = "all")
+```
+
+We also examine the by-culture reliability to make sure there is no consistent pattern across culture. We speculate some bigger difference between cultures may have something to do with one culture reaches ceiling effects. 
+
+
+
+```{r}
+d1_us_reliability <- get_d1_reliability(d1 %>% filter(culture == "US"), 
+                                        tasks = c("RMTS", "EBB", "FD", "RV")) %>% 
+                    mutate(exp = "exp1", 
+                           culture = "US")
+      
+d1_cn_reliability <- get_d1_reliability(d1 %>% filter(culture == "CN"), 
+                                        tasks = c("RMTS", "EBB", "FD", "RV")) %>% 
+                    mutate(exp = "exp1", 
+                           culture = "CN")
+
+
+d2_us_reliability <- get_d2_reliability(d2 %>% filter(culture == "US"), 
+                                     tasks = c("RMTS", "FD", "CD", "CA", "TD","RV")) %>% 
+                  mutate(exp = "exp2", 
+                           culture = "US")
+
+d2_cn_reliability <- get_d2_reliability(d2 %>% filter(culture == "CN"), 
+                                     tasks = c("RMTS", "FD", "CD", "CA", "TD","RV")) %>% 
+                  mutate(exp = "exp2", 
+                           culture = "CN")
+
+by_culture_reliability <- bind_rows(d2_us_reliability, d2_cn_reliability, 
+                                    d1_us_reliability, d1_cn_reliability) %>% 
+                          mutate(type = "by_culture")
+```
+
+
+```{r}
+main_reliability <- bind_rows(reliability_df, by_culture_reliability)
+saveRDS(main_reliability, here("cached_results/ea/reliability.RDS"))
+```
+
+
+# plotting function preview: 
+
+
+
+```{r}
+
+main_reliability %>% 
+  mutate(
+    print_task_name = case_when(
+     task_name == "TD" ~ "Triads", 
+     task_name == "RV" ~ "Ravens", 
+     task_name == "RMTS" ~ "RMTS", 
+     task_name == "FD" ~ "Picture Free Description", 
+     task_name == "EBB" ~ "Ebbinghaus Illusion",
+     task_name == "CD" ~ "Change Detection", 
+     task_name == "CA" ~ "Adult Causal Attribution"
+    )
+  ) %>% 
+  filter(type == "all") %>% 
+  ggplot(aes(x = print_task_name, 
+             y = spearmanbrown, 
+             ymin = SB_low, 
+             ymax = SB_high,
+             group = exp, 
+             shape = exp
+             )) + 
+  ylab("Spearman-Brown Correlation") + 
+  xlab("") + 
+  geom_pointrange(position = position_dodge(width = 0.6)) + 
+  guides(shape=guide_legend(title="Experiment")) + 
+  ylim(0, 1) + 
+  coord_flip() + 
+  theme_classic()
+
+```
+

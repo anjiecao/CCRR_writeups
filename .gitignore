@@ -9,6 +9,11 @@ data/01_merged_data/exp2/
 data/02_trimmed_data/exp1/
 data/02_trimmed_data/exp2/
 
+# too big cached results file 
+cached_results/exp1/raw_models/
+cached_results/exp2/raw_models/
+
+
 # History files
 .Rhistory
 .Rapp.history

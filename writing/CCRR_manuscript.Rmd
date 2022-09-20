@@ -1,0 +1,162 @@
+---
+title             : "Replicability of US-China differences in cognition and perception across 12 tasks"
+shorttitle        : "Replicate US-China differences"
+author:  
+  - name          : "Anjie Cao*"
+    affiliation   : "1"
+    corresponding : yes    
+    address       : "450 Jane Stanford Way, Stanford, 94305"
+    email         : "anjiecao@stanford.edu" 
+  - name          : "Alexandra Carstensen*"
+    affiliation   : "2"
+    email         : "abcarstensen@gmail.com"
+  - name          : "Shan Gao"
+    affiliation   : "3"
+    email         : "FIXME"
+  - name          : "Michael C. Frank"
+    affiliation   : "1"
+    address       : "450 Jane Stanford Way, Stanford, 94305"
+    email         : "mcfrank@stanford.edu" 
+
+affiliation:
+  - id            : "1"
+    institution   : "Department of Psychology, Stanford University"
+  - id            : "2"
+    institution   : "Department of Psychology, University of California, San Diego"
+  - id            : "3"
+    institution   : "FIXME"
+  
+  
+
+authornote: |
+  We gratefully acknowledge Alvin Tan, Joseph Outa, and the members of the Language and Cognition Lab at Stanford for comments and assistance. Experiment 1 was previously reported in abbreviated form in the Proceedings of the Cognitive Science Society as Carstensen et al. (2020).
+  
+abstract: |
+    Cultural differences between the US and China have been investigated using a broad array of psychological tasks measuring differences between cognition, language, perception, and reasoning. We conducted two large-scale replications of a selection of 12 tasks previously reported to show cross-cultural differences, using online convenience samples of adults. Five of these tasks showed robust cross-cultural differences, while six showed no difference and one showed a small difference in the opposite direction. Tasks showing cross-cultural differences tended to have multiple trials measuring high-level reasoning and language; those that did not show cross-cultural difference included measures of attention/perception, implicit social processes, or were initially designed to show differences in children. As in prior work, cross-cultural differences in cognition (in those tasks showing differences) were not strongly related to explicit measures of cultural identity and behavior.
+
+  
+keywords          : "FIXME"
+wordcount         : "FIXME"
+csl               : "apa6-meta.csl"
+bibliography      : "library.bib"
+
+floatsintext      : no
+linenumbers       : yes
+draft             : no
+mask              : no
+
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+
+classoption       : "man"
+output            : papaja::apa6_pdf
+#pdf_document
+#papaja::apa6_pdf
+latex_engine        : xelatex
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+r_refs("library.bib")
+```
+
+```{r load_utility_packages, include = FALSE}
+library(papaja)
+library(rmarkdown)
+library(tidyverse) 
+library(here)
+library(glue)
+```
+
+
+```{r global_options, include = FALSE}
+here::i_am("writing/CCRR_manuscript.Rmd")
+
+knitr::opts_chunk$set(warning = FALSE, 
+                      message = FALSE, 
+                      cache = FALSE,
+                      echo = FALSE
+                      )
+knitr::opts_chunk$set(dev = 'pdf')
+
+
+knitr::opts_knit$set(root.dir = here())
+
+theme_set(theme_classic(base_size = 11))
+```
+
+
+
+# Introduction
+
+```{r child = "writing/sections/01_intro.Rmd"}
+```
+
+# Experiment 1
+
+In Experiment 1, our goal was to evaluate cross-cultural differences in a variety of constructs. We assembled a web-based battery of tasks and tested these on a snowball sample of US and Chinese participants. 
+
+## Methods 
+
+
+```{r child = "writing/sections/02_exp1_methods.Rmd"}
+```
+
+## Results
+
+```{r child = "writing/sections/03_exp1_results.Rmd"}
+```
+
+## Discussion
+
+```{r child = "writing/sections/04_exp1_discussion.Rmd"}
+```
+
+# Experiment 2
+
+Experiment 2 was designed to follow up on Experiment 1 and further evaluate cross-cultural differences across a battery of tasks. Since several of our tasks in Experiment 1 yielded no evidence for cross-cultural differences, we replaced these with alternative tasks selected to address similar or related constructs. We replaced the Ebbinghaus Illusion with a measure of Change Detection that had been argued to index context sensitivity [@masuda2006culture]. We replaced the child-appropriate causal attribution task with a task designed for adults [@morris1994culture]. We also included two tasks measuring linguistic or semantic intuitions more broadly (Taxonomic/Thematic Similarity and Semantic Intuition), following up on the detection of cross-cultural differences in the Picture Free Description task. Although our goal in Experiment 2 was to evaluate a further set of tasks, we also included the RMTS, Picture Free Description, and Raven’s Progressive Matrices tasks to replicate our results from Experiment 1, and we included a modified version of Symbolic Self-Inflation to address several issues with the earlier version of the task. 
+
+In Experiment 2, we made use of crowd-sourcing services – rather than snowball sampling – as our participant recruitment channel. We had two rationales. First, in Experiment 1 our samples were quite young (due to the use of email and social media to populations of university students for recruitment). A younger sample might be more exposed to international media and influences and be less likely to show distinct cross-cultural differences. Second, we were concerned that being recruited by friends and family (as in a snowball sample) might prime interdependent thinking among our participants, leading to decreased cross-cultural differences [@markus1992and]. 
+
+## Methods
+
+```{r child = "writing/sections/05_exp2_methods.Rmd"}
+```
+
+<!-- ```{r child = "sections/06_exp2_results.Rmd"} -->
+<!-- ``` -->
+
+<!-- ```{r child = "sections/07_exp2_discussion.Rmd"} -->
+<!-- ``` -->
+
+
+<!-- # Exploratory analysis  -->
+
+<!-- ```{r child = "sections/08_exploratory_analysis.Rmd"} -->
+<!-- ``` -->
+
+
+<!-- # General Discussion -->
+<!-- ```{r child = "sections/09_general_discussion.Rmd"} -->
+<!-- ``` -->
+
+
+
+---
+nocite: | 
+...
+  
+```{r appendix}
+#render_appendix("appendix.Rmd")
+```
+
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+\newpage
+
+# References
+
+::: {#refs custom-style="Bibliography"}
+:::

@@ -67,6 +67,10 @@ library(rmarkdown)
 library(tidyverse) 
 library(here)
 library(glue)
+
+source(here("processing_pipelines/helper/plotting/plot_es.R"))
+source(here("processing_pipelines/helper/plotting/plot_reliability.R"))
+
 ```
 
 

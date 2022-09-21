@@ -14,6 +14,7 @@ d1 <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv"))
 d2 <- read_csv(here("data/03_processed_data/exp2/tidy_main.csv"))
 
 source(here("processing_pipelines/helper/calculate_reliability.R"))
+source(here("processing_pipelines/helper/plotting/plot_reliability.R"))
 ```
 
 
@@ -85,6 +86,9 @@ saveRDS(main_reliability, here("cached_results/ea/reliability.RDS"))
 
 # plotting function preview: 
 
+```{r}
+plot_rl(main_reliability)
+```
 
 
 ```{r}

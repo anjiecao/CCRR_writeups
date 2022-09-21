@@ -1,0 +1,34 @@
+
+```{r}
+rl <- readRDS(here("cached_results/ea/reliability.RDS"))
+plot_rl(rl)
+```
+
+
+One question motivating our work was whether the individual tasks we used were reliable enough – had low enough measurement error – to be used for further investigation of individual differences. The gold standard for the measurement of whether a task yields stable within-person measurements is test-retest reliability (simply because test-retest gives a direct estimate of stability over time), but this method was outside the scope of our study. Thus we used a split-half approach, asking whether participants’ answers on individual questions related to one another. We used a permutation-based split half approach [@parsons2021splithalf] in which we made 5000 random splits of items into two simulated “halves” and then computed the within-person correlation between scores on these two halves, averaging across simulated runs. To estimate the reliability of the full-length instrument, we used the Spearman-Brown “prophecy” formula. 
+
+Since split-half approach is only suitable for tasks with multiple trials, we thus dropped the tasks with less than four trials from the analysis. For tasks with more than one condition, we focused on the conditions that were predicted to show cultural differences (i.e. Illusion context condition for Ebbinghaus task; Situational judgements for Adult Causal Attribution task; Context condition for Change Detection task). 
+
+```{r}
+us_rl <- rl %>% 
+  filter(type == "by_culture") %>% 
+  filter(culture == "US") %>% 
+  select(spearmanbrown, exp, task_name, culture) %>% 
+  rename(us = spearmanbrown)
+
+cn_rl <- rl %>% 
+  filter(type == "by_culture") %>% 
+  filter(culture == "CN") %>% 
+  select(spearmanbrown, exp, task_name, culture) %>% 
+  rename(cn = spearmanbrown)
+
+cn_us_rl_diff <- cn_rl %>% 
+  left_join(us_rl %>% select(-culture), by = c("task_name", "exp")) %>% 
+  mutate(us_cn_diff = us-cn)
+  
+  
+```
+
+
+Figure FIXME shows the corrected split-half reliabilities for all tasks in both of our experiments. Overall the reliabilities are high (all Spearman-Brown Correlations > 0.6). We further investigated whether there was cultural variation in the reliability of tasks. For most tasks, the reliabilities were relatively similar (within 0.1 of one another), with no systematic pattern of greater reliabilities for either culture. The only exceptions were Change Detection (*US - CN* = `r filter(cn_us_rl_diff, task_name == "CD")$us_cn_diff`),  Adult Causal Attribution (*US - CN* = `r filter(cn_us_rl_diff, task_name == "CD" & exp == "exp2")$us_cn_diff`), Free Description in Study 1 (*US - CN* = `r filter(cn_us_rl_diff, task_name == "FD" & exp == "exp1")$us_cn_diff`).
+

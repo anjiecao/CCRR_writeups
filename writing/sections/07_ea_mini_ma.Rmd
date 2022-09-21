@@ -1,0 +1,10 @@
+
+```{r}
+
+es <- readRDS(here("cached_results/ea/effect_sizes.RDS"))
+plot_es(es)
+```
+
+As our first exploratory analysis, we identified the key effect of interest from our pre-registration (usually a main effect of culture or an interaction of culture, depending on task) and converted the coefficient into a standardized measure of effect size (standardized mean difference; SMD) via the method described by [-@westfall2014statistical]. Because there is no “correct” direction for all of the tasks except Raven’s Matrices, we show the absolute value of the effect size. Figure FIXME shows these effect sizes.
+
+Across our two experiments, we saw consistent and generally large differences (SMD > 0.6) in Free Description, Raven's Matrices, Adult Causal Attribution, Semantic Intuition and Triads tasks. Aside from Raven’s Matrices, all of these tasks had in common that they were deliberative linguistic tasks that tapped into relatively high-level cognitive constructs. In contrast, we observed effect sizes close to zero for our more aesthetic and perceptual tasks (Change Detection, Ebbinghaus Illusion, and Horizon). We also observed little consistent difference in four other tasks (RMTS, Symbolic Self-Inflation, Uniqueness Preference, and Children’s Causal Attribution), perhaps for reasons idiosyncratic to each. We return to the broader question of generalization across task types in the General Discussion. 

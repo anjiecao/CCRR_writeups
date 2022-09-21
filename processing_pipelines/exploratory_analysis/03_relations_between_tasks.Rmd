@@ -37,6 +37,8 @@ For study 1, this includes:
 - Ebbignhaus Illusion (EBB): only with trials in the illusional context. 
 - Ravens (RV)
 
+
+
 For study 2, this includes: 
 
 - RMTS 
@@ -50,17 +52,65 @@ For study 2, this includes:
 # study 1
 
 ```{r}
-d1_task_summary <- d1 %>% 
-  filter(task_name == "RMTS"| task_name == "FD" | (task_name == "EBB" & task_info == "IL") 
-         | task_name == "RV") %>% 
-  group_by(subject, task_name) %>% 
-  summarise(mean_resp = mean(resp)) %>% 
-  ungroup() %>% 
+
+clean_d1_ssi <- d1 %>% 
+  filter(task_name == "SI") %>% 
+  filter(resp_type == "inflation_score_ratio") %>% 
+  mutate(resp_num = as.numeric(resp)) %>% 
+  select(subject, culture, task_name, resp_num)
+
+clean_d1_ebb <- d1 %>% 
+  filter(task_name == "EBB", task_info == "IL") %>% 
+  group_by(subject, culture, task_name) %>% 
+  summarise(resp_num = mean(resp))
+
+clean_d1_rmts <- d1 %>% 
+  filter(task_name == "RMTS") %>% 
+   group_by(subject, culture, task_name) %>% 
+  summarise(resp_num = mean(resp))
+
+clean_d1_hz <- d1 %>% 
+  filter(task_name == "HZ", resp_type == "hz_height") %>% 
+  mutate(resp_num = resp) %>% 
+  select(subject, culture, task_name, resp_num)
+
+clean_d1_up <- d1 %>% 
+  filter(task_name == "CP") %>% 
+  mutate(resp_num = resp) %>% 
+  select(subject, culture, task_name, resp_num)
+
+clean_d1_rv <- d1 %>% 
+  filter(task_name == "RV") %>% 
+   group_by(subject, culture, task_name) %>% 
+  summarise(resp_num = mean(resp)) %>% 
+  select(subject, culture, task_name, resp_num)
+
+clean_d1_fd <- d1 %>% 
+  filter(task_name == "FD", resp_type == "first_mention_focal") %>% 
+   group_by(subject, culture, task_name) %>% 
+  summarise(resp_num = mean(resp)) %>% 
+  select(subject, culture, task_name, resp_num)
+
+clean_d1_ca <- d1 %>% 
+  filter(task_name == "CA", resp_type == "situation_attribution")%>% 
+  group_by(subject, culture, task_name) %>% 
+  summarise(resp_num = mean(resp)) %>% 
+  select(subject, culture, task_name, resp_num)
+
+
+d1_task_summary <- bind_rows(clean_d1_ca, 
+          clean_d1_ebb, 
+          clean_d1_fd, 
+          clean_d1_hz, 
+          clean_d1_rmts, 
+          clean_d1_rv, 
+          clean_d1_ssi, 
+          clean_d1_up) %>% 
   pivot_wider(names_from = task_name, 
-              values_from = mean_resp) %>% 
+              values_from = resp_num) %>% 
   select(-subject)
 
-d1_corr_mat <- cor(d1_task_summary)
+d1_corr_mat <- cor(d2_task_summary)
 melted_d1_corr_mat <- melt(d1_corr_mat)
 melted_d1_corr_mat %>% 
   ggplot(aes(x = Var1, y = Var2, fill = value)) + 
@@ -69,6 +119,78 @@ melted_d1_corr_mat %>%
 corrplot(d1_corr_mat, method = "number")
 
 ```
+## imputed with mean value 
+
+```{r}
+d1_mean <- d1_task_summary %>% 
+  pivot_longer(cols = -c(subject, culture), 
+               names_to = "task", 
+               values_to = "value") %>% 
+  group_by(task) %>% 
+  summarise(mean = mean(value, na.rm = TRUE))
+
+imputed_d1_task_summary <- d1_task_summary %>% 
+  mutate(
+  CA = case_when(
+    is.na(CA) ~ filter(d1_mean, task == "CA")$mean, 
+    TRUE ~ CA
+  ), 
+  EBB = case_when(
+    is.na(EBB) ~ filter(d1_mean, task == "EBB")$mean, 
+    TRUE ~ EBB
+  ),
+  FD = case_when(
+    is.na(FD) ~ filter(d1_mean, task == "FD")$mean, 
+    TRUE ~ FD
+  ),
+  HZ = case_when(
+    is.na(HZ) ~ filter(d1_mean, task == "HZ")$mean, 
+    TRUE ~ HZ
+  ),
+  RMTS = case_when(
+    is.na(RMTS) ~ filter(d1_mean, task == "RMTS")$mean, 
+    TRUE ~ RMTS
+  ),
+  RV = case_when(
+    is.na(RV) ~ filter(d1_mean, task == "RV")$mean, 
+    TRUE ~ RV
+  ),
+  SI = case_when(
+    is.na(SI) ~ filter(d1_mean, task == "SI")$mean, 
+    TRUE ~ SI
+  ),
+  CP = case_when(
+    is.na(CP) ~ filter(d1_mean, task == "CP")$mean, 
+    TRUE ~ CP
+  ),
+  ) 
+
+imputed_d1_corr_mat <- cor(imputed_d1_task_summary %>% ungroup() %>% select(-subject, -culture))
+melted_imputed_d1_corr_mat <- melt(imputed_d1_corr_mat)
+melted_imputed_d1_corr_mat %>% 
+  ggplot(aes(x = Var1, y = Var2, fill = value)) + 
+  geom_tile() 
+
+corrplot(imputed_d1_corr_mat, method = "number")
+```
+
+## deletion
+
+```{r}
+deletion_d1_task_summary <- drop_na(d1_task_summary)
+
+
+deletion_d1_corr_mat <- cor(deletion_d1_task_summary %>% ungroup() %>% select(-subject, -culture))
+melted_deletion_d1_corr_mat <- melt(deletion_d1_corr_mat)
+melted_deletion_d1_corr_mat %>% 
+  ggplot(aes(x = Var1, y = Var2, fill = value)) + 
+  geom_tile() 
+
+corrplot(deletion_d1_corr_mat, method = "number")
+```
+
+
+
 For study 2, this includes: 
 - RMTS 
 - Free Description (FD)
@@ -85,20 +207,51 @@ since we are dealing with missing data, two approaches were considered
 ## imputed with mean value
 
 ```{r}
-d2_task_summary <- d2 %>% 
-  filter(task_name == "RMTS"| task_name == "FD" | (task_name == "CD" & task_info == "context") 
-         | (task_name == "CA" & task_info == "situational") | 
-           (task_name == "TD" & task_info == "triads")| task_name == "RV") %>% 
+
+
+clean_d2_CD <- d2 %>% 
+  filter(task_name == "CD", task_info == "context") %>% 
+  group_by(subject, culture, task_name) %>% 
+  filter(!resp == "null") %>% 
+  summarise(resp_num = mean(as.numeric(resp)))
+
+clean_d2_SSI <- d2 %>% 
+  filter(task_name == "SSI", resp_type == "task_score_ratio") %>%
+  mutate(resp_num = as.numeric(resp))
+
+clean_d2_CA <- d2 %>% 
+  filter(task_name == "CA", task_info == "situational") %>% 
+  group_by(subject, culture, task_name) %>% 
+  filter(!is.na(resp)) %>% 
+  summarise(resp_num = mean(as.numeric(resp)))
+
+clean_d2_TD <- d2 %>% 
+  filter(task_name == "TD", task_info == "triads") %>% 
+  group_by(subject, culture, task_name) %>% 
+  filter(!is.na(resp)) %>% 
+  summarise(resp_num = mean(as.numeric(as.logical(resp))))
+
+clean_d2_SeI <- d2 %>% 
+  filter(task_name == "SeI", task_info == "critical") %>% 
   mutate(resp = case_when(
-    task_name == "TD" ~ as.numeric(as.logical(resp)), 
-    TRUE ~ as.numeric(resp)
-  )) %>% 
-  group_by(subject, task_name) %>% 
-  summarise(mean_resp = mean(resp, na.rm = TRUE)) %>% 
+    resp == "causal_historical" ~ 1, 
+    TRUE ~ 0)) %>% 
+  group_by(subject, culture, task_name) %>% 
+  summarise(resp_num = mean(as.numeric(resp)))
+
+
+d2_task_summary <- d2 %>% 
+  filter(task_name %in% c("RMTS","RV","FD"))  %>% 
+  mutate(resp_num = as.numeric(resp))  %>% 
+  group_by(subject, culture, task_name) %>% 
+  summarise(resp_num = mean(resp_num)) %>%
+  bind_rows(clean_d2_CD, clean_d2_SSI, clean_d2_CA, 
+            clean_d2_TD, clean_d2_SeI)  %>% 
+  select(subject, culture, task_name, resp_num) %>% 
   ungroup() %>% 
   pivot_wider(names_from = task_name, 
-              values_from = mean_resp) %>% 
-  select(-subject)
+              values_from = resp_num) %>% 
+  select(-subject, -culture)
 
 
 # have many missing data
@@ -136,6 +289,14 @@ imputed_d2_task_summary <- d2_task_summary %>%
   FD = case_when(
     is.na(FD) ~ filter(d2_task_mean, task == "FD")$mean, 
     TRUE ~ FD
+  ),
+  SeI = case_when(
+    is.na(SeI) ~ filter(d2_task_mean, task == "SeI")$mean, 
+    TRUE ~ SeI
+  ),
+  SSI = case_when(
+    is.na(SSI) ~ filter(d2_task_mean, task == "SSI")$mean, 
+    TRUE ~ SSI
   )
   ) 
 
@@ -170,17 +331,20 @@ melted_d2_corr_mat %>%
 
 ```{r}
 cor_summary_df <- bind_rows(
-  d1_task_summary %>% mutate(study = "study_1"),
+  d1_task_summary %>% mutate(study = "study_1") %>% ungroup() %>% select(-subject, -culture),
   d2_task_summary %>% mutate(study = "study_2")
 )
 
-melted_d1_corr_mat <- melt(cor(d1_task_summary)) %>% mutate(study = "study_1") 
+melted_d1_corr_mat_imputed <- melt(cor(imputed_d1_task_summary %>% ungroup() %>% select(-subject, -culture))) %>% mutate(study = "study_1") %>% mutate(missing_data = "imputed")
+melted_d1_corr_mat_deletion <- melt(cor(deletion_d1_task_summary %>% ungroup() %>% select(-subject, -culture))) %>% mutate(study = "study_1") %>% mutate(missing_data = "deleted")
 melted_d2_corr_mat_imputed <- melt(cor(imputed_d2_task_summary)) %>% mutate(study = "study_2") %>% 
   mutate(missing_data = "imputed")
 melted_d2_corr_mat_deletion <- melt(cor(deletion_d2_task_summary)) %>% mutate(study = "study_2") %>% 
   mutate(missing_data = "deleted")
 
-cor_main_df <- bind_rows(melted_d1_corr_mat, melted_d2_corr_mat_imputed, melted_d2_corr_mat_deletion) %>% 
+cor_main_df <- bind_rows(melted_d1_corr_mat_imputed,
+                         melted_d1_corr_mat_deletion,
+                         melted_d2_corr_mat_imputed, melted_d2_corr_mat_deletion) %>% 
   rename(task_1 = Var1, task_2 = Var2)
 
 saveRDS(cor_summary_df, here("cached_results/ea/cor_summary_df.RDS"))
@@ -197,7 +361,7 @@ Bartlett’s Test of Sphericity
 Small values of the significance level indicate a factor analysis maybe useful
 but apparently it's not the case
 ```{r}
-cortest.bartlett(d1_task_summary)
+cortest.bartlett(d1_task_summary %>% ungroup() %>% select(-subject, -culture))
 cortest.bartlett(d2_task_summary)
 
 ```
@@ -207,7 +371,7 @@ cortest.bartlett(d2_task_summary)
 ### Study 1
 
 ```{r}
-fafitfree <- fa(d1_task_summary, nfactors = ncol(d1_task_summary), rotate = "none")
+fafitfree <- fa(d1_task_summary %>% ungroup() %>% select(-subject, -culture), nfactors = ncol(d1_task_summary %>% ungroup() %>% select(-subject, -culture)), rotate = "none")
 n_factors <- length(fafitfree$e.values)
 scree     <- data.frame(
   Factor_n =  as.factor(1:n_factors), 

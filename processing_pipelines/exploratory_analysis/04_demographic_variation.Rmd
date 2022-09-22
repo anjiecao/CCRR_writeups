@@ -281,6 +281,8 @@ d1_region_df <- bind_rows(clean_d1_ca,
 d1_region_df$p.adjusted = p.adjust(d1_region_df$p.value,
                                     method = "bonferroni")
 
+saveRDS(d1_region_df, here("cached_results/ea/d1_region.RDS"))
+
 d1_region_df %>% 
   knitr::kable(digits = 3)
 ```
@@ -334,6 +336,9 @@ d2_region_df <- d2_with_scale  %>%
 
 d2_region_df$p.adjusted = p.adjust(d2_region_df$p.value,
                                     method = "bonferroni")
+
+
+saveRDS(d2_region_df, here("cached_results/ea/d2_region.RDS"))
 
 
 d2_region_df %>% 
@@ -450,6 +455,8 @@ demog_d12_numeric_mod <- demog_d12_numeric_df %>%
 demog_d12_numeric_mod$p.adjusted = p.adjust(demog_d12_numeric_mod$p.value,
           method = "bonferroni")
 
+saveRDS(demog_d12_numeric_mod, here("cached_results/ea/d12_numeric_demog_df.RDS"))
+
 
 demog_d12_numeric_mod %>% 
   filter(term != "(Intercept)") %>% 
@@ -477,6 +484,8 @@ demog_d12_cat_mod <- demog_d12_cat_df %>%
 demog_d12_cat_mod$p.adjusted = p.adjust(demog_d12_cat_mod$p.value, 
           method = "bonferroni")
 
+
+saveRDS(demog_d12_cat_mod, here("cached_results/ea/d12_cat_demog_df.RDS"))
 
 demog_d12_cat_mod %>% 
   filter(term != "(Intercept)") %>% 

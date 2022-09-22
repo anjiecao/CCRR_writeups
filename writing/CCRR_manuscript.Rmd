@@ -56,10 +56,6 @@ output            : papaja::apa6_pdf
 latex_engine        : xelatex
 ---
 
-```{r setup, include = FALSE}
-library("papaja")
-r_refs("library.bib")
-```
 
 ```{r load_utility_packages, include = FALSE}
 library(papaja)
@@ -68,6 +64,10 @@ library(tidyverse)
 library(here)
 library(glue)
 
+here::i_am("writing/CCRR_manuscript.Rmd")
+
+r_refs("library.bib")
+
 source(here("processing_pipelines/helper/plotting/plot_es.R"))
 source(here("processing_pipelines/helper/plotting/plot_reliability.R"))
 
@@ -75,7 +75,6 @@ source(here("processing_pipelines/helper/plotting/plot_reliability.R"))
 
 
 ```{r global_options, include = FALSE}
-here::i_am("writing/CCRR_manuscript.Rmd")
 
 knitr::opts_chunk$set(warning = FALSE, 
                       message = FALSE, 
@@ -131,16 +130,30 @@ In Experiment 2, we made use of crowd-sourcing services – rather than snowball
 <!-- ```{r child = "sections/06_exp2_results.Rmd"} -->
 <!-- ``` -->
 
-<!-- ```{r child = "sections/07_exp2_discussion.Rmd"} -->
-<!-- ``` -->
 
 
-<!-- # Exploratory analysis  -->
 
-<!-- ```{r child = "sections/08_exploratory_analysis.Rmd"} -->
-<!-- ``` -->
+# Exploratory analysis
 
+## Mini meta-analysis
 
+```{r child = "writing/sections/07_ea_mini_ma.Rmd"}
+```
+
+## Reliability assessment
+
+```{r child = "writing/sections/08_ea_reliability_assessment.Rmd"}
+```
+
+## Relations between individual tasks
+
+```{r child = "writing/sections/09_ea_relations_between_tasks.Rmd"}
+```
+
+## Demographic variation and explicit measures of cultural identity
+
+```{r child = "writing/sections/10_demog_variation.Rmd"}
+```
 <!-- # General Discussion -->
 <!-- ```{r child = "sections/09_general_discussion.Rmd"} -->
 <!-- ``` -->

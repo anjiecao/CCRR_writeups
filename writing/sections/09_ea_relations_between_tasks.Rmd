@@ -15,15 +15,6 @@ max_cor_df <- cor_tasks %>%
   arrange(-abs(value)) %>% 
   head(6)
 
-cor_tasks %>% 
-  filter(task_1 != task_2) %>% 
-  filter(missing_data == "deleted") %>% 
-  filter(value != filter(max_cor_df, task_1 == "CP", task_2 == "EBB")$value) %>% 
-  filter(value != filter(max_cor_df, task_1 == "TD", task_2 == "CA")$value) %>% 
-  mutate(min_value = min(value), 
-         max_value = max(value)) %>% 
-  distinct(min_value, max_value)
-
 ```
 
 

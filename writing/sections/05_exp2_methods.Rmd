@@ -1,22 +1,61 @@
 
+```{r}
+d2_raw <- read_csv(here("data/01_merged_data/exp2/merged_data.csv"))
+d2 <- read_csv(here("data/03_processed_data/exp2/tidy_main.csv"))
+d2_attrition <- read_csv(here("data/03_processed_data/exp2/attrition_table.csv"))
+```
+
+```{r}
+raw_n_subject <- d2_raw %>% 
+  distinct(culture, subject) %>% 
+  group_by(culture) %>% count()
+```
+
 ### Participants 
 
+We recruited participants through online crowdsourcing websites. For the US, we used Prolific and applied the follwoing screening criteria: a) U.S. nationality; b) Born in the U.S. and c) Currently reside in the U.S. For China, we used the Naodao (www.naodao.com), a platform designed for conducting online experiments in mainland China. Participants in U.S. were compensated at the rate of \$12.25 per submission and in China ¥35 per submission. We recruited `r filter(raw_n_subject, culture == "US")$n` participants from the U.S. and `r filter(raw_n_subject, culture == "CN")$n` participants from China. 
+
+`r d2_attrition %>% filter(exclusion_type == "whole_participant") %>% count() %>% pull()` participants excluded because they did not meet our demographic inclusion criteria. Following our preregistration, we applied a task-based exclusion procedure in which we excluded a participant's responses in a particular task if they a) showed a response bias in the tasks, b) had missing data in more than 25% trials or c) failed to meet the inclusion criteria for any specific task as specified in the preregistration. 
+
+Similar to study 1, we collected additional demographic information from the participants, including subjective socioeconomic status, the state or province the participant grew up in and currently reside in, residential mobility, number of oversea experiences, the highest education level the participants obtained, whether one has studied STEM subjects in college. We also administered scales to collect explicit measures of participants’ cultural identities and behaviors [@cleveland2007acculturaton; @cleveland2015intersection]. 
+
+The sample size for each task after exclusion and the descriptive statistics for each demographic information is reported in TABLE X FIXME.
+
 ### Procedure 
+
+Similar to study 1, participants completed eight tasks and a brief demographics questionnaire online. The experiment is administered online in English for the US sample and in Mandarin Chinese for the China sample, with the exception of Causal attribution task. The Causal attribution task is administered in English, and only Chinese participants who self-identify as being able to read English will participate in this task. To control for the impact of order-related inattention, task order was randomized across participants with two exceptions:  (1) the free description task always occurs before (not necessarily immediately) change detection (because change detection includes a manipulation check that explicitly asks about focal objects, which could bias responding in free description), and (2) the two story-based tasks (semantic intuition and causal attribution) always occur together in a fixed order at the end of the study, with semantic intuition first and causal attribution last. Causal attribution is always the last task (if run) because it will always be run in English and we do not wish to prime CN participants with English stimuli before any tasks that are run in Mandarin.
 
 
 ### Measures 
 
 #### Identical Tasks
 
+We replicated three tasks from Experiment 1 using identical procedures: Ambiguous RMTS, Picture Free Description, and Raven’s Progressive Matrices.
+
 #### Symbolic Self-Inflation 
+
+Participants are asked to draw themselves and their friends as circles, as opposed to drawing themselves and their family members as circles in Study 1. They were also asked to draw lines between any two people who are friends, as in the original study by @kitayama2009cultural. They then label each circle to indicate the person it represents. We calculated a percent inflation score for each participant by dividing the diameter of the self circle by the average diameter of circles for others.
 
 #### Causal Attribution 
 
+We speculated that the lack of cultural difference in causal attribution in Experiment 1 might be due to the simplistic nature of our task, which was designed for use with young children. Therefore, in Experiment 2 we used a paradigm designed for adults, in which participants were asked to read a crime narrative from a news report that included substantial information on a criminal’s background and the events leading up to their crime, and then rated the relevance of various situational and personal factors [@morris1994culture]. In the original study, both Chinese participants and US participants read stories in English. We followed this procedure by selecting Chinese participants who self-identified as comfortable reading short stories in English to participate. In the task, participants were told that they would be reading news stories and answering questions to help social scientists understand the factors that contribute to murders. Participants were randomly assigned to read one of two stories (Iowa shooting or Royal Oak shooting). After the stories, they were asked to write a short explanation for the murderer’s behaviors. Then, they rated a list of statements on a 7-point likert scale about the extent to which each statement is a likely cause of the murder. The statements included items that describe personal factors and situational factors. We measured endorsement of these two factor types. 
+
 #### Change Detection 
+
+@masuda2006culture found differences in attention allocation between Japanese and US participants in a change detection paradigm. They found that Japanese participants were significantly faster than US participants in identifying changes in the background of images. In this task, participants were presented with 30 pairs of images. On each trial, two pictures would alternate on the screen, each presented for 560ms with a blank screen in between images for 80ms. The two pictures are almost identical with subtle differences, either in the focal object or the background (e.g., a tractor in daylight with its lights on or off). Participants were instructed to press a key when they spotted the difference, and then describe the difference in a text box. If they did not detect a difference within 60 seconds, the trial timed out. Only trials in which participants correctly identified the changes were included in the analysis. After 30 trials, participants saw each pair of images again, this time side-by-side on the screen. They were asked to identify the focal object(s) in the pictures by typing into a text box. These responses were used as a manipulation check to ensure that participants in both cultures construed focal objects similarly. 
+
+We followed this original procedure and used the same stimuli. We coded difference descriptions to exclude trials in which participants did not identify the change, and checked agreement on focal objects across cultures. We measured how quickly participants identified the difference on trials in which they reported the difference correctly.
 
 #### Taxonomic/thematic similarity task
 
+@ji2004culture showed that Chinese participants are more likely to categorize items based on thematic similarity, whereas US participants are more likely to categorize items based on taxonomic similarity. In this task, participants were presented with a list of word sets. Each set contains three words: a target word as prompt and two other words as options. The list includes test sets and filler sets. In each test set, one option is a taxonomic match (e.g. monkey - elephant) and the other is a thematic match (e.g. monkey - banana). In each filler set, the cue item and the options are broadly similar, thematically and taxonomically, making for a more ambiguous decision (e.g. monkey - elephant, tiger). Participants completed a 2AFC where they chose one match for each cue item. 
+
+We used a subset of testing materials from FIXMELe (2021), including 15 test triads, 15 filler triads, and 2 attention check questions. The order of the triads was randomized between subjects. We measured taxonomic vs. thematic match selections on each of the test trials. 
+
+
 #### Semantic Intuition 
 
-#### Raven's Standard Progressive Matrices 
+@li2018name found cultural differences in semantic intuitions about ambiguous referents in Chinese and US participants. Chinese participants are more likely to determine the referent of a name based on the description of the speaker (the descriptivist view) whereas U.S. participants are more likely to determine the referent based on the original usage (the causal-historical view). In the study, participants read five separate stories and judged the correctness of statements referring to a character after each story. Two comprehension check questions were included for each story. We followed the original testing procedure closely and used the same materials. We measured participants’ semantic intuition as their judgment on the correctness of statements referring to the critical characters. 
+
+
 

@@ -109,7 +109,7 @@ In Experiment 1, our goal was to evaluate cross-cultural differences in a variet
 ## Results
 
 ```{r child = "writing/sections/03_exp1_results.Rmd"}
-```
+```  
 
 ## Discussion
 

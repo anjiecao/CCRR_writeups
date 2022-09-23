@@ -29,6 +29,5 @@ cn_us_rl_diff <- cn_rl %>%
   
 ```
 
-
-Figure FIXME shows the corrected split-half reliabilities for all tasks in both of our experiments. Overall the reliabilities are high (all Spearman-Brown Correlations > 0.6). We further investigated whether there was cultural variation in the reliability of tasks. For most tasks, the reliabilities were relatively similar (within 0.1 of one another), with no systematic pattern of greater reliabilities for either culture. The only exceptions were Change Detection (*US - CN* = `r filter(cn_us_rl_diff, task_name == "CD")$us_cn_diff`),  Adult Causal Attribution (*US - CN* = `r filter(cn_us_rl_diff, task_name == "CD" & exp == "exp2")$us_cn_diff`), Free Description in Study 1 (*US - CN* = `r filter(cn_us_rl_diff, task_name == "FD" & exp == "exp1")$us_cn_diff`).
+Figure FIXME shows the corrected split-half reliabilities for all tasks in both of our experiments. Overall the reliabilities are high (all Spearman-Brown Correlations > 0.6). We further investigated whether there was cultural variation in the reliability of tasks. For most tasks, the reliabilities were relatively similar (within 0.1 of one another), but there were three tasks where reliability was lower for US participants than Chinese participants: Change Detection (*US - CN* = `r filter(cn_us_rl_diff, task_name == "CD")$us_cn_diff`),  Adult Causal Attribution (*US - CN* = `r filter(cn_us_rl_diff, task_name == "CD" & exp == "exp2")$us_cn_diff`), Free Description in Study 1 (*US - CN* = `r filter(cn_us_rl_diff, task_name == "FD" & exp == "exp1")$us_cn_diff`).
 

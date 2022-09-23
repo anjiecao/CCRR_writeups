@@ -29,6 +29,8 @@ cn_regions <- read_csv(here("data/03_processed_data/cn_regions.csv"))
 
 ```
 
+
+
 # Task-global identity relationships 
 
 
@@ -423,7 +425,7 @@ bind_rows(d1_demog %>% mutate(study = "d1"),
 
 
 - numeric: 
-resimobinum - response too noisy
+resimobinum 
 overseaexpnum
 objectiveses - s1 only
 subjectiveses 
@@ -436,12 +438,23 @@ stem_or_not s2 only
 ## numeric demog 
 
 ```{r}
+# a small proportion of people responded in a way that's difficult to code 
+# here we exclude them 
+resimobinum_exclusion <- bind_rows(d1_demog, d2_demog) %>% 
+  filter(demog_question == "resimobinum") %>% 
+  mutate(demog_response_num = as.numeric(demog_response)) %>% 
+  filter(is.na(demog_response_num)) %>% 
+  pull(subject)
+
+
 demog_d12_numeric_df <- d12_joint_df %>% 
   left_join(cleaned_basic_demog_df, 
             by = c("subject", "culture", "study")) %>% 
   rename(demog_type = demog_question) %>% 
-  filter(demog_type %in% c("overseaexpnum", "objectiveses","subjectiveses", "age")) %>% 
-  mutate(demog_resp = as.numeric(demog_response))
+  filter(demog_type %in% c("overseaexpnum", "objectiveses","subjectiveses", "age", 
+                           "resimobinum")) %>% 
+  mutate(demog_resp = as.numeric(demog_response)) %>% 
+  filter(!(subject %in% resimobinum_exclusion & demog_type == "resimobinum"))
 
 
 demog_d12_numeric_mod <- demog_d12_numeric_df %>% 
@@ -452,10 +465,6 @@ demog_d12_numeric_mod <- demog_d12_numeric_df %>%
   select(-mod, -data) %>% 
   unnest(cols = c(tidy))
 
-demog_d12_numeric_mod$p.adjusted = p.adjust(demog_d12_numeric_mod$p.value,
-          method = "bonferroni")
-
-saveRDS(demog_d12_numeric_mod, here("cached_results/ea/d12_numeric_demog_df.RDS"))
 
 
 demog_d12_numeric_mod %>% 
@@ -481,11 +490,6 @@ demog_d12_cat_mod <- demog_d12_cat_df %>%
   select(-mod, -data) %>% 
   unnest(cols = c(tidy))
 
-demog_d12_cat_mod$p.adjusted = p.adjust(demog_d12_cat_mod$p.value, 
-          method = "bonferroni")
-
-
-saveRDS(demog_d12_cat_mod, here("cached_results/ea/d12_cat_demog_df.RDS"))
 
 demog_d12_cat_mod %>% 
   filter(term != "(Intercept)") %>% 
@@ -494,5 +498,12 @@ demog_d12_cat_mod %>%
 
 
 
+```{r}
+demog_d12_mod <- bind_rows(demog_d12_cat_mod, demog_d12_numeric_mod)
+demog_d12_mod$p.adjusted = p.adjust(demog_d12_mod$p.value,
+          method = "bonferroni")
+
+saveRDS(demog_d12_mod, here("cached_results/ea/d12_demog_df.RDS"))
+```
 
 

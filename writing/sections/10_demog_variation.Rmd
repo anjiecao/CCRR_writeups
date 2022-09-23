@@ -3,11 +3,10 @@
 task_gi_scale_df <- readRDS(here("cached_results/ea/task_giscale_df.RDS"))
 d1_region_df <- readRDS(here("cached_results/ea/d1_region.RDS"))
 d2_region_df <- readRDS(here("cached_results/ea/d2_region.RDS"))
-d12_numeric_demog_df <- readRDS(here("cached_results/ea/d12_numeric_demog_df.RDS"))
-d12_cat_demog_df <- readRDS(here("cached_results/ea/d12_cat_demog_df.RDS"))
+d12_demog_df <- readRDS(here("cached_results/ea/d12_demog_df.RDS"))
 ```
 
-Does demographic or variation in cultural identity predict responding in our tasks? Our approach to this question was to fit a set of exploratory regression models for each task, predicting task scores as a function of an individual scale and its interaction with culture. This approach allowed us to explore both within- and across-culture effects in a single model. Our predictors were 1) the summed score for our global/local cultural identity and consumption measures (with local items reverse-scored, such that higher scores represent more global identity and consumption patterns), 2) geographic information about where participants grew up (specifically, regions that have historically farmed primarily rice or wheat in China, following [-@talhelm2014large], and culturally distinct regions of the US following FIXME), and 3) a range of demographic factors, [FIXME] including age, gender identity, subjective socioeconomic status measured using the MacArthur Ladder, level of maternal education, residential mobility[FIXME], and number of international experiences. 
+Does demographic or variation in cultural identity predict responding in our tasks? Our approach to this question was to fit a set of exploratory regression models for each task, predicting task scores as a function of an individual scale and its interaction with culture. This approach allowed us to explore both within- and across-culture effects in a single model. Our predictors were 1) the summed score for our global/local cultural identity and consumption measures (with local items reverse-scored, such that higher scores represent more global identity and consumption patterns), 2) geographic information about where participants grew up (specifically, regions that have historically farmed primarily rice or wheat in China, following @talhelm2014large, and culturally distinct regions of the US following @markus2014clash), and 3) a range of demographic factors, including age, gender identities, residential mobility, number of international experiences, maternal education level, subjective socioeconomic status as measured by MacArthur Ladder [@adler2000relationship]. 
 
 ### Task-Global identity relationships 
 
@@ -16,11 +15,20 @@ task_gi_scale_df %>%
   filter(p.value < .05)
 ```
 
-We fit the global-local identity models for tasks in Experiment 2 since we did not collect these scales in Experiment 1. We include the coefficients for all models in Supplementary Table FIXME Two of these relationships were statistically significant at .01 < p < .05 (Adult Causal Attribution task and Triads task) but neither of these relationships were particularly strong and they would not survive any appropriate correction for multiple comparisons. 
+We fit models predicting task scores based on culture and its interaction with global-local identity for tasks in Experiment 2 (we did not collect these scales in Experiment 1). We include the coefficients for all models in Supplementary Table FIXME Two of these relationships were statistically significant at .01 < p < .05 (Adult Causal Attribution: *p* = `r round(filter(task_gi_scale_df, task_name == "CA", grepl("cultureUS", term))$p.value, 2)`; Triads task: *p* = `r round(filter(task_gi_scale_df, task_name == "TD", grepl("cultureUS", term))$p.value, 2)`) but neither of these relationships survived Bonferroni correction for multiple comparisons across the family of coefficients for the models across all tasks. 
 
 ### Task-Geographic origin relationships 
 
-```{r eval=FALSE, include=FALSE}
+```{r include=FALSE}
+n_task_geo_models <- nrow(bind_rows(d1_region_df %>% mutate(study = "study1"), 
+          d2_region_df %>% mutate(study = "study2")) %>% 
+  distinct(culture, task_name, region_type, study)) 
+
+
+n_sig_geo_models <- nrow(bind_rows(d1_region_df %>% mutate(study = "study1"), 
+          d2_region_df %>% mutate(study = "study2")) %>% 
+        filter(p.value < .05) %>% 
+  distinct(culture, task_name, region_type, study)) 
 d1_region_df %>% 
   filter(p.value < .05)
 
@@ -28,36 +36,23 @@ d2_region_df %>%
   filter(p.value < .05)
 ```
 
-We considered whether regions within each country were meaningful predictors for task performance. For China, regions were categorized as rice-cultivating regions and wheat-cultivating regions based on FIXME. For U.S. regions were categorized as either FIXME. We fit the region models for tasks in Experiment 1 and Experiment 2 separately, and coefficients for all models were included in the Supplementary Table FIXME. One relationship in Experiment 1 (Coast for Free Description in U.S) and four relationships in Experiment 2 (Coast and Region for Ravens in U.S; Coast and Region for Change Detection in U.S) were statistically significant at  .01 < p < .05. But none survived Bonferroni correction for multiple comparisons. 
+We next considered whether regions within each country were meaningful predictors of task performance. We fit models predicting task scores based on the categories of regions the participants reported grew up in. For China, provinces were categorized as rice-cultivating regions and wheat-cultivating regions based on @talhelm2014large. For U.S., states were categorized based on either the coastal locations (West Coast, East Coast and Inland) or broad geographic locations (West, South, Northeast, Midwest), following the categorization reported in @carstensen2022bridging. We fit the region models for each task in each study separately, and coefficients for all models were included in the Supplementary Table FIXME. 
+
+`r n_sig_geo_models` out of `r n_task_geo_models` models we ran showed a statistically significant relationships between regions and task performance. In Study 1, coastal location was a significant predictor for Free Description task. Participants who grew up in Inland regions or East Coast were more likely to mention the focal object first when describing the pictures (Inland: *p* = `r round((d1_region_df %>% filter(task_name == "FD") %>% filter(grepl("inland", term)))$p.value,2)`; East Coast: *p* = `r round((d1_region_df %>% filter(task_name == "FD") %>% filter(grepl("east_coast", term)))$p.value,2)`). In Study 2, both coastal location and broad geographic location were significant predictors for Ravens, with participants from Inland and East Coast scoring higher than participants from West Coast (Inland: *p* = `r round((d2_region_df %>% filter(task_name == "RV") %>% filter(grepl("inland", term)))$p.value, 3)`; East Coast: *p* = `r round((d2_region_df %>% filter(task_name == "RV") %>% filter(grepl("east_coast", term)))$p.value, 2)`), and participants from Midwest and South scoring higher than participants from the West (Midwest: `r round((d2_region_df %>% filter(task_name == "RV") %>% filter(grepl("Midwest", term)))$p.value, 3)`; South: `r round((d2_region_df %>% filter(task_name == "RV") %>% filter(grepl("South", term)))$p.value, 2)`). In addition, the two categories also predicted performance in Change Detection. East Coast participants took longer to respond than West Coast participants (*p* = `r round((d2_region_df %>% filter(task_name == "CD") %>% filter(grepl("east_coast", term)))$p.value, 2)`), and Northeastern participants took longer to respond than participants grew up in the West (*p* = `r round((d2_region_df %>% filter(task_name == "CD") %>% filter(grepl("Northeast", term)))$p.value, 2)`). However, none of these relationship survived Bonferroni correction. 
 
 ### Basic demographic effects
 
 ```{r}
-c(unique(d12_numeric_demog_df$demog_type),
-unique(d12_cat_demog_df$demog_type))
+n_demog_models <- nrow(d12_demog_df %>% 
+  distinct(culture, study, task_name, demog_type))
 
-d12_numeric_demog_df %>% 
-  filter(!grepl("Intercept", term)) %>% 
-  filter(p.value < 0.05) %>% 
-  arrange(demog_type)
-
-d12_cat_demog_df %>% 
-  filter(!grepl("Intercept", term)) %>% 
-  filter(p.value < 0.05) %>% 
-  arrange(demog_type)
-
-
-d12_numeric_demog_df %>% 
-  filter(!grepl("Intercept", term)) %>% 
-  filter(p.adjusted < 0.05) %>% 
-  arrange(demog_type)
-
-d12_cat_demog_df %>% 
-  filter(!grepl("Intercept", term)) %>% 
-  filter(p.adjusted < 0.05) %>% 
-  arrange(demog_type)
+n_sig_demog_models <- nrow(d12_demog_df %>%
+  filter(p.value < .05, !grepl("Intercept", term)) %>% 
+  distinct(culture, study, task_name, demog_type)) 
+  
 ```
 
+We fit `r n_demog_models` to see if basic demographic factors could predict task performance. The demographic factors we explored were age, gender identities, residential mobility, number of international experiences, maternal education level, subjective socioeconomic status as measured by MacArthur Ladder [@adler2000relationship]. `r n_sig_demog_models` were statistically significant, but only one model survived Bonferroni correction. Change detection was predicted by age in the U.S. sample, with older participants took longer to respond than younger participants (Adjusted *p* < 0.0001).
 
 
 

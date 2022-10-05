@@ -127,8 +127,10 @@ In Experiment 2, we made use of crowd-sourcing services – rather than snowball
 ```{r child = "writing/sections/05_exp2_methods.Rmd"}
 ```
 
-<!-- ```{r child = "sections/06_exp2_results.Rmd"} -->
-<!-- ``` -->
+## Results
+
+```{r child = "writing/sections/06_exp2_results.Rmd"}
+```
 
 
 

@@ -11,6 +11,7 @@ library(here)
 library(lme4)
 library(lmerTest)
 
+
 source(here("processing_pipelines/helper/tidy_model_helper.R"))
 tidy_d <- read_csv(here("data/03_processed_data/exp2/tidy_main.csv"))
 ```
@@ -46,6 +47,11 @@ save_model(rmts_model, GLMER_MODEL_DIR)
 ```
 
 ### bayes 
+
+```{r}
+
+```
+
 
 ```{r}
 full_rmts_model <- brm(choice ~ culture + (trial_num | subject), 
@@ -291,16 +297,41 @@ SeI_df <- tidy_d %>%
     )
   ) %>% 
   mutate(item = trial_info) %>% 
-  select(choice_causal, culture, subject, item)
+  select(choice_causal, culture, subject, item) %>% 
+  mutate(choice_causal = as.numeric(choice_causal))
 
 #SeI_model <- glmer(choice_causal ~ culture + (1 | subject) + (culture | item), family = binomial, data = SeI_df)
 
 SeI_model <- glmer(choice_causal ~ culture + (1 | subject) , family = binomial, data = SeI_df, 
                    control=glmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5)))
 
+SeI_mode_with_item <- glmer(choice_causal ~ culture + item + (1 | subject) , family = binomial, data = SeI_df, 
+                   control=glmerControl(optimizer="bobyqa",optCtrl=list(maxfun=2e5)))
+
+
 save_model(SeI_model, GLMER_MODEL_DIR)
 
 ```
+
+```{r}
+tidy_d %>% 
+  filter(task_name == "SeI") %>% 
+  filter(task_info == "critical") %>% 
+  mutate(
+    choice_causal = case_when(
+      resp == "causal_historical" ~ TRUE, 
+      resp == "descriptivist" ~ FALSE
+    )
+  ) %>% 
+  mutate(item = trial_info) %>% 
+  select(choice_causal, culture, subject, item) %>% 
+  mutate(choice_causal = as.numeric(choice_causal)) %>% 
+  ggplot(aes(x = culture, y = choice_causal, color = item)) + 
+  #geom_point(alpha = .3) + 
+  stat_summary(fun.data = "mean_cl_boot", position = position_dodge(width = .3)) + 
+  ylim(0, 1)
+```
+
 
 ### bayes
 
@@ -322,6 +353,46 @@ null_b_SeI_model <- brm(choice_causal ~ 1 + (1 | subject) + (culture | item),
                      save_pars = save_pars(all = TRUE), 
 file = here("cached_results/exp2/raw_models/bayes_models/null_b_SeI_model.Rds"),
                       data = SeI_df)
+
+
+full_b_SeI_model_pruned <- brm(choice_causal ~ culture + (1 | subject), 
+                      family = binomial,
+                       control = list(adapt_delta = .999, 
+                                    max_treedepth = 15),
+                     iter = 5000, seed = 11111,
+                     save_pars = save_pars(all = TRUE), 
+                      data = SeI_df, 
+                     file = here("cached_results/exp2/raw_models/bayes_models/full_b_SeI_model_pruned.Rds"))
+
+null_b_SeI_model_pruned <- brm(choice_causal ~ 1 + (1 | subject), 
+                      family = binomial,
+                       control = list(adapt_delta = .999, 
+                                    max_treedepth = 15),
+                     iter = 5000, seed = 11111,
+                     save_pars = save_pars(all = TRUE), 
+file = here("cached_results/exp2/raw_models/bayes_models/null_b_SeI_model_pruned.Rds"),
+                      data = SeI_df)
+
+
+full_b_SeI_model_culture_pruned <- brm(choice_causal ~ culture + (1 | subject) + (1 | item), 
+                      family = binomial,
+                       control = list(adapt_delta = .999, 
+                                    max_treedepth = 15),
+                     iter = 5000, seed = 11111,
+                     save_pars = save_pars(all = TRUE), 
+                      data = SeI_df, 
+                     file = here("cached_results/exp2/raw_models/bayes_models/full_b_SeI_model_culture_pruned.Rds"))
+
+null_b_SeI_model_culture_pruned <- brm(choice_causal ~ 1 + (1 | subject) + (1 | item), 
+                      family = binomial,
+                       control = list(adapt_delta = .999, 
+                                    max_treedepth = 15),
+                     iter = 5000, seed = 11111,
+                     save_pars = save_pars(all = TRUE), 
+file = here("cached_results/exp2/raw_models/bayes_models/null_b_SeI_model_culture_pruned.Rds"),
+                      data = SeI_df)
+
+
 ```
 
 
@@ -417,7 +488,11 @@ for (i in seq(1, length(all_bayes_factor_str), 1)){
 }
 
 bfs_df <- bfs_df %>% 
-  mutate(bf_print = round(bf, 2))
+  mutate(bf_print = case_when(
+    bf < 0.01 ~ "< 0.01",
+    bf > 100 ~ "> 100", 
+    TRUE ~ paste0("= ", as.character(round(bf,2)))
+    ))
     
 saveRDS(bfs_df, here("cached_results/exp2/bfs_summary.RDS"))
 ```

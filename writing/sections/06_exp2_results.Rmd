@@ -1,0 +1,190 @@
+
+
+```{r}
+e2_lmer_df <- readRDS(here("cached_results/exp2/glmer_model_summary.RDS"))
+e2_bfs_df <- readRDS(here("cached_results/exp2/bfs_summary.RDS"))
+d2 <- read_csv(here("data/03_processed_data/exp2/tidy_main.csv"))
+```
+
+### Ambiguous RMTS 
+
+```{r}
+RMTS_summary <- d2 %>% 
+  filter(task_name == "RMTS") %>% 
+  group_by(culture, subject) %>% 
+  summarise(
+    relational_match = mean(as.numeric(resp))
+  ) %>% 
+  group_by(culture) %>% 
+  summarise(
+    culture_mean = round(mean(relational_match),2), 
+    culture_sd = round(sd(relational_match),2)
+  )
+
+rmts_tidy_model <- e2_lmer_df %>% filter(model_name == "rmts_model")
+rmts_bf <- e2_bfs_df %>% filter(bfs_type == "rmts")
+```
+
+
+Our analysis was identical to that in Experiment 1. We did not observe a main effect of country on participants’ preference for object vs relational matches (Proportion of relational match: US: *M* = `r filter(RMTS_summary, culture == "US")$culture_mean`, *SD* = `r filter(RMTS_summary, culture == "US")$culture_sd`; CN: *M* = `r filter(RMTS_summary, culture == "CN")$culture_mean`, *SD* = `r filter(RMTS_summary, culture == "CN")$culture_sd`; $\beta$ = `r filter(rmts_tidy_model, predictor == "cultureUS")$estimate_print`, *SE* = `r filter(rmts_tidy_model, predictor == "cultureUS")$se_print`, *z* = `r filter(rmts_tidy_model, predictor == "cultureUS")$z_print`, *p* `r filter(rmts_tidy_model, predictor == "cultureUS")$p_print`). This analysis again supports the null hypothesis (*BF* = `r rmts_bf$bf_print`). As in Experiment 1, we did not find evidence that the differential preferences observed in preschoolers extend to adults. It seems likely that adults in both populations are aware of the mixed evidence for the relational and object solution and that their responses reflect sensitivity to this ambiguous design. [^p]
+
+[^p] Interestingly, our reliability analysis shows that adults expressed this uncertainty only at the population level: individuals tended to be consistent in choosing the same solution type across all four test trials, with ambiguity expressed as disagreement between participants.
+
+
+
+### Picture Free Description
+
+```{r}
+fd_summary <- d2 %>% 
+  filter(task_name == "FD") %>% 
+  group_by(culture, subject, resp_type) %>% 
+  summarise(
+    mean_resp = mean(as.numeric(resp))
+  ) %>% 
+  group_by(culture, resp_type) %>% 
+  summarise(
+    culture_mean = round(mean(mean_resp),2), 
+    culture_sd = round(sd(mean_resp), 2)
+  )
+
+tidy_fd_mention_model <- e2_lmer_df %>% filter(model_name == "fd_mention_model")
+fd_mention_bf <- e2_bfs_df %>% filter(bfs_type == "fd_mention")
+
+fd_es <- readRDS(here("cached_results/ea/effect_sizes.RDS")) %>% 
+  filter(task_name == "FD") %>% 
+  mutate_if(is.numeric, round, digits = 2)
+ 
+```
+
+
+US participants were more likely to mention the focal objects than the background objects (First mention: US: *M* = `r filter(fd_summary, culture == "US"&resp_type == "first_mention_focal")$culture_mean`, *SD* = `r filter(fd_summary, culture == "US"&resp_type == "first_mention_focal")$culture_sd`; CN: *M* = `r filter(fd_summary, culture == "CN"&resp_type == "first_mention_focal")$culture_mean`, *SD* = `r filter(fd_summary, culture == "CN"&resp_type == "first_mention_focal")$culture_sd`). We used the same regression analysis as in Experiment 1 and found a main effect of country ($\beta$ = `r filter(tidy_fd_mention_model, predictor == "cultureUS")$estimate_print`, *SE* = `r filter(tidy_fd_mention_model, predictor == "cultureUS")$se_print`, *z* = `r filter(tidy_fd_mention_model, predictor == "cultureUS")$z_print`, *p* `r filter(tidy_fd_mention_model, predictor == "cultureUS")$p_print`). The result of our Bayes Factor analysis is consistent with this model (*BF* = `r fd_mention_bf$bf_print`). Our results replicate Experiment 1’s finding for the first-mention measure with comparable effect size (standardized mean difference; Experiment 1: `r filter(fd_es, study_num == "Study 1")$d`[`r filter(fd_es, study_num == "Study 1")$d_ci_lower`, `r filter(fd_es, study_num == "Study 1")$d_ci_upper`]; Experiment 2: `r filter(fd_es, study_num == "Study 2")$d`[`r filter(fd_es, study_num == "Study 2")$d_ci_lower`, `r filter(fd_es, study_num == "Study 2")$d_ci_upper`]). This suggests that the finding was not caused by the idiosyncrasy of our samples. As a result, we decided not to code the descriptive accounts for Experiment 2 that did not show differences in Experiment 1. In summary, we partially extended Imada et al.'s [-@imada2013east] findings to Chinese adults. 
+
+
+
+
+### Change Detection 
+
+```{r}
+cd_culture_summary <- d2 %>% 
+  filter(task_name == "CD") %>% 
+  group_by(culture, subject, task_info) %>% 
+  summarise(
+    mean_resp = mean(as.numeric(resp), na.rm = TRUE)
+  ) %>% 
+  group_by(culture) %>% 
+  summarise(
+    culture_mean = round(mean(mean_resp, na.rm = TRUE),2), 
+    culture_sd = round(sd(mean_resp,na.rm = TRUE), 2)
+  )
+
+cd_condition_summary <- d2 %>% 
+  filter(task_name == "CD") %>% 
+  group_by(culture, subject, task_info) %>% 
+  summarise(
+    mean_resp = mean(as.numeric(resp), na.rm = TRUE)
+  ) %>% 
+  group_by(task_info) %>% 
+  summarise(
+    condition_mean = round(mean(mean_resp, na.rm = TRUE),2), 
+    condition_sd = round(sd(mean_resp,na.rm = TRUE), 2)
+  )
+
+tidy_cd_model <- e2_lmer_df %>% filter(model_name == "cd_model")
+cd_bf <- e2_bfs_df %>% filter(bfs_type == "cd")
+```
+
+
+We ran a linear mixed-effects model predicting the reaction time to correctly identify changes in the pictures, with country (U.S. or China) and type of change detected (focal or background) as main effects, as well as their interaction. We did not find evidence for an interaction between culture and type of change detected ($\beta$ = `r filter(tidy_cd_model, predictor == "cultureUS:type_of_changefocal")$estimate_print`, *SE* = `r filter(tidy_cd_model, predictor == "cultureUS:type_of_changefocal")$se_print`, *z* = `r filter(tidy_cd_model, predictor == "cultureUS:type_of_changefocal")$t_print`, *p* `r filter(tidy_cd_model, predictor == "cultureUS:type_of_changefocal")$p_print`). Participants in both countries identified changes to the context faster than changes to focal objects (Context Changes: *M* = `r filter(cd_condition_summary, task_info == "context")$condition_mean`, *SD* = `r filter(cd_condition_summary, task_info == "context")$condition_sd`; Focal Object Changes: *M* = `r filter(cd_condition_summary, task_info == "focal")$condition_mean`, *SD* = `r filter(cd_condition_summary, task_info == "focal")$condition_sd`; $\beta$ = `r filter(tidy_cd_model, predictor == "type_of_changefocal")$estimate_print`, *SE* = `r filter(tidy_cd_model, predictor == "type_of_changefocal")$se_print`, *t* = `r filter(tidy_cd_model, predictor == "type_of_changefocal")$t_print`, *p* `r filter(tidy_cd_model, predictor == "type_of_changefocal")$p_print`). Chinese participants identified both types of change more quickly than U.S. participants (US: *M* = `r filter(cd_culture_summary, culture == "US")$culture_mean`, *SD* = `r filter(cd_culture_summary, culture == "US")$culture_sd`; CN: *M* = `r filter(cd_culture_summary, culture == "CN")$culture_mean`, *SD* = `r filter(cd_culture_summary, culture == "CN")$culture_sd`; $\beta$ = `r filter(tidy_cd_model, predictor == "cultureUS")$estimate_print`, *SE* = `r filter(tidy_cd_model, predictor == "cultureUS")$se_print`, *t* = `r filter(tidy_cd_model, predictor == "cultureUS")$t_print`, *p* `r filter(tidy_cd_model, predictor == "cultureUS")$p_print`). The result of our Bayes Factor analysis is consistent with this result (*BF* = `r cd_bf$bf_print`). We did not extend the findings from @masuda2006culture to the current study. 
+
+### Symbolic Self-Inflation 
+
+```{r}
+ssi_summary <- d2 %>% 
+  filter(task_name == "SSI") %>% 
+  group_by(culture, subject, task_info, resp_type) %>% 
+  summarise(
+    mean_resp = mean(as.numeric(resp))
+  ) %>% 
+  group_by(culture, task_info, resp_type) %>% 
+  filter(resp_type == "task_score_ratio") %>% 
+  summarise(
+    culture_mean = round(mean(mean_resp),2), 
+    culture_sd = round(sd(mean_resp),2)
+  )
+
+ssi_ratio_tidy_model <- e2_lmer_df %>% filter(model_name == "ssi_model") 
+ssi_ratio_bf <-  e2_bfs_df %>% filter(bfs_type == "ssi")
+
+```
+
+In Experiment 1, we did not find a significant difference in the degree of symbolic self-inflation between adults in the US and China. Here, we observed a pattern contrary to the prediction: U.S. adults showed less self-inflation than Chinese adults (US: *M* = `r filter(ssi_summary, culture == "US", resp_type == "task_score_ratio")$culture_mean`, *SD* = `r filter(ssi_summary, culture == "US", resp_type == "task_score_ratio")$culture_sd`; CN: *M* = `r filter(ssi_summary, culture == "CN", resp_type == "task_score_ratio")$culture_mean`, *SD* = `r filter(ssi_summary, culture == "CN", resp_type == "task_score_ratio")$culture_sd`; $\beta$  = `r filter(ssi_ratio_tidy_model, predictor == "cultureUS")$estimate_print`, *SE* = `r filter(ssi_ratio_tidy_model, predictor == "cultureUS")$se_print`, *t* = `r filter(ssi_ratio_tidy_model, predictor == "cultureUS")$t_print`, *p* `r filter(ssi_ratio_tidy_model, predictor == "cultureUS")$p_print`). However, the Bayes Factor analysis shows support for null hypothesis (*BF* = `r ssi_ratio_bf$print`). We did not extend the findings of @kitayama2009cultural with Japanese participants to our comparison with Chinese participants.
+
+### Adult Causal Attribution
+
+```{r}
+ca_summary <- d2 %>% 
+  filter(task_name == "CA") %>% 
+  group_by(culture, subject, task_info, resp_type) %>% 
+  summarise(
+    mean_resp = mean(as.numeric(resp, na.rm = TRUE))
+  ) %>% 
+  ungroup() %>% 
+  group_by(culture, task_info) %>% 
+  summarise(
+    culture_mean = round(mean(mean_resp, na.rm = TRUE),2), 
+    culture_sd = round(sd(mean_resp, na.rm = TRUE),2)
+  )
+
+
+ca_tidy_model <- e2_lmer_df %>% filter(model_name == "ca_model") 
+ca_bf <-  e2_bfs_df %>% filter(bfs_type == "ca")
+```
+
+
+We ran a mixed-effects linear regression predicting endorsement of each potential cause with country (U.S. or China) and attribution type (personal or situational) as fixed effects, as well as their interaction. We found an interaction in the predicted direction: Chinese participants endorsed situational attributions to a greater extent than their counterparts in the U.S. (Situational ratings: US: *M* = `r filter(ca_summary, culture == "US" & task_info == "situational")$culture_mean`, *SD* = `r filter(ca_summary, culture == "US" & task_info == "situational")$culture_sd`; CN: *M* = `r filter(ca_summary, culture == "CN" & task_info == "situational")$culture_mean`, *SD* = `r filter(ca_summary, culture == "CN" & task_info == "situational")$culture_sd`; Personal ratings: US: *M* = `r filter(ca_summary, culture == "US" & task_info == "personal")$culture_mean`, *SD* = `r filter(ca_summary, culture == "US" & task_info == "personal")$culture_sd`; CN: *M* = `r filter(ca_summary, culture == "CN" & task_info == "personal")$culture_mean`, *SD* = `r filter(ca_summary, culture == "CN" & task_info == "personal")$culture_sd`; $\beta$  = `r filter(ca_tidy_model, predictor == "cultureUS:attribution_typesituational")$estimate_print`, *SE* = `r filter(ca_tidy_model, predictor == "cultureUS:attribution_typesituational")$se_print`, *t* = `r filter(ca_tidy_model, predictor == "cultureUS:attribution_typesituational")$t_print`, *p* `r filter(ca_tidy_model, predictor == "cultureUS:attribution_typesituational")$p_print`).  The Bayes Factor analysis was consistent with this finding (*BF* = `r ca_bf$bf_print`). This result extends the original findings by @morris1994culture, and suggests that our Experiment 1 measure of causal attribution (designed for use with child participants) may not be appropriate for measuring cross-cultural differences in causal attribution among adults. 
+
+
+
+### Taxonomic-Thematic Similarity 
+
+```{r}
+td_summary <- d2 %>% 
+  filter(task_name == "TD", task_info == "triads") %>% 
+  group_by(culture, task_info) %>% 
+  summarise(
+    culture_mean = round(mean(as.numeric(as.logical(resp)), na.rm = TRUE),2), 
+    culture_sd = round(sd(as.numeric(as.logical(resp)), na.rm = TRUE),2)
+  )
+
+
+td_tidy_model <- e2_lmer_df %>% filter(model_name == "td_model") 
+td_bf <-  e2_bfs_df %>% filter(bfs_type == "td")
+```
+
+
+We used a mixed-effects logistic regression model predicting response (taxonomic or thematic match) with country (US or China) as a fixed effect. There was a significant effect in the predicted direction: participants in the U.S. were more likely to choose taxonomic matches than participants in China (Proportion of taxonomic matches: US: *M* = `r filter(td_summary, culture == "US")$culture_mean`; *SD* = `r filter(td_summary, culture == "US")$culture_sd`; CN: *M* = `r filter(td_summary, culture == "CN")$culture_mean`; *SD* = `r filter(td_summary, culture == "CN")$culture_sd`), on both the main model ($\beta$  = `r filter(td_tidy_model, predictor == "cultureUS")$estimate_print`, *SE* = `r filter(td_tidy_model, predictor == "cultureUS")$se_print`, *t* = `r filter(td_tidy_model, predictor == "cultureUS")$z_print`, *p* `r filter(td_tidy_model, predictor == "cultureUS")$p_print`) and the Bayesian analysis (*BF* = `r td_bf$bf_print`). This finding replicates those of @ji2004culture and @le2021. 
+
+
+### Semantic Intuition 
+
+### Raven's Standard Progressive Matrices
+
+```{r}
+rv_summary <- d2 %>% 
+  filter(task_name == "RV") %>% 
+  group_by(culture, subject) %>% 
+  summarise(
+    accuracy = mean(as.numeric(resp))
+  ) %>% 
+  group_by(culture) %>% 
+  summarise(
+    culture_mean = round(mean(accuracy),2), 
+    culture_sd = round(sd(accuracy), 2)
+  )
+
+rv_tidy_model <- e2_lmer_df %>% filter(model_name == "rv_model") 
+rv_bf <-  e2_bfs_df %>% filter(bfs_type == "rv")
+```
+
+
+We replicated the findings from Experiment 1. Chinese participants scored higher on Raven’s Standard Progressive Matrices than U.S. participants (US: *M* = `r filter(rv_summary, culture == "US")$culture_mean`, *SD* = `r filter(rv_summary, culture == "US")$culture_sd`; CN: *M* = `r filter(rv_summary, culture == "CN")$culture_mean`, *SD* = `r filter(rv_summary, culture == "CN")$culture_sd`; $\beta$ = `r filter(rv_tidy_model, predictor == "cultureUS")$estimate_print`, *SE* = `r filter(rv_tidy_model, predictor == "cultureUS")$se_print`, *z* = `r filter(rv_tidy_model, predictor == "cultureUS")$z_print`, *p* `r filter(rv_tidy_model, predictor == "cultureUS")$p_print`). The Bayes Factor analysis is consistent with our model findings (*BF* = `r rv_bf$bf_print`).

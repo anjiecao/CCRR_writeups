@@ -20,7 +20,8 @@ library(tidyverse)
 library(lme4)
 library(stringr)
 library(lmerTest)
-library(brms)
+library(rstanarm)
+library(bridgesampling)
 source(here("processing_pipelines/helper/tidy_model_helper.R"))
 
 d <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv"))
@@ -64,25 +65,33 @@ save_model(rmts_model, GLMER_MODEL_DIR)
 
 ### bayes 
 
-
 ```{r}
+full_b_rmts_model <-  rstanarm::stan_glmer(
+    choice ~ culture + (trial_num | subject), 
+    family = "binomial",
+    data = rmts_df, 
+    prior = normal(0,0.5),
+    prior_intercept = normal(0,1.5),
+    iter = 5000,
+    adapt_delta = .99, 
+    seed = 11111,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
 
-full_b_rmts_model <- brm(choice ~ culture + (trial_num | subject), family = binomial, 
-                          save_pars = save_pars(all = TRUE), 
-                         control = list(adapt_delta = .999, 
-                                    max_treedepth = 15),
-                      iter = 9000, seed = 11111,
-                         data = rmts_df, 
-                         file= here("cached_results/exp1/raw_models/bayes_models/full_b_rmts_model.Rds"),
-                          cores=3)
-null_b_rmts_model <- brm(choice ~ 1 + (trial_num | subject), family = binomial, 
-                          save_pars = save_pars(all = TRUE), 
-                         control = list(adapt_delta = .999, 
-                                    max_treedepth = 15),
-                      iter = 9000, seed = 11111,
-                         data = rmts_df, 
-                         file= here("cached_results/exp1/raw_models/bayes_models/null_b_rmts_model.Rds"),
-                          cores=3)
+null_b_rmts_model <-  rstanarm::stan_glmer(
+    choice ~ 1 + (trial_num | subject), 
+    family = "binomial",
+    data = rmts_df, 
+    prior = normal(0,0.5),
+    prior_intercept = normal(0,1.5),
+    iter = 5000,
+    adapt_delta = .99, 
+    seed = 11111,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+
+saveRDS(full_b_rmts_model,here("cached_results/exp1/raw_models/bayes_models/full_b_rmts_model.Rds"))
+
+saveRDS(null_b_rmts_model,here("cached_results/exp1/raw_models/bayes_models/null_b_rmts_model.Rds"))
+
 ```
 
 
@@ -120,38 +129,59 @@ save_model(fd_descriptive_model, GLMER_MODEL_DIR)
 
 ### bayes
 
+#### firstmention 
+
 ```{r}
-#BF analysis
-full_b_fd_firstmention_model <- brm(first_mention ~ culture + (1 | subject)+(culture | scene) ,
-                   save_pars = save_pars(all = TRUE), control = list(adapt_delta = .999, max_treedepth = 15),
-                   iter = 5000, seed = 11111, data = fd_mention_df, 
-                    file= here("cached_results/exp1/raw_models/bayes_models/full_b_fd_firstmention_model.Rds"),
-                          cores=3)
-null_b_fd_firstmention_model <- brm(first_mention ~ 1 + (1 | subject)+(culture | scene) ,
-                   save_pars = save_pars(all = TRUE), control = list(adapt_delta = .999, max_treedepth = 15),
-                   iter = 5000, seed = 11111, data = fd_mention_df, 
-                    file= here("cached_results/exp1/raw_models/bayes_models/null_b_fd_firstmention_model.Rds"),
-                          cores=3)
+full_b_fd_firstmention_model <-  rstanarm::stan_glmer(
+    first_mention ~ culture + (1 | subject)+(culture | scene), 
+    data = fd_mention_df, 
+    family = "binomial",
+    prior = normal(0,0.5),
+    prior_intercept = normal(0,1.5),
+    iter = 5000,
+    adapt_delta = .99, 
+    seed = 11111,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
 
-full_b_fd_descriptives_model <- brm(description_num ~ description_type * culture + (description_type | subject) + (culture | scene),
-                             family = gaussian, control = list(adapt_delta = 0.995, max_treedepth = 15),
-                             iter = 5000, seed = 11111, 
-                             save_pars = save_pars(all = TRUE),
-                             data = fd_descriptive_df, cores=3, 
-                             file= here("cached_results/exp1/raw_models/bayes_models/full_b_fd_descriptives_model.Rds"))
-  
-
-# the null model for the interaction effect will contain the main effect of the model 
-null_b_fd_descriptives_model <- brm(description_num ~ description_type + culture + (description_type | subject) + (culture | scene),
-                             family = gaussian, control = list(adapt_delta = 0.995, max_treedepth = 15),
-                             iter = 5000, seed = 11111, 
-                             save_pars = save_pars(all = TRUE),
-                             data = fd_descriptive_df, cores=3, 
-                             file= here("cached_results/exp1/raw_models/bayes_models/null_b_fd_descriptives_model.Rds"))
-  
+null_b_fd_firstmention_model <-  rstanarm::stan_glmer(
+    first_mention ~ 1 + (1 | subject)+(culture | scene), 
+    data = fd_mention_df, 
+    family = "binomial",
+    prior = normal(0,0.5),
+    prior_intercept = normal(0,1.5),
+    iter = 5000,
+    adapt_delta = .99, 
+    seed = 11111,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
 
 
+saveRDS(full_b_rmts_model,here("cached_results/exp1/raw_models/bayes_models/full_b_fd_firstmention_model.Rds"))
+
+saveRDS(null_b_rmts_model,here("cached_results/exp1/raw_models/bayes_models/null_b_fd_firstmention_model.Rds"))
 ```
+
+
+#### descriptive accounts 
+
+```{r}
+full_b_fd_descriptives_model <-  rstanarm::stan_glmer(
+    description_num ~ description_type * culture + (description_type | subject) + (culture | scene), 
+    data = fd_descriptive_df, 
+    family = "gaussian",
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+
+null_b_fd_descriptives_model <-  rstanarm::stan_glmer(
+    description_num ~ description_type + culture + (description_type | subject) + (culture | scene), 
+    data = fd_descriptive_df, 
+    family = "gaussian",
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+
+saveRDS(full_b_fd_descriptives_model, here("cached_results/exp1/raw_models/bayes_models/full_b_fd_descriptives_model.Rds"))
+saveRDS(null_b_fd_descriptives_model, here("cached_results/exp1/raw_models/bayes_models/null_b_fd_descriptives_model.Rds"))
+```
+
+
+
 
 
 ## Ebbinghaus 
@@ -186,21 +216,32 @@ save_model(ebb_model, GLMER_MODEL_DIR)
 ### bayes
 
 ```{r}
+full_b_ebb_model <-  rstanarm::stan_glmer(
+    correct ~ culture * context * size_diff + (size_diff * context | subject), 
+    data = ebb_df, 
+    family = "binomial",
+    prior = normal(0,0.5),
+    prior_intercept = normal(0,1.5),
+    iter = 5000,
+    adapt_delta = .99, 
+    seed = 11111,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
 
+null_b_ebb_model <-  rstanarm::stan_glmer(
+    correct ~ context * size_diff + (size_diff * context | subject), 
+    data = ebb_df, 
+    family = "binomial",
+    prior = normal(0,0.5),
+    prior_intercept = normal(0,1.5),
+    iter = 5000,
+    adapt_delta = .99, 
+    seed = 11111,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
 
-full_b_ebb_model <- brm(correct ~ culture * context * size_diff + (size_diff * context | subject),
-                        family = binomial, save_pars = save_pars(all = TRUE), iter = 5000, seed = 11111,
-                         control = list(adapt_delta = 0.995, max_treedepth = 15),
-                        data = ebb_df, cores=3, 
-                        file = here("cached_results/exp1/raw_models/bayes_models/full_b_ebb_model.Rds"))
-
-null_b_ebb_model <- brm(correct ~  context * size_diff + (size_diff * context | subject),
-                        family = binomial, save_pars = save_pars(all = TRUE), iter = 5000, seed = 11111,
-                         control = list(adapt_delta = 0.995, max_treedepth = 15),
-                        data = ebb_df, cores=3, 
-                        file = here("cached_results/exp1/raw_models/bayes_models/null_b_ebb_model.Rds"))
-
+saveRDS(full_b_ebb_model, here("cached_results/exp1/raw_models/bayes_models/full_b_ebb_model.Rds"))
+saveRDS(null_b_ebb_model, here("cached_results/exp1/raw_models/bayes_models/null_b_ebb_model.Rds"))
 ```
+
 
 
 ## Horizon 
@@ -248,36 +289,61 @@ save_model(hz_stkr_n_model, GLMER_MODEL_DIR)
 
 ### bayes
 
+#### height 
+
 ```{r}
-# HZ_height BF 
-full_b_hz_height_model <- brm(height ~ culture, family = gaussian, save_pars = save_pars(all = TRUE),
-                              data = HZ_height_df, cores=3, 
-                        file = here("cached_results/exp1/raw_models/bayes_models/full_b_hz_height_model.Rds"))
+full_b_hz_height_model <-  rstanarm::stan_glmer(
+    height ~ culture, 
+    data = HZ_height_df, 
+    diagnostic_file = file.path(tempdir(), "df.csv"))
 
+null_b_hz_height_model <-  rstanarm::stan_glmer(
+    height ~ 1, 
+    data = HZ_height_df, 
+    diagnostic_file = file.path(tempdir(), "df.csv"))
 
-null_b_hz_height_model <- brm(height ~ 1, family = gaussian, save_pars = save_pars(all = TRUE),
-                              data = HZ_height_df, cores=3, 
-                        file = here("cached_results/exp1/raw_models/bayes_models/null_b_hz_height_model.Rds"))
-
-
-#HZ_number BF analysis
-full_b_hz_n_model <- brm(stkr_count ~ culture, family = gaussian,save_pars = save_pars(all = TRUE),
-                         data = HZ_stkr_n_df, cores=3, 
-                          file = here("cached_results/exp1/raw_models/bayes_models/full_b_hz_n_model.Rds"))
-
-null_b_hz_n_model <- brm(stkr_count ~ culture, family = gaussian,save_pars = save_pars(all = TRUE),
-                         data = HZ_stkr_n_df, cores=3, 
-                          file = here("cached_results/exp1/raw_models/bayes_models/null_b_hz_n_model.Rds"))
-
-
-full_b_hz_area_model <- brm(stkr_area ~ culture, family = gaussian, save_pars = save_pars(all = TRUE),
-                            data = HZ_stkr_area_df, cores=3, 
-                            file=here("cached_results/exp1/raw_models/bayes_models/full_b_hz_area_model.Rds"))
-
-null_b_hz_area_model <- brm(stkr_area ~ 1, family = gaussian, save_pars = save_pars(all = TRUE),
-                            data = HZ_stkr_area_df, cores=3, 
-                            file=here("cached_results/exp1/raw_models/bayes_models/null_b_hz_area_model.Rds"))
+saveRDS(full_b_hz_height_model, here("cached_results/exp1/raw_models/bayes_models/full_b_hz_height_model.Rds"))
+saveRDS(null_b_hz_height_model, 
+        here("cached_results/exp1/raw_models/bayes_models/null_b_hz_height_model.Rds"))
 ```
+
+#### n
+
+```{r}
+full_b_hz_n_model <-  rstanarm::stan_glmer(
+    stkr_count ~ culture, 
+    data = HZ_stkr_n_df, 
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+
+null_b_hz_n_model <-  rstanarm::stan_glmer(
+    stkr_count ~ 1, 
+    data = HZ_stkr_n_df, 
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+
+saveRDS(full_b_hz_n_model, here("cached_results/exp1/raw_models/bayes_models/full_b_hz_n_model.Rds"))
+saveRDS(null_b_hz_n_model, 
+       here("cached_results/exp1/raw_models/bayes_models/null_b_hz_n_model.Rds"))
+```
+
+
+#### area 
+
+```{r}
+full_b_hz_area_model <-  rstanarm::stan_glmer(
+    stkr_area ~ culture, 
+    data = HZ_stkr_area_df, 
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+
+null_b_hz_area_model <-  rstanarm::stan_glmer(
+    stkr_area ~ 1, 
+    data = HZ_stkr_area_df, 
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+
+saveRDS(full_b_hz_area_model, here("cached_results/exp1/raw_models/bayes_models/full_b_hz_area_model.Rds"))
+saveRDS(null_b_hz_area_model, 
+       here("cached_results/exp1/raw_models/bayes_models/null_b_hz_area_model.Rds"))
+```
+
 
 
 ## Symbolict Self Inflation 
@@ -308,24 +374,42 @@ save_model(ssi_diff_model, GLMER_MODEL_DIR)
 
 ### bayes 
 
+#### ratio 
+
 ```{r}
-full_b_ssi_ratio_model <- brm(score ~ culture, family = gaussian, save_pars = save_pars(all = TRUE),
-                             data = si_df_r, cores=3,
-                        file = here("cached_results/exp1/raw_models/bayes_models/full_b_ssi_ratio_model.Rds"))
+full_b_ssi_ratio_model <-  rstanarm::stan_glmer(
+    score ~ culture, 
+    data = si_df_r, 
+    diagnostic_file = file.path(tempdir(), "df.csv"))
 
-null_b_ssi_ratio_model <- brm(score ~ 1, family = gaussian, save_pars = save_pars(all = TRUE),
-                             data = si_df_r, cores=3, 
-                         file = here("cached_results/exp1/raw_models/bayes_models/null_b_ssi_ratio_model.Rds"))
+null_b_ssi_ratio_model <-  rstanarm::stan_glmer(
+    score ~ 1, 
+    data = si_df_r, 
+    diagnostic_file = file.path(tempdir(), "df.csv"))
 
+saveRDS(full_b_ssi_ratio_model, here("cached_results/exp1/raw_models/bayes_models/full_b_ssi_ratio_model.Rds"))
 
-full_b_ssi_diff_model <- brm(score ~ culture, family = gaussian, save_pars = save_pars(all = TRUE),
-                            data = si_df_diff, cores=3, 
-                        file = here("cached_results/exp1/raw_models/bayes_models/full_b_ssi_diff_model.Rds"))
+saveRDS(null_b_ssi_ratio_model, 
+here("cached_results/exp1/raw_models/bayes_models/null_b_ssi_ratio_model.Rds"))
+```
 
-null_b_ssi_diff_model <- brm(score ~ 1, family = gaussian, save_pars = save_pars(all = TRUE),
-                            data = si_df_diff, cores=3, 
-                        file = here("cached_results/exp1/raw_models/bayes_models/null_b_ssi_diff_model.Rds"))
+#### diff
 
+```{r}
+full_b_ssi_diff_model <-  rstanarm::stan_glmer(
+    score ~ culture, 
+    data = si_df_diff, 
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+
+null_b_ssi_diff_model <-  rstanarm::stan_glmer(
+    score ~ 1, 
+    data = si_df_diff, 
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+
+saveRDS(full_b_ssi_diff_model, here("cached_results/exp1/raw_models/bayes_models/full_b_ssi_diff_model.Rds"))
+
+saveRDS(null_b_ssi_diff_model, 
+here("cached_results/exp1/raw_models/bayes_models/null_b_ssi_diff_model.Rds"))
 ```
 
 
@@ -338,8 +422,8 @@ null_b_ssi_diff_model <- brm(score ~ 1, family = gaussian, save_pars = save_pars
 up_df <- d %>% 
   filter(task_name == "CP") %>% 
   mutate(choice = case_when(
-    resp == "1" ~ 1,       #uniq
-    resp == "0" ~ 0)  #non-uniq
+    resp == "1" ~ 1,       #unique
+    resp == "0" ~ 0)  #non-unique
          ) %>% 
   select(-resp, -task_info, -trial_info, -resp_type)
 
@@ -353,16 +437,28 @@ save_model(up_model, GLMER_MODEL_DIR)
 ### bayes
 
 ```{r}
-full_b_up_model <- brm(choice ~ culture, family = binomial(link="logit"), save_pars = save_pars(all = TRUE),
-                       data = up_df, cores=3, 
-                      file = here("cached_results/exp1/raw_models/bayes_models/full_b_up_model.Rds"))
+full_b_up_model <-  rstanarm::stan_glmer(
+    choice ~ culture, 
+    data = up_df, 
+    family = "binomial",
+    prior = normal(0,0.5),
+    prior_intercept = normal(0,1.5),
+    diagnostic_file = file.path(tempdir(), "df.csv"))
 
+null_b_up_model <-  rstanarm::stan_glmer(
+    choice ~ 1, 
+    data = up_df, 
+    family = "binomial",
+    prior = normal(0,0.5),
+    prior_intercept = normal(0,1.5),
+    diagnostic_file = file.path(tempdir(), "df.csv"))
 
-null_b_up_model <- brm(choice ~ 1, family = binomial(link="logit"), save_pars = save_pars(all = TRUE),
-                       data = up_df, cores=3, 
-                      file = here("cached_results/exp1/raw_models/bayes_models/null_b_up_model.Rds"))
+saveRDS(full_b_up_model, here("cached_results/exp1/raw_models/bayes_models/full_b_up_model.Rds"))
 
+saveRDS(null_b_up_model, 
+here("cached_results/exp1/raw_models/bayes_models/null_b_up_model.Rds"))
 ```
+
 
 
 
@@ -409,22 +505,33 @@ save_model(ca_model, GLMER_MODEL_DIR)
 
 ### bayes 
 
+
 ```{r}
-#BF analysis, full model
-# 12 divergent transitions
-full_b_ca_model <- brm(attrib_num ~ attrib_type * culture + (attrib_type | subject) + (culture | trial),
-                       family = poisson, control = list(adapt_delta = 0.999, max_treedepth = 15),
-                       iter = 5000, seed = 11111,
-                       save_pars = save_pars(all = TRUE), data = ca_df, cores=3, 
-                      file = here("cached_results/exp1/raw_models/bayes_models/full_b_ca_model.Rds"))
+full_b_ca_model <-  rstanarm::stan_glmer(
+    attrib_num ~ attrib_type * culture + (attrib_type | subject) + (culture | trial), 
+    data = ca_df, 
+    family = "poisson",
+    prior = normal(3,0.5),
+    iter = 5000,
+    adapt_delta = .99, 
+    seed = 11111,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
 
-null_b_ca_model <-  brm(attrib_num ~ attrib_type  + culture + (attrib_type | subject) + (culture | trial),
-                       family = poisson, control = list(adapt_delta = 0.999, max_treedepth = 15),
-                       iter = 5000, seed = 11111,
-                       save_pars = save_pars(all = TRUE), data = ca_df, cores=3, 
-                      file = here("cached_results/exp1/raw_models/bayes_models/null_b_ca_model.Rds"))
+null_b_ca_model <-  rstanarm::stan_glmer(
+    attrib_num ~ attrib_type + culture + (attrib_type | subject) + (culture | trial), 
+    data = ca_df, 
+    family = "poisson",
+    prior = normal(3,0.5),
+    iter = 5000,
+    adapt_delta = .99, 
+    seed = 11111,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+
+saveRDS(full_b_ca_model, here("cached_results/exp1/raw_models/bayes_models/full_b_ca_model.Rds"))
+
+saveRDS(null_b_ca_model, 
+here("cached_results/exp1/raw_models/bayes_models/null_b_ca_model.Rds"))
 ```
-
 
 
 
@@ -448,20 +555,32 @@ save_model(rv_model, GLMER_MODEL_DIR)
 ### bayes 
 
 ```{r}
-# #BF analysis
-full_rv_model <- brm(acc ~ culture + (1 | subject) + (culture | trial), 
-                     family = binomial(), save_pars = save_pars(all = TRUE),
-                     control = list(adapt_delta = 0.999, max_treedepth = 15),
-                       iter = 5000, seed = 11111,
-                    data = rv_df, cores=3, 
-                  file = here("cached_results/exp1/raw_models/bayes_models/full_b_rv_model.Rds"))
+full_rv_model <-  rstanarm::stan_glmer(
+    acc ~ culture + (1 | subject) + (culture | trial), 
+    data = rv_df, 
+    family = "binomial",
+    prior = normal(0,0.5),
+    prior_intercept = normal(0,1.5),
+    iter = 5000,
+    adapt_delta = .99, 
+    seed = 11111,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
 
-null_rv_model <- brm(acc ~ 1 + (1 | subject) + (culture | trial), 
-                     family = binomial(), save_pars = save_pars(all = TRUE),
-                     control = list(adapt_delta = 0.999, max_treedepth = 15),
-                       iter = 5000, seed = 11111,
-                    data = rv_df, cores=3, 
-                  file = here("cached_results/exp1/raw_models/bayes_models/null_b_rv_model.Rds"))
+null_rv_model <-  rstanarm::stan_glmer(
+    acc ~ 1 + (1 | subject) + (culture | trial), 
+    data = rv_df, 
+    family = "binomial",
+    prior = normal(0,0.5),
+    prior_intercept = normal(0,1.5),
+    iter = 5000,
+    adapt_delta = .99, 
+    seed = 11111,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+
+saveRDS(full_rv_model, here("cached_results/exp1/raw_models/bayes_models/full_rv_model.Rds"))
+
+saveRDS(null_rv_model, 
+here("cached_results/exp1/raw_models/bayes_models/null_rv_model.Rds"))
 ```
 
 
@@ -504,8 +623,8 @@ lapply(key_words, function(kw){
     }
   }
   
-  bf <- bayes_factor(readRDS(paste0(BAYES_MODEL_DIR, full_model_name)), 
-               readRDS(paste0(BAYES_MODEL_DIR, null_model_name)))
+  bf <- bayes_factor(bridge_sampler(readRDS(paste0(BAYES_MODEL_DIR, full_model_name))), 
+               bridge_sampler(readRDS(paste0(BAYES_MODEL_DIR, null_model_name))))
   print(bf)
   
   saveRDS(bf, file = paste0(here("cached_results/exp1/raw_models/bayes_models/bfs/"), kw, ".rds"))
@@ -526,7 +645,11 @@ for (i in seq(1, length(all_bayes_factor_str), 1)){
 }
 
 bfs_df <- bfs_df %>% 
-  mutate(bf_print = round(bf, 2))
+  mutate(bf_print = case_when(
+    bf < 0.01 ~ "< 0.01",
+    bf > 100 ~ "> 100", 
+    TRUE ~ paste0("= ", as.character(round(bf,2)))
+    ))
     
 saveRDS(bfs_df, here("cached_results/exp1/bfs_summary.RDS"))
 ```

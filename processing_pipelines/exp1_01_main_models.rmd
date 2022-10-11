@@ -577,10 +577,10 @@ null_rv_model <-  rstanarm::stan_glmer(
     seed = 11111,
     diagnostic_file = file.path(tempdir(), "df.csv"))
 
-saveRDS(full_rv_model, here("cached_results/exp1/raw_models/bayes_models/full_rv_model.Rds"))
+saveRDS(full_rv_model, here("cached_results/exp1/raw_models/bayes_models/full_b_rv_model.Rds"))
 
 saveRDS(null_rv_model, 
-here("cached_results/exp1/raw_models/bayes_models/null_rv_model.Rds"))
+here("cached_results/exp1/raw_models/bayes_models/null_b_rv_model.Rds"))
 ```
 
 

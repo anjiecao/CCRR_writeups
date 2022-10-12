@@ -98,7 +98,6 @@ theme_set(theme_classic(base_size = 11))
 
 # Experiment 1
 
-In Experiment 1, our goal was to evaluate cross-cultural differences in a variety of constructs. We assembled a web-based battery of tasks and tested these on a snowball sample of US and Chinese participants. 
 
 ## Methods 
 
@@ -118,9 +117,6 @@ In Experiment 1, our goal was to evaluate cross-cultural differences in a variet
 
 # Experiment 2
 
-Experiment 2 was designed to follow up on Experiment 1 and further evaluate cross-cultural differences across a battery of tasks. Since several of our tasks in Experiment 1 yielded no evidence for cross-cultural differences, we replaced these with alternative tasks selected to address similar or related constructs. We replaced the Ebbinghaus Illusion with a measure of Change Detection that had been argued to index context sensitivity [@masuda2006culture]. We replaced the child-appropriate causal attribution task with a task designed for adults [@morris1994culture]. We also included two tasks measuring linguistic or semantic intuitions more broadly (Taxonomic/Thematic Similarity and Semantic Intuition), following up on the detection of cross-cultural differences in the Picture Free Description task. Although our goal in Experiment 2 was to evaluate a further set of tasks, we also included the RMTS, Picture Free Description, and Raven’s Progressive Matrices tasks to replicate our results from Experiment 1, and we included a modified version of Symbolic Self-Inflation to address several issues with the earlier version of the task. 
-
-In Experiment 2, we made use of crowd-sourcing services – rather than snowball sampling – as our participant recruitment channel. We had two rationales. First, in Experiment 1 our samples were quite young (due to the use of email and social media to populations of university students for recruitment). A younger sample might be more exposed to international media and influences and be less likely to show distinct cross-cultural differences. Second, we were concerned that being recruited by friends and family (as in a snowball sample) might prime interdependent thinking among our participants, leading to decreased cross-cultural differences [@markus1992and]. 
 
 ## Methods
 
@@ -156,9 +152,10 @@ In Experiment 2, we made use of crowd-sourcing services – rather than snowball
 
 ```{r child = "writing/sections/10_demog_variation.Rmd"}
 ```
-<!-- # General Discussion -->
-<!-- ```{r child = "sections/09_general_discussion.Rmd"} -->
-<!-- ``` -->
+# General Discussion
+
+```{r child = "writing/sections/11_general_discussion.Rmd"}
+```
 
 
 

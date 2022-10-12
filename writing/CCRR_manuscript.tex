@@ -231,10 +231,10 @@ We make all code and data from our experiments available for further data collec
 \hypertarget{experiment-1}{%
 \section{Experiment 1}\label{experiment-1}}
 
-In Experiment 1, our goal was to evaluate cross-cultural differences in a variety of constructs. We assembled a web-based battery of tasks and tested these on a snowball sample of US and Chinese participants.
-
 \hypertarget{methods}{%
 \subsection{Methods}\label{methods}}
+
+In Experiment 1, our goal was to evaluate cross-cultural differences in a variety of constructs. We assembled a web-based battery of tasks and tested these on a snowball sample of US and Chinese participants.
 
 \hypertarget{participants}{%
 \subsubsection{Participants}\label{participants}}
@@ -377,12 +377,12 @@ We designed Experiment 2 to extend Experiment 1 by recruiting a different sample
 \hypertarget{experiment-2}{%
 \section{Experiment 2}\label{experiment-2}}
 
+\hypertarget{methods-1}{%
+\subsection{Methods}\label{methods-1}}
+
 Experiment 2 was designed to follow up on Experiment 1 and further evaluate cross-cultural differences across a battery of tasks. Since several of our tasks in Experiment 1 yielded no evidence for cross-cultural differences, we replaced these with alternative tasks selected to address similar or related constructs. We replaced the Ebbinghaus Illusion with a measure of Change Detection that had been argued to index context sensitivity (Masuda \& Nisbett, 2006). We replaced the child-appropriate causal attribution task with a task designed for adults (Morris \& Peng, 1994). We also included two tasks measuring linguistic or semantic intuitions more broadly (Taxonomic/Thematic Similarity and Semantic Intuition), following up on the detection of cross-cultural differences in the Picture Free Description task. Although our goal in Experiment 2 was to evaluate a further set of tasks, we also included the RMTS, Picture Free Description, and Raven's Progressive Matrices tasks to replicate our results from Experiment 1, and we included a modified version of Symbolic Self-Inflation to address several issues with the earlier version of the task.
 
 In Experiment 2, we made use of crowd-sourcing services -- rather than snowball sampling -- as our participant recruitment channel. We had two rationales. First, in Experiment 1 our samples were quite young (due to the use of email and social media to populations of university students for recruitment). A younger sample might be more exposed to international media and influences and be less likely to show distinct cross-cultural differences. Second, we were concerned that being recruited by friends and family (as in a snowball sample) might prime interdependent thinking among our participants, leading to decreased cross-cultural differences (Markus \& Kitayama, 1992).
-
-\hypertarget{methods-1}{%
-\subsection{Methods}\label{methods-1}}
 
 \hypertarget{participants-1}{%
 \subsubsection{Participants}\label{participants-1}}
@@ -470,7 +470,7 @@ We ran a mixed-effects linear regression predicting endorsement of each potentia
 \hypertarget{taxonomic-thematic-similarity}{%
 \subsubsection{Taxonomic-Thematic Similarity}\label{taxonomic-thematic-similarity}}
 
-We used a mixed-effects logistic regression model predicting response (taxonomic or thematic match) with country (US or China) as a fixed effect. There was a significant effect in the predicted direction: participants in the U.S. were more likely to choose taxonomic matches than participants in China (Proportion of taxonomic matches: US: \emph{M} = 0.69; \emph{SD} = 0.46; CN: \emph{M} = 0.44; \emph{SD} = 0.50), on both the main model (\(\beta\) = 2.02, \emph{SE} = 0.89, \emph{t} = 2.27, \emph{p} \textless{} 0.05) and the Bayesian analysis (\emph{BF} = 3,766,960.49). This finding replicates those of Ji et al. (2004) and Khuyen, Frank, and Carstensen (2021).
+We used a mixed-effects logistic regression model predicting response (taxonomic or thematic match) with country (US or China) as a fixed effect. There was a significant effect in the predicted direction: participants in the U.S. were more likely to choose taxonomic matches than participants in China (Proportion of taxonomic matches: US: \emph{M} = 0.69; \emph{SD} = 0.46; CN: \emph{M} = 0.44; \emph{SD} = 0.50), on both the main model (\(\beta\) = 2.02, \emph{SE} = 0.89, \emph{t} = 2.27, \emph{p} \textless{} 0.05) and the Bayesian analysis (\emph{BF} = 3,766,960.49). This finding replicates those of Ji et al. (2004) and Le, Frank, and Carstensen (2021).
 
 \hypertarget{semantic-intuition-1}{%
 \subsubsection{Semantic Intuition}\label{semantic-intuition-1}}
@@ -486,7 +486,7 @@ We replicated the findings from Experiment 1. Chinese participants scored higher
 \hypertarget{mini-meta-analysis}{%
 \subsection{Mini meta-analysis}\label{mini-meta-analysis}}
 
-\includegraphics{CCRR_manuscript_files/figure-latex/unnamed-chunk-24-1.pdf}
+\includegraphics{CCRR_manuscript_files/figure-latex/unnamed-chunk-25-1.pdf}
 
 As our first exploratory analysis, we identified the key effect of interest from our pre-registration (usually a main effect of culture or an interaction of culture, depending on task) and converted the coefficient into a standardized measure of effect size (standardized mean difference; SMD) via the method described by (2014). Because there is no ``correct'' direction for all of the tasks except Raven's Matrices, we show the absolute value of the effect size. Figure FIXME shows these effect sizes.
 
@@ -495,7 +495,7 @@ Across our two experiments, we saw consistent and generally large differences (S
 \hypertarget{reliability-assessment}{%
 \subsection{Reliability assessment}\label{reliability-assessment}}
 
-\includegraphics{CCRR_manuscript_files/figure-latex/unnamed-chunk-25-1.pdf}
+\includegraphics{CCRR_manuscript_files/figure-latex/unnamed-chunk-26-1.pdf}
 
 One question motivating our work was whether the individual tasks we used were reliable enough -- had low enough measurement error -- to be used for further investigation of individual differences. The gold standard for the measurement of whether a task yields stable within-person measurements is test-retest reliability (simply because test-retest gives a direct estimate of stability over time), but this method was outside the scope of our study. Thus we used a split-half approach, asking whether participants' answers on individual questions related to one another. We used a permutation-based split half approach (Parsons, 2021) in which we made 5000 random splits of items into two simulated ``halves'' and then computed the within-person correlation between scores on these two halves, averaging across simulated runs. To estimate the reliability of the full-length instrument, we used the Spearman-Brown ``prophecy'' formula.
 
@@ -532,6 +532,40 @@ We next considered whether regions within each country were meaningful predictor
 
 We fit 192 to see if basic demographic factors could predict task performance. The demographic factors we explored were age, gender identities, residential mobility, number of international experiences, maternal education level, subjective socioeconomic status as measured by MacArthur Ladder (Adler et al., 2000). 24 were statistically significant, but only one model survived Bonferroni correction. Change detection was predicted by age in the U.S. sample, with older participants took longer to respond than younger participants (Adjusted \emph{p} \textless{} 0.0001).
 
+\hypertarget{general-discussion}{%
+\section{General Discussion}\label{general-discussion}}
+
+The world's cultures are strikingly different, and psychologists have long sought to measure and characterize this variation, with differences between Western and East Asian cultures as a particular case study of interest. These efforts have given rise to a rich literature documenting cultural differences in a wide range of psychological tasks. Across two experiments, we selected a range of tasks that had previously been shown to yield differences between Western and East Asian samples and replicated them with two relatively large online samples of US and Chinese participants. In this discussion, we first consider the limitations of our study since these contextualize the remainder of our conclusions. Next we consider the interpretation of our results within individual tasks. Finally, we turn to broader interpretation of our results including our exploratory analyses.
+
+\hypertarget{general-limitations}{%
+\subsection{General Limitations}\label{general-limitations}}
+
+As discussed above and in the introduction, we did not design our experiments to replicate prior work directly, and hence one important limitation of our work is simply that it cannot be used as a test of the reliability of prior findings. Instead, our measures provide estimates of US-China differences on a range of constructs, specifically for online convenience samples. These estimates are likely biased downward -- towards the null hypothesis of no difference between cultures -- by several features of our experimental design. Online experiments (especially grouped into a long battery as ours were) likely receive slightly less attention than in-person studies, though overall these effects have tended to be small in US samples (Buhrmester, Kwang, \& Gosling, 2016). Contra this concern, however, participants did perform relatively accurately on those tasks that had correct answers (e.g., Raven's Matrices, Ebbinghaus Illusion), and in our exploratory analysis, we found relatively high reliabilities on all tasks. Further, our pre-registered exclusion criteria removed participants who performed poorly. Thus, we do not believe that participants were inattentive overall.
+
+Another limitation of our estimates of US-China differences comes from differences in sampling strategy between cultures. In Experiment 1, we used the same snowball sampling procedure, but this procedure may have yielded different samples due to differences in social networks or norms about sharing study information across cultures. In Experiment 2, because the platform we used to recruit U.S. participants (Prolific) was not accessible in China, we used a different platform to recruit Chinese participants (Naodao). Prolific and Naodao have different levels of popularity and different participant pools, resulting in some asymmetry between the US and Chinese samples. Despite these differences between samples both across and within experiments, we do not see indications that our estimates were dramatically biased by our sampling decisions. First, our results were largely comparable in the tasks that were included in both experiments (e.g.~Picture Free Description; Ravens; and RMTS). Second, in our exploratory analyses we did not find strong associations between participant demographics and cross-cultural effects (with some small exceptions discussed in that section). Finally, we reran all of our preregistered analyses with an age-matched subset of U.S. participants and found our results were qualitatively identical (see SI). Thus, while our samples are certainly not representative samples of US or Chinese national populations -- indeed to our knowledge, nearly all work to date has used convenience samples of one type or another -- they appear to yield stable cross-sample estimates that do not reflect large biases due to sampling strategy or demographics.
+
+One of the main ways in which our samples may not have been representative is that they are likely to be more globalized than the population on average simply by being young (and thus less acculturated) and having access to a computer. Contra this concern, variation in local cultural identity did not strongly relate to variation in any of our tasks, but interestingly, we observed the strongest local identities (within our Chinese sample) among the youngest participants.
+
+Another difference between our experiments and previous work was the lack of an experimenter, and some of our tasks may be particularly sensitive to the presence of an experimenter. In a web experiment, participants are often isolated in front of their own computer. In contrast, when participating in an in-person experiment, participants need to interact with and perform the task in front of the experimenters who are often from the same social group. Indeed, in the uniqueness preference pen choice task, cross-cultural differences are dependent on the presence of an experimenter (Yamagishi et al., 2008). Our null results, obtained in the absence of an experimenter, can be seen as a conceptual replication of this work.
+
+\hypertarget{task-specific-limitations}{%
+\subsection{Task-specific Limitations}\label{task-specific-limitations}}
+
+In addition to the general limitations discussed above, there are features of our experimental adaptations that may have affected performance in specific tasks. In this section, we highlight concerns about these issues and discuss their implications for interpreting the results of these tasks.
+
+In the case of the Uniqueness Preference task, it is possible that adapting the task to an online format in which resource scarcity was not strictly real and choices in this task had no lasting effect (in the form of a new pen), may have trivialized the choice and undermined the incentive for prosocial, harmonious behavior or expression. This possibility is consistent with the chance responding we observed in both groups. Alternatively, our results could be seen as a conceptual replication of Yamagishi et al. (2008), who argue that differences in this task are moderated by the likelihood of evaluation, with no differences in pen choice observed in the absence of an experimenter.
+
+The ambiguous developmental tasks, Ambiguous RMTS and Child Causal Attribution, may have been too heavy-handed in their key manipulations; both were designed to highlight ambiguity for young children, but it may be that their explicit cues and repetitive instructions impressed this ambiguity too strongly for adult audiences, resulting in the adults' near-chance responding--a reasonable response to such marked ambiguity. Cultural differences in causal reasoning and attribution and may only manifest when the task design is age-appropriate. Consistent with this view, we did replicate previously attested differences in the Adult Causal Attribution task in Experiment 2, and other recent work has shown cross-cultural differences in causal attribution among 4- to 9-year-olds in Germany, Japan, and Ecuador using a design similar to our Child Causal Attribution task (Jurkat, Iza Simba, Hernández Chacón, Itakura, \& Kärtner, 2022).
+
+Last but not least, cultural variation within the broader constructs of East Asia and the West could explain some of our findings, as a failure to extend previous work. Some of the tasks we included originally compared children and adults from other parts of East Asia and the West (e.g.~Horizon Collage, Symbolic Self Inflation, Change Detection; but c.f. Masuda, Ishii, and Kimura (2016) for an alternative account of mixed findings in change detection paradigms). For example, the Taxonomic-Thematic Similarity task replicated previously attested cross-cultural differences between the US and China both here and in other work (Le et al., 2021) but these differences failed to generalize to a US-Vietnam comparison, despite the cultural, historical, and geographic similarities between China and Vietnam, and broad construals of the relevant cultural factors in previous work (e.g., Ji et al. (2004)). Nonetheless, this variation could reflect similar psychological tendencies that are expressed differently as a result of distinct sociocultural contexts and traditions across differing regions and countries. As another example, responding in the Horizon Collage task could be modulated by variation between countries: Chinese and Japanese aesthetic traditions differ, so while Chinese and Japanese people may share a preference for highly contextualized information, this preference may typically be expressed through distinct visual techniques.
+
+\hypertarget{conclusion}{%
+\subsection{Conclusion}\label{conclusion}}
+
+We conducted two sets of experiments to examine the robustness of several classic experimental paradigms in cross-cultural psychology. Our results showed a heterogeneous pattern of successes and failures: some tasks yielded robust cultural differences across both experiments, while others showed no difference between cultures. We estimated the reliability of the tasks to be relatively high, with only minor cultural variations. In addition, we also explored the effect of a range of demographic variables, including explicit identification with global identity, regional differences within cultures, and several demographic characteristics. All of which had minimal impact on task performance.
+
+Our goal here was not to perform direct replications that would shed light on the replicability of specific findings. Instead, since our methods, administration medium, sample, and analytic approach differed from the prior literature, our hope was to examine the robustness of these paradigms as a method for measuring US-China differences in an online context. Our work has several strengths relative to the prior literature, including larger samples of participants from the US and China, two broad groups of tasks implemented openly online (and reusable by future researchers), and a preregistered analysis plan that allows for the unbiased estimation of cross-cultural effects. In sum, we hope that our work here provides a foundation for future studies that seek to establish a robust and replicable science of cross-cultural difference.
+
 \setlength{\parindent}{-0.5in}
 \setlength{\leftskip}{0.5in}
 
@@ -556,6 +590,9 @@ Barr, D. J., Levy, R., Scheepers, C., \& Tily, H. J. (2013). Random effects stru
 
 \leavevmode\vadjust pre{\hypertarget{ref-blouin2004difference}{}}%
 Blouin, D. C., \& Riopelle, A. J. (2004). The difference between t and z and the difference it makes. \emph{J of Gen Psych}, \emph{131}(1), 77--84.
+
+\leavevmode\vadjust pre{\hypertarget{ref-buhrmester2016amazon}{}}%
+Buhrmester, M., Kwang, T., \& Gosling, S. D. (2016). Amazon's mechanical turk: A new source of inexpensive, yet high-quality data?
 
 \leavevmode\vadjust pre{\hypertarget{ref-burkner2017brms}{}}%
 Bürkner, P.-C. (2017). Brms: An r package for bayesian multilevel models using stan. \emph{Journal of Statistical Software}, \emph{80}, 1--28.
@@ -626,8 +663,8 @@ Ji, L.-J., Peng, K., \& Nisbett, R. E. (2000). Culture, control, and perception 
 \leavevmode\vadjust pre{\hypertarget{ref-ji2004culture}{}}%
 Ji, L.-J., Zhang, Z., \& Nisbett, R. E. (2004). Is it culture or is it language? \emph{JPSP}, \emph{87}(1), 57.
 
-\leavevmode\vadjust pre{\hypertarget{ref-le2021}{}}%
-Khuyen, L., Frank, M., \& Carstensen, Alex. (2021). \emph{Is it language or is it culture? Re-examining cross-cultural similarity judgments using lexical co-occurrence} (Undergraduate Honors Theses). Stanford University.
+\leavevmode\vadjust pre{\hypertarget{ref-jurkat2022cultural}{}}%
+Jurkat, S., Iza Simba, N. B., Hernández Chacón, L., Itakura, S., \& Kärtner, J. (2022). Cultural similarities and differences in explaining others' behavior in 4-to 9-year-old children from three cultural contexts. \emph{Journal of Cross-Cultural Psychology}, 00220221221098423.
 
 \leavevmode\vadjust pre{\hypertarget{ref-kim1999deviance}{}}%
 Kim, H., \& Markus, H. R. (1999). Deviance or uniqueness, harmony or conformity? A cultural analysis. \emph{JPSP}, \emph{77}(4), 785.
@@ -640,6 +677,9 @@ Kuwabara, M., \& Smith, L. B. (2012). Cross-cultural differences in cognitive de
 
 \leavevmode\vadjust pre{\hypertarget{ref-kwan1997pancultural}{}}%
 Kwan, V. S., Bond, M. H., \& Singelis, T. M. (1997). Pancultural explanations for life satisfaction: Adding relationship harmony to self-esteem. \emph{JPSP}, \emph{73}(5), 1038.
+
+\leavevmode\vadjust pre{\hypertarget{ref-le2021}{}}%
+Le, K., Frank, M., \& Carstensen, Alex. (2021). \emph{Is it language or is it culture? Re-examining cross-cultural similarity judgments using lexical co-occurrence} (Undergraduate Honors Theses). Stanford University.
 
 \leavevmode\vadjust pre{\hypertarget{ref-li2018name}{}}%
 Li, J., Liu, L., Chalmers, E., \& Snedeker, J. (2018). What is in a name?: The development of cross-cultural differences in referential intuitions. \emph{Cognition}, \emph{171}, 108--111.
@@ -658,6 +698,9 @@ Markus, H. R., \& Kitayama, S. (1992). The what, why and how of cultural psychol
 
 \leavevmode\vadjust pre{\hypertarget{ref-markus2010cultures}{}}%
 Markus, H. R., \& Kitayama, S. (2010). Cultures and selves: A cycle of mutual constitution. \emph{Perspectives on Psychological Science}, \emph{5}(4), 420--430.
+
+\leavevmode\vadjust pre{\hypertarget{ref-masuda2016does}{}}%
+Masuda, T., Ishii, K., \& Kimura, J. (2016). When does the culturally dominant mode of attention appear or disappear? Comparing patterns of eye movement during the visual flicker task between european canadians and japanese. \emph{Journal of Cross-Cultural Psychology}, \emph{47}(7), 997--1014.
 
 \leavevmode\vadjust pre{\hypertarget{ref-masuda2006culture}{}}%
 Masuda, T., \& Nisbett, R. E. (2006). Culture and change blindness. \emph{Cognitive Science}, \emph{30}(2), 381--399.

@@ -1,5 +1,8 @@
 
 
+In Experiment 1, our goal was to evaluate cross-cultural differences in a variety of constructs. We assembled a web-based battery of tasks and tested these on a snowball sample of US and Chinese participants. 
+
+
 ```{r include=FALSE}
 
 knitr::opts_knit$set(here())

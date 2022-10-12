@@ -1,4 +1,8 @@
 
+
+We conducted a set of exploratory analyses to consolidate results from the two experiments. We first performed a mini-meta analysis with the tasks from both experiments. Then, we assessed the reliability of the tasks that included multiple trials. Finally, we examined how explicit cultural identities and demographic factors relate to task performance.
+
+
 ```{r}
 
 es <- readRDS(here("cached_results/ea/effect_sizes.RDS"))

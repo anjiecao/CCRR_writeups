@@ -1,0 +1,215 @@
+---
+title: "bf investigation"
+author: "anjie"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(here)
+library(bridgesampling)
+library(rstanarm)
+library(brms)
+library(broom)
+library(broom.mixed)
+
+```
+
+here we use the SSI task as an example because its models runs fast 
+
+```{r}
+d2 <- read_csv(here("data/03_processed_data/exp2/tidy_main.csv"))
+ssi_df <- d2 %>% 
+  filter(task_name == "SSI") %>% 
+  filter(resp_type == "task_score_ratio") %>% 
+  mutate(score = as.numeric(resp)) %>% 
+  select(-resp, -task_info, -trial_info, -resp_type)
+
+
+```
+
+# variations in BF
+
+first we want to run models with recommended posterior sample size: 1e+05
+
+```{r}
+full_ssi_model <-  rstanarm::stan_glm(
+    score ~ culture, 
+    data = ssi_df, 
+    iter = 10000, 
+    warmup = 1000,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+
+null_ssi_model <-  rstanarm::stan_glm(
+    score ~ 1, 
+    data = ssi_df, 
+    #iter = 50000,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+
+
+saveRDS(full_ssi_model, here("processing_pipelines/misc/full_ssi_model_ideal.RDS"))
+saveRDS(null_ssi_model, here("processing_pipelines/misc/null_ssi_model_ideal.RDS"))
+
+summary(full_ssi_model)
+summary(null_ssi_model)
+```
+
+then run bf muliple times. it still gave warning
+it's all zero
+
+```{r}
+# caching is obviously not working because they way the diagnostics files are handled
+#full_ssi_model <- readRDS(here("processing_pipelines/misc/full_ssi_model_ideal.RDS"))
+#null_ssi_model <-  readRDS(here("processing_pipelines/misc/null_ssi_model_ideal.RDS"))
+
+
+multiple_bf <- tibble(
+  id = seq(1, 20, 1)
+) %>% 
+  mutate(bf = map(., function(x){
+    bayes_factor(bridge_sampler(full_ssi_model), 
+                 bridge_sampler(null_ssi_model))$bf
+  }))
+
+
+l <- lapply(seq(1, 20, 1), function(x){
+  bayes_factor(bridge_sampler(full_ssi_model), 
+                 bridge_sampler(null_ssi_model))$bf
+})
+```
+
+# variations by samples 
+
+```{r}
+
+exp_with_sample <- function(s){
+  full_ssi_model <-  rstanarm::stan_glm(
+    score ~ culture, 
+    data = ssi_df, 
+    iter = s,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+  
+  null_ssi_model <-  rstanarm::stan_glm(
+    score ~ 1, 
+    data = ssi_df, 
+    iter = s,
+    diagnostic_file = file.path(tempdir(), "df.csv"))
+  
+  bf = bayes_factor(bridge_sampler(full_ssi_model), 
+                    bridge_sampler(null_ssi_model))$bf
+  
+  res = broom.mixed::tidy(full_ssi_model) %>% 
+    mutate(sample = s, 
+           bf = bf)
+  
+  return (res)
+}
+
+
+a <- lapply(seq(5000, 50000, 1000), 
+       function(x){
+         exp_with_sample(x)
+       }) %>% 
+  bind_rows()
+
+```
+
+similarly, stable estimate, similar bf and no change
+```{r}
+saveRDS(a, "exp_with_sample_bf.RDS")
+
+a <- readRDS("exp_with_sample_bf.RDS")
+a
+```
+
+
+# compare brms and rstanarm 
+
+```{r}
+# first building the no random effects version
+get_prior_from_rstanarm <- function(model){
+  
+  fixed_effect_prior = paste0(
+    (prior_summary(model)$prior)$dist,
+    "(",
+    (prior_summary(model)$prior)$location,
+    ",",
+    (prior_summary(model)$prior)$adjusted_scale,
+    ")")
+  
+  return (fixed_effect_prior)
+}
+
+get_prior_intercept_from_rstanarm <- function(model){
+  intercept_prior = paste0(
+    (prior_summary(model)$prior_intercept)$dist,
+    "(",
+    (prior_summary(model)$prior_intercept)$location,
+    ",",
+    (prior_summary(model)$prior_intercept)$adjusted_scale,
+    ")")
+  
+  return (intercept_prior)
+}
+
+get_prior_aux_from_rstanarm <- function(model){
+  intercept_prior = paste0(
+    (prior_summary(model)$prior_aux)$dist,
+    "(",
+    "rate = ", 
+    (prior_summary(model)$prior_aux)$rate /(prior_summary(model)$prior_aux)$adjusted_scale  , 
+    ")")
+  
+  return (intercept_prior)
+}
+
+
+ssi_priors <- c(
+  set_prior(get_prior_from_rstanarm(full_ssi_model), 
+            class = "b", coef = "cultureUS"),
+  set_prior(get_prior_intercept_from_rstanarm(full_ssi_model), 
+            class = "Intercept")#,
+  #set_prior(get_prior_aux_from_rstanarm(full_ssi_model), 
+     #        class = "sigma")
+ 
+)
+
+brms_full <-  brms::brm(
+    score ~ culture,
+    prior = ssi_priors, 
+    data = ssi_df)
+
+brms_null <- brms::brm(
+    score ~ 1,
+    prior = c(set_prior(get_prior_intercept_from_rstanarm(full_ssi_model), 
+            class = "Intercept")), 
+    data = ssi_df)
+```
+
+4000 posterior sample, note the culture's CI doesn't include zero
+
+
+```{r}
+summary(brms_full)
+tidy(brms_full)
+```
+
+can't run, abort R all the time 
+
+```{r}
+bayes_factor(brms_full, brms_null)
+```
+
+```{r}
+brms_full_default <-  brms::brm(
+    score ~ culture,
+    data = ssi_df)
+
+brms_null_default <- brms::brm(
+    score ~ 1,
+    data = ssi_df)
+```
+
+
+

@@ -1,10 +1,15 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 
 ```{r}
 library(tidyverse)
 library(cowplot)
 library(patchwork)
 library(here)
- library(tidyboot)
+library(tidyboot)
 ```
 
 
@@ -64,7 +69,6 @@ plots that will take the same format
 
 d1: non_generics: EBB and CA
 
-d2: non_generics: CD, CA
 
 ```{r}
 
@@ -109,7 +113,12 @@ scale_color_manual(values = c("red", "blue"))+
 scale_fill_manual(values = c("red", "blue")) + 
   guides(fill = "none") +
 guides(color = "none") + 
-  theme_classic())
+  theme_classic() + 
+  xlab("") + 
+  theme(text = element_text(size=8),
+      plot.title = element_text(hjust = 0.5, size = 8), 
+      plot.subtitle = element_text(hjust = 0.5, size = 6)) 
+  )
   
 ```
 
@@ -211,7 +220,7 @@ names(d1_base_plot_list)
 
 ```{r}
 d1_fd_plot <- d1_base_plot_list$FD + 
-  ylab("Proportion of first mention focal") + 
+  ylab("Proportion first mention focal") + 
   labs(title = "Free Description")
 
 d1_fd_plot
@@ -232,7 +241,7 @@ d1_hz_plot
 
 ```{r}
 d1_rmts_plot <- d1_base_plot_list$RMTS + 
-  ylab("Proportion of choosing relational match") + 
+  ylab("Proportion choosing relational match") + 
   labs(title = "Ambiguous RMTS")
 
 d1_rmts_plot
@@ -242,7 +251,7 @@ d1_rmts_plot
 
 ```{r}
 d1_rv_plot <- d1_base_plot_list$RV + 
-  ylab("Proportion of correct") + 
+  ylab("Proportion correct") + 
   labs(title = "Ravens")
 d1_rv_plot
 ```
@@ -257,13 +266,159 @@ d1_ssi_plot <- d1_base_plot_list$SI +
 d1_ssi_plot
 ```
 
+## putting d1 together 
+
 ```{r}
-d1_ca_plot + d1_ebb_plot + d1_up_plot + d1_fd_plot + d1_hz_plot + d1_rmts_plot + d1_rv_plot + d1_ssi_plot + plot_layout(ncol = 2, widths = 1)
+d1_all <-
+  ((d1_up_plot / d1_fd_plot / d1_hz_plot) | (d1_rmts_plot / d1_rv_plot / d1_ssi_plot)) /  (d1_ca_plot / d1_ebb_plot) 
+```
+
+```{r}
+d1_all
 ```
 
 
 
-
-
 # fine tuning d2
+
+
+## non generics 
+
+### CD 
+
+```{r}
+raw_CD <- d2 %>% 
+  filter(task_name == "CD") %>% 
+  group_by(subject, task_info, culture) %>% 
+  mutate(resp = log(as.numeric(resp))) %>% 
+  summarise(mean_log_rt = mean(resp, na.rm = TRUE)) %>% 
+  mutate(
+         resp_type_print = case_when(
+           task_info == "context" ~ "Context Change", 
+           TRUE ~ "Focal Change"
+         ))
+  
+d2_cd_plot <- ggplot(data = raw_CD, 
+       aes(y = mean_log_rt, x = culture, color = culture)) +
+geom_point(alpha = .2, position = position_jitter(width = .1)) + 
+                    stat_summary(fun.data = "mean_cl_boot", color = "black")+
+scale_color_manual(values = c("red", "blue"))+
+guides(fill = "none") +
+guides(color = "none") +
+ylab("Log-Transformed RT") + 
+xlab("")+
+theme_classic() +
+  facet_wrap(~resp_type_print)+
+  labs(title = "Change Detection")  + 
+  theme(text = element_text(size=8),
+      plot.title = element_text(hjust = 0.5, size = 8), 
+      plot.subtitle = element_text(hjust = 0.5, size = 6))  
+```
+
+### Causal Attribution 
+
+```{r}
+raw_CA <- d2 %>% 
+  filter(task_name == "CA") %>% 
+  group_by(subject, task_info, culture) %>% 
+  mutate(resp = (as.numeric(resp))) %>% 
+  summarise(mean_resp = mean(resp, na.rm = TRUE)) %>% 
+  mutate(
+         resp_type_print = case_when(
+           task_info == "personal" ~ "Personal Attribution", 
+           TRUE ~ "Situational Attribution"
+         ))
+  
+d2_ca_plot <- ggplot(data = raw_CA, 
+       aes(y = mean_resp, x = culture, color = culture)) +
+geom_point(alpha = .2, position = position_jitter(width = .1)) + 
+                    stat_summary(fun.data = "mean_cl_boot", color = "black")+
+scale_color_manual(values = c("red", "blue"))+
+guides(fill = "none") +
+guides(color = "none") +
+ylab("Rating") + 
+xlab("")+
+theme_classic() +
+  facet_wrap(~resp_type_print)+
+  labs(title = "Causal Attribution")  + 
+  theme(text = element_text(size=8),
+      plot.title = element_text(hjust = 0.5, size = 8), 
+      plot.subtitle = element_text(hjust = 0.5, size = 6)) 
+```
+
+
+## generics 
+
+
+### FD
+```{r}
+d2_fd_plot <- d2_base_plot_list$FD + 
+  ylab("Proportion first mention focal") + 
+  labs(title = "Free Description")
+
+d2_fd_plot
+```
+
+### RMTS
+
+```{r}
+d2_rmts_plot <- d2_base_plot_list$RMTS + 
+  ylab("Proportion choosing relational match") + 
+  labs(title = "Ambiguous RMTS")
+d2_rmts_plot
+```
+
+### RV 
+
+```{r}
+d2_rv_plot <- d2_base_plot_list$RV + 
+  ylab("Proportion correct") + 
+  labs(title = "Ravens")
+
+d2_rv_plot
+```
+
+### SeI 
+
+```{r}
+d2_sei_plot <- d2_base_plot_list$SeI + 
+  ylab("N of Causal Historical Response") + 
+  labs(title = "Semantic Intuition")
+
+d2_sei_plot
+```
+
+### SSI 
+
+```{r}
+d2_ssi_plot <- d2_base_plot_list$SSI + 
+  ylab("N of Causal Historical Response") + 
+  labs(title = "Symbolic Self Inflation")
+d2_ssi_plot
+```
+
+### TD
+
+
+```{r}
+d2_td_plot <- d2_base_plot_list$TD + 
+  ylab("Proportion Taxonomic Match") + 
+  labs(title = "Taxonomic-Thematic Similarity ")
+d2_td_plot
+```
+
+## putting d2 together 
+
+```{r}
+d2_all <-
+  ((d2_fd_plot / d2_rmts_plot / d2_rv_plot) | (d2_sei_plot / d2_ssi_plot / d2_td_plot)) /  (d2_ca_plot / d2_cd_plot) 
+
+d2_all
+```
+
+# everything togehter 
+
+```{r}
+plot_grid(d1_all, d2_all, labels = c("Exp.1", "Exp.2"))
+```
 

@@ -1,6 +1,6 @@
 ---
 title             : "Replicability of US-China differences in cognition and perception across 12 tasks"
-shorttitle        : "Replicate US-China differences"
+shorttitle        : "Replicating US-China differences"
 author:  
   - name          : "Anjie Cao*"
     affiliation   : "1"
@@ -24,7 +24,7 @@ affiliation:
   - id            : "2"
     institution   : "Department of Psychology, University of California, San Diego"
   - id            : "3"
-    institution   : "FIXME"
+    institution   : "University of Chicago"
   
   
 
@@ -32,15 +32,15 @@ authornote: |
   We gratefully acknowledge Alvin Tan, Joseph Outa, and the members of the Language and Cognition Lab at Stanford for comments and assistance. Experiment 1 was previously reported in abbreviated form in the Proceedings of the Cognitive Science Society as Carstensen et al. (2020).
   
 abstract: |
-    Cultural differences between the US and China have been investigated using a broad array of psychological tasks measuring differences between cognition, language, perception, and reasoning. We conducted two large-scale replications of a selection of 12 tasks previously reported to show cross-cultural differences, using online convenience samples of adults. Five of these tasks showed robust cross-cultural differences, while six showed no difference and one showed a small difference in the opposite direction. Tasks showing cross-cultural differences tended to have multiple trials measuring high-level reasoning and language; those that did not show cross-cultural difference included measures of attention/perception, implicit social processes, or were initially designed to show differences in children. As in prior work, cross-cultural differences in cognition (in those tasks showing differences) were not strongly related to explicit measures of cultural identity and behavior.
+    Cultural differences between the US and China have been investigated using a broad array of psychological tasks measuring differences between cognition, language, perception, and reasoning. Using online convenience samples of adults, we conducted two large-scale replications of a selection of 12 tasks previously reported to show cross-cultural differences. Five of these tasks showed robust cross-cultural differences, while six showed no difference and one showed a small difference in the opposite direction. Tasks showing cross-cultural differences tended to have multiple trials measuring high-level reasoning and language; those that did not show cross-cultural difference included measures of attention/perception or implicit social processes or were initially designed to show differences in children. As in prior work, cross-cultural differences in cognition (in those tasks showing differences) were not strongly related to explicit measures of cultural identity and behavior.
 
   
-keywords          : "FIXME"
+keywords          : "replication; cross-cultural differences"
 wordcount         : "FIXME"
 csl               : "apa6-meta.csl"
 bibliography      : "library.bib"
 
-floatsintext      : no
+floatsintext      : yes
 linenumbers       : yes
 draft             : no
 mask              : no
@@ -133,7 +133,7 @@ theme_set(theme_classic(base_size = 11))
 
 # Exploratory analysis
 
-## Mini meta-analysis
+<!-- ## Mini meta-analysis -->
 
 ```{r child = "writing/sections/07_ea_mini_ma.Rmd"}
 ```

@@ -33,7 +33,7 @@ Similar to Experiment 1, participants completed eight tasks and a brief demograp
 
 ### Measures 
 
-#### Identical Tasks
+#### Tasks repeated from Experiment 1
 
 We replicated three tasks from Experiment 1 using identical procedures: Ambiguous RMTS, Picture Free Description, and Raven’s Progressive Matrices.
 

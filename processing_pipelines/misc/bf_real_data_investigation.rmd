@@ -37,22 +37,23 @@ first we want to run models with recommended posterior sample size: 1e+05
 full_ssi_model <-  rstanarm::stan_glm(
     score ~ culture, 
     data = ssi_df, 
-    iter = 10000, 
-    warmup = 1000,
+    # iter = 10000, 
+    # warmup = 1000,
     diagnostic_file = file.path(tempdir(), "df.csv"))
 
 null_ssi_model <-  rstanarm::stan_glm(
     score ~ 1, 
     data = ssi_df, 
-    #iter = 50000,
+    # iter = 10000, 
+    # warmup = 1000,
     diagnostic_file = file.path(tempdir(), "df.csv"))
 
-
-saveRDS(full_ssi_model, here("processing_pipelines/misc/full_ssi_model_ideal.RDS"))
-saveRDS(null_ssi_model, here("processing_pipelines/misc/null_ssi_model_ideal.RDS"))
-
-summary(full_ssi_model)
-summary(null_ssi_model)
+# 
+# saveRDS(full_ssi_model, here("processing_pipelines/misc/full_ssi_model_ideal.RDS"))
+# saveRDS(null_ssi_model, here("processing_pipelines/misc/null_ssi_model_ideal.RDS"))
+# 
+# summary(full_ssi_model)
+# summary(null_ssi_model)
 ```
 
 then run bf muliple times. it still gave warning
@@ -62,6 +63,14 @@ it's all zero
 # caching is obviously not working because they way the diagnostics files are handled
 #full_ssi_model <- readRDS(here("processing_pipelines/misc/full_ssi_model_ideal.RDS"))
 #null_ssi_model <-  readRDS(here("processing_pipelines/misc/null_ssi_model_ideal.RDS"))
+
+bridge_full <- bridge_sampler(full_ssi_model, cores = 4, method = "warp3", verbose = TRUE)
+bridge_null <- bridge_sampler(null_ssi_model, verbose = TRUE)
+
+
+bayes_factor(bridge_full, bridge_null)
+
+
 
 
 multiple_bf <- tibble(
@@ -178,12 +187,14 @@ ssi_priors <- c(
 brms_full <-  brms::brm(
     score ~ culture,
     prior = ssi_priors, 
+    save_pars = save_pars(all = TRUE),
     data = ssi_df)
 
 brms_null <- brms::brm(
     score ~ 1,
     prior = c(set_prior(get_prior_intercept_from_rstanarm(full_ssi_model), 
             class = "Intercept")), 
+    save_pars = save_pars(all = TRUE),
     data = ssi_df)
 ```
 

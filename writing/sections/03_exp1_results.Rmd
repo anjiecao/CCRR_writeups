@@ -1,4 +1,8 @@
-FIXME: The majority of results are visualized in Figure 1, except for the Ebbinghaus Illusion data, in Figure 2. Below we discuss the results of each task in turn. 
+
+```{r fig.cap = "Results from each task. Results from the CN sample are plotted in red, and the US in blue.",fig.width=8, fig.height=11}
+plot_megaplogt()
+```
+
 
 ```{r}
 e1_lmer_df <- readRDS(here("cached_results/exp1/glmer_model_summary.RDS"))

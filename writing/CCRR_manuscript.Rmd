@@ -119,10 +119,17 @@ theme_set(theme_classic(base_size = 11))
 ```{r child = "writing/sections/02_exp1_methods.Rmd"}
 ```
 
+
+
+
 ## Results
 
 ```{r child = "writing/sections/03_exp1_results.Rmd"}
 ```  
+
+
+
+# Experiment 2
 
 ## Discussion
 
@@ -130,11 +137,6 @@ theme_set(theme_classic(base_size = 11))
 ```
 
 
-<!-- ```{r fig.width=8, fig.height=6} -->
-<!-- plot_megaplogt() -->
-<!-- ``` -->
-
-# Experiment 2
 
 
 ## Methods

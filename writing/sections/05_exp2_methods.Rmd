@@ -25,7 +25,7 @@ We recruited participants through online crowdsourcing websites. For the US, we 
 
 Similar to Experiment 1, we collected demographic information from participants, including subjective socioeconomic status, the state or province the participant grew up in and the one they currently reside in, residential mobility, number of international experiences, education, and undergraduate area of study (STEM or non-STEM). We also administered scales to collect explicit measures of participants’ cultural identities and behaviors [@cleveland2007acculturaton; @cleveland2015intersection]. 
 
-The sample size for each task after exclusion and the descriptive statistics for each demographic question are reported in TABLE X FIXME.
+The sample size for each task after exclusion and the descriptive statistics for each demographic question are reported in Table 1.
 
 ### Procedure 
 

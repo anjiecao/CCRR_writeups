@@ -75,7 +75,8 @@ plot_megaplogt <- function(){
           guides(color = "none") + 
           theme_classic() + 
           xlab("") +
-          theme(text = element_text(size=4),
+          theme(text = element_text(size=6),
+                axis.text=element_text(size=10),
                 plot.title = element_text(hjust = 0.5, size = 7.5), 
                 plot.subtitle = element_text(hjust = 0.5, size = 7.5)),
                 plot.margin = unit(c(3, 3, 3, 3)))
@@ -92,7 +93,8 @@ plot_megaplogt <- function(){
           guides(color = "none") + 
           theme_classic() + 
           xlab("") + 
-          theme(text = element_text(size=4),
+          theme(text = element_text(size=6),
+                axis.text=element_text(size=10),
                 plot.title = element_text(hjust = 0.5, size = 7.5), 
                 plot.subtitle = element_text(hjust = 0.5, size = 7.5)) 
     )
@@ -126,7 +128,10 @@ plot_megaplogt <- function(){
     theme_classic()+
     theme(text = element_text(size=9)) + 
     labs(title = "Ebbinghaus Illusion") +
-    theme(text = element_text(size=4),
+    theme(text = element_text(size=6),
+          axis.text.y=element_text(size=10),
+          axis.title.x = element_text(size=8),
+          strip.text = element_text(size=8),
           plot.title = element_text(hjust = 0.5, size = 7.5), 
           plot.subtitle = element_text(hjust = 0.5, size = 7.5))  
   
@@ -159,7 +164,9 @@ plot_megaplogt <- function(){
     #         )  + 
     facet_wrap(~resp_type_print)+
     labs(title = "Causal Attribution") +
-    theme(text = element_text(size=4),
+    theme(text = element_text(size=6),
+          axis.text=element_text(size=10),
+          strip.text = element_text(size=8),
           plot.title = element_text(hjust = 0.5, size = 7.5), 
           plot.subtitle = element_text(hjust = 0.5, size = 7.5))  
   ###########d2 non generic plot###########
@@ -186,7 +193,9 @@ plot_megaplogt <- function(){
     theme_classic() +
     facet_wrap(~resp_type_print)+
     labs(title = "Change Detection")  + 
-    theme(text = element_text(size=4),
+    theme(text = element_text(size=6),
+          strip.text = element_text(size=8),
+          axis.text=element_text(size=10),
           plot.title = element_text(hjust = 0.5, size = 7.5), 
           plot.subtitle = element_text(hjust = 0.5, size = 7.5))  
   
@@ -213,7 +222,9 @@ plot_megaplogt <- function(){
     theme_classic() +
     facet_wrap(~resp_type_print)+
     labs(title = "Causal Attribution")  + 
-    theme(text = element_text(size=4),
+    theme(text = element_text(size=6),
+          axis.text=element_text(size=10),
+          strip.text = element_text(size=8),
           plot.title = element_text(hjust = 0.5, size = 7.5), 
           plot.subtitle = element_text(hjust = 0.5, size = 7.5)) 
   

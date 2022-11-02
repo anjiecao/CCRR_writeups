@@ -55,7 +55,7 @@ fd_es <- readRDS(here("cached_results/ea/effect_sizes.RDS")) %>%
 ```
 
 
-US participants were more likely to mention the focal objects than the background objects (First mention: US: *M* = `r filter(fd_summary, culture == "US"&resp_type == "first_mention_focal")$culture_mean`, *SD* = `r filter(fd_summary, culture == "US"&resp_type == "first_mention_focal")$culture_sd`; CN: *M* = `r filter(fd_summary, culture == "CN"&resp_type == "first_mention_focal")$culture_mean`, *SD* = `r filter(fd_summary, culture == "CN"&resp_type == "first_mention_focal")$culture_sd`). We used the same regression analysis as in Experiment 1 and found a main effect of country ($\beta$ = `r filter(tidy_fd_mention_model, predictor == "cultureUS")$estimate_print`, *SE* = `r filter(tidy_fd_mention_model, predictor == "cultureUS")$se_print`, *z* = `r filter(tidy_fd_mention_model, predictor == "cultureUS")$z_print`, *p* `r filter(tidy_fd_mention_model, predictor == "cultureUS")$p_print`). <!-- The result of our Bayes Factor analysis is consistent with this model (*BF* = `r fd_mention_bf$bf_print`).  -->Our results replicate Experiment 1’s finding for the first-mention measure with comparable effect size (standardized mean difference; Experiment 1: `r filter(fd_es, study_num == "Study 1")$d`[`r filter(fd_es, study_num == "Study 1")$d_ci_lower`, `r filter(fd_es, study_num == "Study 1")$d_ci_upper`]; Experiment 2: `r filter(fd_es, study_num == "Study 2")$d`[`r filter(fd_es, study_num == "Study 2")$d_ci_lower`, `r filter(fd_es, study_num == "Study 2")$d_ci_upper`]). <!-- This suggests that the finding was not caused by the idiosyncrasy of our samples. As a result, we decided not to code the descriptive accounts for Experiment 2 that did not show differences in Experiment 1.  --> These findings extend Imada et al.'s [-@imada2013east] findings to Chinese adults. 
+US participants were more likely to mention the focal objects than the background objects (First mention: US: *M* = `r filter(fd_summary, culture == "US"&resp_type == "first_mention_focal")$culture_mean`, *SD* = `r filter(fd_summary, culture == "US"&resp_type == "first_mention_focal")$culture_sd`; CN: *M* = `r filter(fd_summary, culture == "CN"&resp_type == "first_mention_focal")$culture_mean`, *SD* = `r filter(fd_summary, culture == "CN"&resp_type == "first_mention_focal")$culture_sd`). We used the same regression analysis as in Experiment 1 and found a main effect of country ($\beta$ = `r filter(tidy_fd_mention_model, predictor == "cultureUS")$estimate_print`, *SE* = `r filter(tidy_fd_mention_model, predictor == "cultureUS")$se_print`, *z* = `r filter(tidy_fd_mention_model, predictor == "cultureUS")$z_print`, *p* `r filter(tidy_fd_mention_model, predictor == "cultureUS")$p_print`). <!-- The result of our Bayes Factor analysis is consistent with this model (*BF* = `r fd_mention_bf$bf_print`).  -->Our results replicate Experiment 1’s finding for the first-mention measure with comparable effect size (standardized mean difference; Experiment 1: `r filter(fd_es, study_num == "Study 1")$d`[`r filter(fd_es, study_num == "Study 1")$d_ci_lower`, `r filter(fd_es, study_num == "Study 1")$d_ci_upper`]; Experiment 2: `r filter(fd_es, study_num == "Study 2")$d`[`r filter(fd_es, study_num == "Study 2")$d_ci_lower`, `r filter(fd_es, study_num == "Study 2")$d_ci_upper`]). ^[The comparable SMD suggests that the finding was not caused by the idiosyncrasy of our samples. As a result, we decided not to code the descriptive accounts for Experiment 2 that did not show differences in Experiment 1.]. These findings extend Imada et al.'s [-@imada2013east] findings to Chinese adults. 
 
 
 ### Change Detection 
@@ -161,6 +161,28 @@ We used a mixed-effects logistic regression model predicting response (taxonomic
 
 
 ### Semantic Intuition 
+
+```{r}
+sei_summary <- d2 %>% 
+  filter(task_name == "SeI", task_info == "critical") %>% 
+  mutate(resp = case_when(
+    resp == "causal_historical" ~ 1,
+    TRUE ~ 0
+  )) %>% 
+  group_by(culture) %>% 
+  summarise(
+    culture_mean = round(mean(resp), 2), 
+    culture_sd = round(sd(resp),2)
+  )
+
+sei_model <- e2_lmer_df %>% filter(model_name == "SeI_model") 
+```
+
+
+We ran a mixed-effects logistic regression predicting response (descriptive or causal-historical) with country (US or China) as a fixed effect, and found that U.S. participants made significantly more causal-historical choices than Chinese participants (Proportion of causal historical choice: US: *M* = `r filter(sei_summary, culture == "US")$culture_mean`; *SD* = `r filter(sei_summary, culture == "US")$culture_sd`; CN: *M* = `r filter(sei_summary, culture == "CN")$culture_mean`; *SD* = `r filter(sei_summary, culture == "CN")$culture_sd`; $\beta$  = `r filter(sei_model, predictor == "cultureUS")$estimate_print`, *SE* = `r filter(sei_model, predictor == "cultureUS")$se_print`, *t* = `r filter(sei_model, predictor == "cultureUS")$z_print`, *p* `r filter(sei_model, predictor == "cultureUS")$p_print`). We also replicated the item effect identified by @li2018name, though this was not among our preregistered analyses. In sum, We replicated @li2018name with a new sample of US and China adults. 
+
+
+
 
 ### Raven's Standard Progressive Matrices
 

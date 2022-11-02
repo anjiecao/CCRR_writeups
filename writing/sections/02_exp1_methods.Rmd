@@ -109,6 +109,7 @@ Below, we give a short description of the methods for each task; further details
 #### Ambiguous cRMTS
 
 @carstensen2019context observed cross-culturally distinct developmental trajectories in a causal relational match-to-sample (cRMTS) task, and different preferences in an ambiguous formulation of this task. Specifically, when 3-year-olds saw evidence consistent with both object-based (e.g., blue cubes make a machine play music) and relational (pairs of different objects, AB, make a machine play music) solutions, children in the US sample preferentially chose the object-based solution, while those in China chose the relational solution. 
+
 We used an ambiguous version of the task [@carstensen2019context, Experiment 3] to explore whether adults in the US and China also show differing preferences for object-based or relational solutions. Our participants saw two pairs of objects, AB and AC, activate a machine, and were given a forced choice between an object-based solution (a *same* pair of A objects, AA) and a relational solution (*different* pair BC). 
 
 
@@ -152,7 +153,7 @@ Our sample size, methods, and main analyses were pre-registered and are availabl
 
 The specific papers that we drew on for our tasks used a heterogeneous set of analytic methods. Rather than planning to replicate these specific analyses, we instead attempted to follow current best practices by using linear mixed effects models with maximal random effect structure as a unified analytic framework [@barr2013random]. We fit a separate model to each task. In case of convergence failure, we followed standard operating procedure of pruning random slopes first and then random intercepts, always maintaining random intercepts by participant. We report p-values derived from approximating t-scores from z-scores, which is appropriate for relatively large samples [@blouin2004difference]. Our key tests of interest were typically either the coefficient for a main effect of country (US/China) or an interaction of country and condition. 
 
-While our main analyses used our preregistered models, described above, we also computed Bayes Factors (BFs) for each model to evaluate evidence for null hypotheses relative to test hypotheses. In each case, we fit a Bayesian linear mixed effects model with the maximal random effect structure and default priors using the brms package in R and evaluated evidence for this model as compared to one without the key culture term (either main effect or interaction) using the bridge sampling method [@burkner2017brms]. We adopt a conventional threshold of >3 of <.3 for interpreting the BF ratio as evidence for the test or null hypothesis, respectively. 
+<!-- While our main analyses used our preregistered models, described above, we also computed Bayes Factors (BFs) for each model to evaluate evidence for null hypotheses relative to test hypotheses. In each case, we fit a Bayesian linear mixed effects model with the maximal random effect structure and default priors using the brms package in R and evaluated evidence for this model as compared to one without the key culture term (either main effect or interaction) using the bridge sampling method [@burkner2017brms]. We adopt a conventional threshold of >3 of <.3 for interpreting the BF ratio as evidence for the test or null hypothesis, respectively.  -->
 
 
 

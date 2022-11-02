@@ -54,6 +54,11 @@ output            : papaja::apa6_pdf
 #pdf_document
 #papaja::apa6_pdf
 latex_engine        : xelatex
+header-includes   :
+    - \usepackage{tabu}
+    - \usepackage{adjustbox}
+    - \usepackage{graphicx}
+
 ---
 
 
@@ -62,6 +67,10 @@ library(papaja)
 library(rmarkdown)
 library(tidyverse) 
 library(here)
+library(tidyboot)
+library(glue)
+library(cowplot)
+library(kableExtra)
 library(glue)
 
 here::i_am("writing/CCRR_manuscript.Rmd")
@@ -70,6 +79,8 @@ r_refs("library.bib")
 
 source(here("processing_pipelines/helper/plotting/plot_es.R"))
 source(here("processing_pipelines/helper/plotting/plot_reliability.R"))
+source(here("processing_pipelines/helper/plotting/plot_megaplot.R"))
+source(here("processing_pipelines/helper/plotting/plot_table.R"))
 
 ```
 
@@ -96,6 +107,9 @@ theme_set(theme_classic(base_size = 11))
 ```{r child = "writing/sections/01_intro.Rmd"}
 ```
 
+
+<!-- \end{landscape} -->
+
 # Experiment 1
 
 
@@ -114,6 +128,11 @@ theme_set(theme_classic(base_size = 11))
 
 ```{r child = "writing/sections/04_exp1_discussion.Rmd"}
 ```
+
+
+<!-- ```{r fig.width=8, fig.height=6} -->
+<!-- plot_megaplogt() -->
+<!-- ``` -->
 
 # Experiment 2
 
@@ -152,6 +171,7 @@ theme_set(theme_classic(base_size = 11))
 
 ```{r child = "writing/sections/10_demog_variation.Rmd"}
 ```
+
 # General Discussion
 
 ```{r child = "writing/sections/11_general_discussion.Rmd"}

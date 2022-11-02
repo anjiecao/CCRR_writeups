@@ -151,7 +151,10 @@
 
 \begin{Shaded}
 \begin{Highlighting}[]
- \FunctionTok{library}\NormalTok{(tidyboot)}
+\FunctionTok{library}\NormalTok{(glue)}
+\FunctionTok{library}\NormalTok{(tidyboot)}
+
+\FunctionTok{source}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"processing\_pipelines/helper/plotting/save\_plot.R"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -328,7 +331,7 @@ d1: non\_generics: EBB and CA
 \FunctionTok{guides}\NormalTok{(}\AttributeTok{color =} \StringTok{"none"}\NormalTok{) }\SpecialCharTok{+} 
   \FunctionTok{theme\_classic}\NormalTok{() }\SpecialCharTok{+} 
   \FunctionTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{theme}\NormalTok{(}\AttributeTok{text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{8}\NormalTok{),}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{4}\NormalTok{),}
       \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{8}\NormalTok{), }
       \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{))  )}
 
@@ -344,7 +347,7 @@ d1: non\_generics: EBB and CA
 \FunctionTok{guides}\NormalTok{(}\AttributeTok{color =} \StringTok{"none"}\NormalTok{) }\SpecialCharTok{+} 
   \FunctionTok{theme\_classic}\NormalTok{() }\SpecialCharTok{+} 
   \FunctionTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\SpecialCharTok{+} 
-  \FunctionTok{theme}\NormalTok{(}\AttributeTok{text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{8}\NormalTok{),}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{4}\NormalTok{),}
       \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{8}\NormalTok{), }
       \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{)) }
 \NormalTok{  )}
@@ -412,7 +415,7 @@ d1: non\_generics: EBB and CA
 \FunctionTok{theme\_classic}\NormalTok{()}\SpecialCharTok{+}
   \FunctionTok{theme}\NormalTok{(}\AttributeTok{text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{9}\NormalTok{)) }\SpecialCharTok{+} 
    \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Ebbinghaus Illusion"}\NormalTok{) }\SpecialCharTok{+}
-\FunctionTok{theme}\NormalTok{(}\AttributeTok{text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{8}\NormalTok{),}
+\FunctionTok{theme}\NormalTok{(}\AttributeTok{text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{4}\NormalTok{),}
       \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{8}\NormalTok{), }
       \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{))  }
 \end{Highlighting}
@@ -422,6 +425,13 @@ d1: non\_generics: EBB and CA
 ## Warning: `guides(<scale> = FALSE)` is deprecated. Please use `guides(<scale> =
 ## "none")` instead.
 \end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggsave}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"cached\_results/figures/ebb.png"}\NormalTok{), d1\_ebb\_plot, }
+       \AttributeTok{width =} \DecValTok{4}\NormalTok{, }\AttributeTok{height =} \DecValTok{3}\NormalTok{, }\AttributeTok{device =} \ConstantTok{NULL}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{ca}{%
 \subsubsection{CA}\label{ca}}
@@ -465,7 +475,7 @@ d1: non\_generics: EBB and CA
 \CommentTok{\#         )  + }
   \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{resp\_type\_print)}\SpecialCharTok{+}
   \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Causal Attribution"}\NormalTok{) }\SpecialCharTok{+}
-\FunctionTok{theme}\NormalTok{(}\AttributeTok{text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{8}\NormalTok{),}
+\FunctionTok{theme}\NormalTok{(}\AttributeTok{text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{4}\NormalTok{),}
       \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{8}\NormalTok{), }
       \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{))  }
 \end{Highlighting}
@@ -492,7 +502,7 @@ d1: non\_generics: EBB and CA
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{visualization_files/figure-latex/unnamed-chunk-6-1.pdf}
+\includegraphics{visualization_files/figure-latex/unnamed-chunk-7-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -517,7 +527,7 @@ d1: non\_generics: EBB and CA
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{visualization_files/figure-latex/unnamed-chunk-8-1.pdf}
+\includegraphics{visualization_files/figure-latex/unnamed-chunk-9-1.pdf}
 
 \hypertarget{hz}{%
 \subsubsection{HZ}\label{hz}}
@@ -532,7 +542,7 @@ d1: non\_generics: EBB and CA
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{visualization_files/figure-latex/unnamed-chunk-9-1.pdf}
+\includegraphics{visualization_files/figure-latex/unnamed-chunk-10-1.pdf}
 
 \hypertarget{rmts}{%
 \subsubsection{RMTS}\label{rmts}}
@@ -547,7 +557,7 @@ d1: non\_generics: EBB and CA
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{visualization_files/figure-latex/unnamed-chunk-10-1.pdf}
+\includegraphics{visualization_files/figure-latex/unnamed-chunk-11-1.pdf}
 
 \hypertarget{rv}{%
 \subsubsection{RV}\label{rv}}
@@ -561,7 +571,7 @@ d1: non\_generics: EBB and CA
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{visualization_files/figure-latex/unnamed-chunk-11-1.pdf}
+\includegraphics{visualization_files/figure-latex/unnamed-chunk-12-1.pdf}
 
 \hypertarget{si}{%
 \subsubsection{SI}\label{si}}
@@ -575,21 +585,15 @@ d1: non\_generics: EBB and CA
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{visualization_files/figure-latex/unnamed-chunk-12-1.pdf}
+\includegraphics{visualization_files/figure-latex/unnamed-chunk-13-1.pdf}
 
 \hypertarget{putting-d1-together}{%
 \subsection{putting d1 together}\label{putting-d1-together}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{d1\_all }\OtherTok{\textless{}{-}}
-\NormalTok{  ((d1\_up\_plot }\SpecialCharTok{/}\NormalTok{ d1\_fd\_plot }\SpecialCharTok{/}\NormalTok{ d1\_hz\_plot) }\SpecialCharTok{|}\NormalTok{ (d1\_rmts\_plot }\SpecialCharTok{/}\NormalTok{ d1\_rv\_plot }\SpecialCharTok{/}\NormalTok{ d1\_ssi\_plot)) }\SpecialCharTok{/}\NormalTok{  (d1\_ca\_plot }\SpecialCharTok{/}\NormalTok{ d1\_ebb\_plot) }
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{d1\_all}
+\NormalTok{d1\_regular\_plot }\OtherTok{=}\NormalTok{ cowplot}\SpecialCharTok{::}\FunctionTok{plot\_grid}\NormalTok{(d1\_up\_plot, d1\_fd\_plot, d1\_hz\_plot, d1\_rmts\_plot, d1\_rv\_plot, d1\_ssi\_plot, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\NormalTok{d1\_wide\_plot }\OtherTok{=}\NormalTok{ cowplot}\SpecialCharTok{::}\FunctionTok{plot\_grid}\NormalTok{(d1\_ca\_plot, d1\_ebb\_plot, }\AttributeTok{ncol =} \DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -601,7 +605,11 @@ d1: non\_generics: EBB and CA
 ## Warning: Removed 1 rows containing missing values (geom_point).
 \end{verbatim}
 
-\includegraphics{visualization_files/figure-latex/unnamed-chunk-14-1.pdf}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{d1\_all }\OtherTok{=} \FunctionTok{plot\_grid}\NormalTok{(d1\_regular\_plot, d1\_wide\_plot, }\AttributeTok{ncol =} \DecValTok{1}\NormalTok{, }\AttributeTok{greedy =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{fine-tuning-d2}{%
 \section{fine tuning d2}\label{fine-tuning-d2}}
@@ -766,7 +774,7 @@ d1: non\_generics: EBB and CA
 \FunctionTok{theme\_classic}\NormalTok{() }\SpecialCharTok{+}
   \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{resp\_type\_print)}\SpecialCharTok{+}
   \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Change Detection"}\NormalTok{)  }\SpecialCharTok{+} 
-  \FunctionTok{theme}\NormalTok{(}\AttributeTok{text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{8}\NormalTok{),}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{4}\NormalTok{),}
       \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{8}\NormalTok{), }
       \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{))  }
 \end{Highlighting}
@@ -809,7 +817,7 @@ d1: non\_generics: EBB and CA
 \FunctionTok{theme\_classic}\NormalTok{() }\SpecialCharTok{+}
   \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{resp\_type\_print)}\SpecialCharTok{+}
   \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Causal Attribution"}\NormalTok{)  }\SpecialCharTok{+} 
-  \FunctionTok{theme}\NormalTok{(}\AttributeTok{text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{8}\NormalTok{),}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{text =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size=}\DecValTok{4}\NormalTok{),}
       \AttributeTok{plot.title =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{8}\NormalTok{), }
       \AttributeTok{plot.subtitle =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{hjust =} \FloatTok{0.5}\NormalTok{, }\AttributeTok{size =} \DecValTok{6}\NormalTok{)) }
 \end{Highlighting}
@@ -910,31 +918,23 @@ d1: non\_generics: EBB and CA
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{d2\_all }\OtherTok{\textless{}{-}}
-\NormalTok{  ((d2\_fd\_plot }\SpecialCharTok{/}\NormalTok{ d2\_rmts\_plot }\SpecialCharTok{/}\NormalTok{ d2\_rv\_plot) }\SpecialCharTok{|}\NormalTok{ (d2\_sei\_plot }\SpecialCharTok{/}\NormalTok{ d2\_ssi\_plot }\SpecialCharTok{/}\NormalTok{ d2\_td\_plot)) }\SpecialCharTok{/}\NormalTok{  (d2\_ca\_plot }\SpecialCharTok{/}\NormalTok{ d2\_cd\_plot) }
+\NormalTok{d2\_regular\_plot }\OtherTok{=}\NormalTok{ cowplot}\SpecialCharTok{::}\FunctionTok{plot\_grid}\NormalTok{(d2\_fd\_plot,d2\_rmts\_plot,d2\_rv\_plot,}
+\NormalTok{                                     d2\_sei\_plot, d2\_ssi\_plot, d2\_td\_plot, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\NormalTok{d2\_wide\_plot }\OtherTok{=}\NormalTok{ cowplot}\SpecialCharTok{::}\FunctionTok{plot\_grid}\NormalTok{(d2\_ca\_plot, d2\_cd\_plot, }\AttributeTok{ncol =} \DecValTok{1}\NormalTok{)}
 
-\NormalTok{d2\_all}
+\NormalTok{d2\_all }\OtherTok{=} \FunctionTok{plot\_grid}\NormalTok{(d2\_regular\_plot, d2\_wide\_plot, }\AttributeTok{ncol =} \DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\includegraphics{visualization_files/figure-latex/unnamed-chunk-23-1.pdf}
 
 \hypertarget{everything-togehter}{%
 \section{everything togehter}\label{everything-togehter}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{plot\_grid}\NormalTok{(d1\_all, d2\_all, }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Exp.1"}\NormalTok{, }\StringTok{"Exp.2"}\NormalTok{))}
+\CommentTok{\#}
+\FunctionTok{plot\_grid}\NormalTok{(d1\_all, d2\_all, }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Exp.1"}\NormalTok{, }\StringTok{"Exp.2"}\NormalTok{), }\AttributeTok{label\_size =} \DecValTok{10}\NormalTok{, }\AttributeTok{axis =} \StringTok{"r"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## Warning: Removed 1 rows containing non-finite values (stat_summary).
-\end{verbatim}
-
-\begin{verbatim}
-## Warning: Removed 1 rows containing missing values (geom_point).
-\end{verbatim}
 
 \includegraphics{visualization_files/figure-latex/unnamed-chunk-24-1.pdf}
 

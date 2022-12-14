@@ -1,6 +1,6 @@
 ---
-title             : "Replicability of US-China differences in cognition and perception across 12 tasks"
-shorttitle        : "Replicating US-China differences"
+title             : "US-China differences in cognition and perception across 12 tasks: Replicability, robustness, and within-culture variation"
+shorttitle        : "US-China differences"
 author:  
   - name          : "Anjie Cao*"
     affiliation   : "1"
@@ -29,7 +29,7 @@ affiliation:
   
 
 authornote: |
-  We gratefully acknowledge Alvin Tan, Joseph Outa, and the members of the Language and Cognition Lab at Stanford for comments and assistance. Experiment 1 was previously reported in abbreviated form in the Proceedings of the Cognitive Science Society as Carstensen et al. (2020).
+  We gratefully acknowledge Alvin Tan, Joseph Outa, and the members of the Language and Cognition Lab at Stanford for comments and assistance. We are also grateful for the feedback and suggestions from Jenny Yang, Catherine Thomas, Ellen Reinhart, Erik Santoro, Kengthsagn Louis, Leslie Remache, and Hazel Markus. Experiment 1 was previously reported in abbreviated form in the Proceedings of the Cognitive Science Society as Carstensen et al. (2020).
   
 abstract: |
     Cultural differences between the US and China have been investigated using a broad array of psychological tasks measuring differences between cognition, language, perception, and reasoning. Using online convenience samples of adults, we conducted two large-scale replications of a selection of 12 tasks previously reported to show cross-cultural differences. Five of these tasks showed robust cross-cultural differences, while six showed no difference and one showed a small difference in the opposite direction. Tasks showing cross-cultural differences tended to have multiple trials measuring high-level reasoning and language; those that did not show cross-cultural difference included measures of attention/perception or implicit social processes or were initially designed to show differences in children. As in prior work, cross-cultural differences in cognition (in those tasks showing differences) were not strongly related to explicit measures of cultural identity and behavior.
@@ -58,6 +58,11 @@ header-includes   :
     - \usepackage{tabu}
     - \usepackage{adjustbox}
     - \usepackage{graphicx}
+    - \usepackage{longtable}
+    - \usepackage{tabu}
+    - \usepackage{setspace}% http://ctan.org/pkg/setspace
+    - \AtBeginEnvironment{longtable}{\singlespacing}{\small}
+
 
 ---
 
@@ -113,7 +118,6 @@ theme_set(theme_classic(base_size = 11))
 # Experiment 1
 
 
-## Methods 
 
 
 ```{r child = "writing/sections/02_exp1_methods.Rmd"}
@@ -128,9 +132,6 @@ theme_set(theme_classic(base_size = 11))
 ```  
 
 
-
-# Experiment 2
-
 ## Discussion
 
 ```{r child = "writing/sections/04_exp1_discussion.Rmd"}
@@ -138,8 +139,9 @@ theme_set(theme_classic(base_size = 11))
 
 
 
+# Experiment 2
 
-## Methods
+
 
 ```{r child = "writing/sections/05_exp2_methods.Rmd"}
 ```
@@ -149,6 +151,11 @@ theme_set(theme_classic(base_size = 11))
 ```{r child = "writing/sections/06_exp2_results.Rmd"}
 ```
 
+## Discussion 
+
+```{r child = "writing/sections/07_exp2_discussion.Rmd"}
+
+```
 
 
 
@@ -156,27 +163,27 @@ theme_set(theme_classic(base_size = 11))
 
 <!-- ## Mini meta-analysis -->
 
-```{r child = "writing/sections/07_ea_mini_ma.Rmd"}
+```{r child = "writing/sections/08_ea_mini_ma.Rmd"}
 ```
 
 ## Reliability assessment
 
-```{r child = "writing/sections/08_ea_reliability_assessment.Rmd"}
+```{r child = "writing/sections/09_ea_reliability_assessment.Rmd"}
 ```
 
 ## Relations between individual tasks
 
-```{r child = "writing/sections/09_ea_relations_between_tasks.Rmd"}
+```{r child = "writing/sections/10_ea_relations_between_tasks.Rmd"}
 ```
 
 ## Demographic variation and explicit measures of cultural identity
 
-```{r child = "writing/sections/10_demog_variation.Rmd"}
+```{r child = "writing/sections/11_demog_variation.Rmd"}
 ```
 
 # General Discussion
 
-```{r child = "writing/sections/11_general_discussion.Rmd"}
+```{r child = "writing/sections/12_general_discussion.Rmd"}
 ```
 
 

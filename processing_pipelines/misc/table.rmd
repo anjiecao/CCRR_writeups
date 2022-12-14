@@ -15,165 +15,140 @@ d2 <- read_csv(here("data/03_processed_data/exp2/tidy_main.csv"))
 
 ```
 
-
-\begin{landscape}
-\begin{table}
-    \small
-    \caption{Tasks included in each experiment along with the post-exclusion sample sizes.}\label{ta:upper_bound}
-    \centering
-
-    \begin{tabular}{l p{2in} p{2in} p{2in} p{.7in} p{.7in}} 
-        \hline
-        \bf{Experiment} & \bf{Task} & \bf{Relevant Citation} & \bf{Task Description} & \bf{CN} & \bf{US} \\
-        \hline
-
-        1 & Ambiguous Relational Match-To-Sample (RMTS) & Carstensen et al. (2019) & Infer whether an object or relation is causally relevant & N = 167  & N = 169\\
-
-& Picture Free Description & Imada, Carlson, \& Ktakura (2013) & Describe pictures from memory after a brief study period & N = 167 & N = 169\\
-
-& Ebbinghaus Illusion & Imada, Carlson, \& Itakura (2013) & Judge the size of circles in a context designed to bias size judgments & N = 167  & N = 169\\
-
-& Horizon Collage & Senzaki, Masuda, \& Nand (2014) & Make an image by dragging and dropping stickers onto a display & N = 167  & N = 169\\
-
-& Symbolic Self-Inflation (Family) & Kitayama et al. (2009) & Draw self and family members as circles & N = 141 & N = 110\\
-
-& Uniqueness Preference & Kim \& Markus (1999) & Choose a sticker from five stickers, four of which are the same color & N = 167 & N = 169\\
-
-& Child Causal Attribution & Seiver, Gopnik, \& Goodman (2013) & Watch short vignettes and explain the decisions of the characters & N = 167 & N = 169\\
-
-& Raven's Progressive Matrices & Su (2020) & Use analogic reasoning to complete visually-presented patterns & N = 167 & N = 169\\
-2 & Ambiguous Relational Match-To-Sample (RMTS) & Carstensen et al. (2019) & Infer whether an object or relation is causally relevant & N = 174 & N = 293\\
-
-& Picture Free Description & Imada, Carlson, \& Itakura (2013) & Describe pictures from memory after a brief study period & N = 132 & N = 284\\
-
-& Change Detection & Mausda \& Nisbett (2007) & Find differences in the foreground or background of two images & N = 160 & N = 253\\
-
-& Symbolic Self-Inflation (Friends) & Kitayama et al. (2009) & Draw a sociogram with self and friends as nodes, relationships as edges & N = 158 & N = 252\\
-
-& Adult Causal Attribution & Morris \& Peng (1994) & Read a crime story and explain the criminal’s motivations & N = 114 & N = 293\\
-
-& Taxonomic-Thematic Similariy & Ji, Zhang, \& Nisbett (2004) & Match items based on taxonomic or thematic similarity (e.g., cow: chicken / grass) & N =178 & N = 295\\
-
-& Semantic Intuition & Li, Liu, Chalmers, \& Snedeker (2018) & Decide whether a story refers to a named character (whose actions are mischaracterized) or the person who performed the actions (but had a different name) & N = 181 & N = 298\\
-
-& Raven's Progressive Matrices & Su (2020) & Use analogical reasoning to complete visually-presented patterns & N = 181 & N = 298\\
+\begin{longtable}{l p{1.2in} p{1.4in} p{1.4in} p{.2in} p{.2in}}
+    \caption{Tasks included in each experiment and the final sample size after exclusion.}\\
+    \small  % Switch from 12pt to 11pt; otherwise, table won't fit
+    \setlength\LTleft{0pt}            
+    \setlength\LTright{0pt}         
+    
+    \bf{Experiment} & \bf{Task} & \bf{Citation} & \bf{Task Description} & \bf{CN} & \bf{US} \\
     \hline
-    \end{tabular}
-\end{table}
-\end{landscape}
+        1 & Ambiguous Relational Match-To-Sample (RMTS) & Carstensen et al. (2019) & Infer whether an object or relation is causally relevant &  167  &  169 \\
 
+& Picture Free Description & Imada, Carlson, \& Ktakura (2013) & Describe pictures from memory after a brief study period &  167 &  169\\
 
-<!-- # get the sample size  -->
+& Ebbinghaus Illusion & Imada, Carlson, \& Itakura (2013) & Judge the size of circles in a context designed to bias size judgments &  167  &  169\\
 
-<!-- ```{r} -->
-<!-- d1_order <- c("RMTS", "FD", "EBB", "HZ", "SI", "CP", "CA", "RV") -->
+& Horizon Collage & Senzaki, Masuda, \& Nand (2014) & Make an image by dragging and dropping stickers onto a display &  167  &  169\\
 
-<!-- d1_df_summary <- d1 %>%  -->
-<!--   group_by(task_name,culture) %>%  -->
-<!--   distinct(subject) %>%  -->
-<!--   count() %>%  -->
-<!--   ungroup() %>%  -->
-<!--   pivot_wider(names_from = culture, values_from = n) %>%  -->
-<!--   mutate( -->
-<!--     str = glue("CN:{CN}; US:{US}") -->
-<!--   ) %>%  -->
-<!--   slice(match(d1_order, task_name)) -->
+& Symbolic Self-Inflation (Family) & Kitayama et al. (2009) & Draw self and family members as circles &  141 &  110\\
 
+& Uniqueness Preference & Kim \& Markus (1999) & Choose a sticker from five stickers, four of which are the same color &  167 &  169\\
 
-<!-- d2_order <- c("RMTS", "FD", "CD", "SSI", "CA", "TD", "SeI", "RV") -->
+& Child Causal Attribution & Seiver, Gopnik, \& Goodman (2013) & Watch short vignettes and explain the decisions of the characters &  167 &  169\\
 
-<!-- d2_df_summary <- d2 %>%  -->
-<!--   group_by(task_name,culture) %>%  -->
-<!--   distinct(subject) %>%  -->
-<!--   count() %>%  -->
-<!--   ungroup() %>%  -->
-<!--   pivot_wider(names_from = culture, values_from = n) %>%  -->
-<!--   mutate( -->
-<!--     str = glue("CN:{CN}; US:{US}") -->
-<!--   ) %>%  -->
-<!--   slice(match(d2_order, task_name)) -->
+& Raven's Progressive Matrices & Su (2020) & Use analogic reasoning to complete visually-presented patterns &  167 &  169\\
+2 & Ambiguous Relational Match-To-Sample (RMTS) & Carstensen et al. (2019) & Infer whether an object or relation is causally relevant &  174 &  293\\
 
+& Picture Free Description & Imada, Carlson, \& Itakura (2013) & Describe pictures from memory after a brief study period &  132 &  284\\
 
-<!-- sample_sizes <- c(d1_df_summary$str, d2_df_summary$str) -->
+& Change Detection & Mausda \& Nisbett (2007) & Find differences in the foreground or background of two images &  160 &  253\\
 
+& Symbolic Self-Inflation (Friends) & Kitayama et al. (2009) & Draw a sociogram with self and friends as nodes, relationships as edges &  158 &  252\\
 
-<!-- ``` -->
+& Adult Causal Attribution & Morris \& Peng (1994) & Read a crime story and explain the criminal’s motivations &  114 &  293\\
 
+& Taxonomic-Thematic Similariy & Ji, Zhang, \& Nisbett (2004) & Match items based on taxonomic or thematic similarity (e.g., cow: chicken / grass) & 178 &  295\\
 
-<!-- ```{r fig.width=8, fig.height=10} -->
+& Semantic Intuition & Li, Liu, Chalmers, \& Snedeker (2018) & Decide whether a story refers to a named character (whose actions are mischaracterized) or the person who performed the actions (but had a different name) &  181 &  298\\
 
-<!-- collapse_rows_dt <- data.frame(Experiment = c(rep("1", 8), rep("2", 8)), -->
-<!--                            Task = c("Ambiguous Relational Match-To-Sample (RMTS)", -->
-<!--                                     "Picture Free Description", -->
-<!--                                     "Ebbinghaus Illusion", -->
-<!--                                     "Horizon Collage", -->
-<!--                                     "Symbolic Self-Inflation (Family)", -->
-<!--                                     "Uniqueness Preference", -->
-<!--                                     "Child Causal Attribution", -->
-<!--                                     "Raven's Progressive Matrices", -->
-<!--                                     "Ambiguous Relational Match-To-Sample (RMTS)", -->
-<!--                                     "Picture Free Description", -->
-<!--                                     "Change Detection", -->
-<!--                                     "Symbolic Self-Inflation (Friends)", -->
-<!--                                     "Adult Causal Attribution", -->
-<!--                                     "Taxonomic-Thematic Similariy", -->
-<!--                                     "Semantic Intuition", -->
-<!--                                     "Raven's Progressive Matrices"), -->
-<!--                            `Relevant Citation` = c( -->
-<!--                              "Carstensen et al. (2019)", -->
-<!--                              "Imada, Carlson, & Ktakura (2013)", -->
-<!--                              "Imada, Carlson, & Itakura (2013)", -->
-<!--                              "Senzaki, Masuda, & Nand (2014)", -->
-<!--                              "Kitayama et al. (2009)", -->
-<!--                              "Kim & Markus (1999)", -->
-<!--                              "Seiver, Gopnik, & Goodman (2013)", -->
-<!--                              "Su (2020)", -->
-<!--                              "Carstensen et al. (2019)", -->
-<!--                              "Imada, Carlson, & Itakura (2013)", -->
-<!--                              "Mausda & Nisbett (2007)", -->
-<!--                              "Kitayama et al. (2009)", -->
-<!--                              "Morris & Peng (1994)", -->
-<!--                              "Ji, Zhang, & Nisbett (2004)", -->
-<!--                              "Li, Liu, Chalmers, & Snedeker (2018)", -->
-<!--                              "Su (2020)" -->
-<!--                            ), -->
-<!--                            `Task Description` = c( -->
-<!--                              "Infer whether an object or relation is causally relevant", -->
-<!--                              "Describe pictures from memory after a brief study period", -->
-<!--                              "Judge the size of circles in a context designed to bias size judgments", -->
-<!--                              "Make an image by dragging and dropping stickers onto a display", -->
-<!--                              "Draw self and family members as circles", -->
-<!--                              "Choose a sticker from five stickers, four of which are the same color", -->
-<!--                              "Watch short vignettes and explain the decisions of the characters -->
-<!--                               ", -->
-<!--                              "Use analogic reasoning to complete visually-presented patterns", -->
-<!--                              "Infer whether an object or relation is causally relevant", -->
-<!--                              "Describe pictures from memory after a brief study period", -->
-<!--                              "Find differences in the foreground or background of two images", -->
-<!--                              "Draw a sociogram with self and friends as nodes, relationships as edges", -->
-<!--                              "Read a crime story and explain the criminal’s motivations", -->
-<!--                              "Match items based on taxonomic or thematic similarity (e.g., cow: chicken / grass)", -->
+& Raven's Progressive Matrices & Su (2020) & Use analogical reasoning to complete visually-presented patterns &  181 &  298\\
+    \hline
+    \end{longtable}
 
-<!--                              "Decide whether a story refers to a named character (whose actions are mischaracterized) or the person who performed the actions (but had a different name)", -->
-<!--                              "Use analogical reasoning to complete visually-presented patterns" -->
-<!--                            ), -->
-<!--                            "Sample Size" = sample_sizes -->
-<!--                            ) -->
-
-<!-- kable(collapse_rows_dt, "latex", align = "l", longtable  = TRUE, -->
-<!--       row.names = FALSE, -->
-<!--        col.names = c("Experiment", -->
-<!--                     "Task", -->
-<!--                     "Relevant Citation", -->
-<!--                     "Task Description", -->
-<!--                     "Task Sample Size")) %>% -->
-<!-- kable_styling(full_width = TRUE, -->
-<!--               font_size = 5, -->
-<!--               bootstrap_options = c("condensed")) %>% -->
-<!-- collapse_rows(columns = 1:2, -->
-<!--               row_group_label_fonts = list(list(bold = T), list(bold = T))) -->
+# table 2
 
 
 
-<!-- ``` -->
+\begin{longtable}{l p{1.2in} p{1.4in} p{1.4in} p{.2in} p{.2in}}
+    \caption{Tasks included in each experiment and the final sample size after exclusion.}\\
+    \small  % Switch from 12pt to 11pt; otherwise, table won't fit
+    \setlength\LTleft{0pt}            
+    \setlength\LTright{0pt}         
+    
+    \bf{Task Name} & \bf{Difference between the current version and the original version} & \bf{Speculative reasons} \\
+    \hline
+        1 & Ambiguous Relational Match-To-Sample (RMTS) & Carstensen et al. (2019) & Infer whether an object or relation is causally relevant &  167  &  169 \\
+
+& Picture Free Description & Imada, Carlson, \& Ktakura (2013) & Describe pictures from memory after a brief study period &  167 &  169\\
+
+& Ebbinghaus Illusion & Imada, Carlson, \& Itakura (2013) & Judge the size of circles in a context designed to bias size judgments &  167  &  169\\
+
+& Horizon Collage & Senzaki, Masuda, \& Nand (2014) & Make an image by dragging and dropping stickers onto a display &  167  &  169\\
+
+& Symbolic Self-Inflation (Family) & Kitayama et al. (2009) & Draw self and family members as circles &  141 &  110\\
+
+& Uniqueness Preference & Kim \& Markus (1999) & Choose a sticker from five stickers, four of which are the same color &  167 &  169\\
+
+& Child Causal Attribution & Seiver, Gopnik, \& Goodman (2013) & Watch short vignettes and explain the decisions of the characters &  167 &  169\\
+
+& Raven's Progressive Matrices & Su (2020) & Use analogic reasoning to complete visually-presented patterns &  167 &  169\\
+2 & Ambiguous Relational Match-To-Sample (RMTS) & Carstensen et al. (2019) & Infer whether an object or relation is causally relevant &  174 &  293\\
+
+& Picture Free Description & Imada, Carlson, \& Itakura (2013) & Describe pictures from memory after a brief study period &  132 &  284\\
+
+& Change Detection & Mausda \& Nisbett (2007) & Find differences in the foreground or background of two images &  160 &  253\\
+
+& Symbolic Self-Inflation (Friends) & Kitayama et al. (2009) & Draw a sociogram with self and friends as nodes, relationships as edges &  158 &  252\\
+
+& Adult Causal Attribution & Morris \& Peng (1994) & Read a crime story and explain the criminal’s motivations &  114 &  293\\
+
+& Taxonomic-Thematic Similariy & Ji, Zhang, \& Nisbett (2004) & Match items based on taxonomic or thematic similarity (e.g., cow: chicken / grass) & 178 &  295\\
+
+& Semantic Intuition & Li, Liu, Chalmers, \& Snedeker (2018) & Decide whether a story refers to a named character (whose actions are mischaracterized) or the person who performed the actions (but had a different name) &  181 &  298\\
+
+& Raven's Progressive Matrices & Su (2020) & Use analogical reasoning to complete visually-presented patterns &  181 &  298\\
+    \hline
+    \end{longtable}
+
+
+
+```{r eval=FALSE, include=FALSE}
+data.frame(
+  `Task Name` = c("Ambiguous Relational Match-To-Sample", 
+                  "Ebbinghaus Illusion", 
+                  "Horizon Collage", 
+                  "Symbolic Self-Inflation (Family version and Friends version)", 
+                  "Uniqueness Preference", 
+                  "Child Causal Attribution", 
+                  "Change Detection"), 
+  `Difference between the current version and the original version` = c(
+    "Age: The original experiment was conducted with young children; the current experiment was conducted with adults.
+    Test Format: The original experiment was conducted in person with physical stimuli and live experimenters; the current experiment was conducted through web-based interfaces with animation.", 
+   "Age: The original study was conducted with young children; the current experiment was conducted with adults.
+    Culture: The original experiment compared Japanese participants with Canadian participants; the current experiment compared Chinese participants with U.S. participants.", 
+   "Age: The original experiment was conducted with young children; the current experiment was conducted with adults.
+    Test Format: The original experiment was conducted in person with canvas and collage stickers; the current experiment was conducted through web-based interfaces.
+    Culture: The original experiment compared Japanese participants with Canadian participants; the current experiment compared Chinese participants with U.S. participants.", 
+   "Test Format: The original experiment was conducted in person with pen and paper; the current experiment was conducted through web-based interfaces.
+   Test Prompt: The original experiment asked the participants to draw their close social network; the current experiment asked the participants to draw their family members or friends growing up.", 
+   "Test Format: The original experiment was conducted in person; the current experiment was conducted through web-based interfaces.
+   Stimulus: The original experiment was giving away physical pens; the current experiment was asking the participants to select virtual stickers.", 
+   "Age: The original experiment was conducted with young children; the current experiment was conducted with adults.", 
+   "Test Format: The original experiment was conducted in person; the current experiment was conducted through web-based interfaces."
+  ), 
+  `Speculative reasons` = c(
+    "The relation between objects might have been less salient when the stimuli were presented as schematic animation.
+     Adults may have been  overall less engaged with the tasks and paid less attention to the causal properties of the object pairs.", 
+    "Adults in both cultures reached ceiling performance. 
+    U.S. and Chinese participants may different levels of visual context sensitivity compared to Canadian and Japanese participants.", 
+    "The task might have been too trivial for adults to engage with properly. 
+    The saliency of horizon height is diminished by the drag-and-drop online interface. ", 
+    "The online interface might have altered participants’ drawing process, making it more difficult to implicitly represent the symbolic meaning of the circle size.", 
+    "The choice for a virtual sticker represents is less meaningful than a choice for a real pen.
+    The presence of a live experimenter might increase the social pressure on participants, causing them to consider the cultural perception of their choice. ", 
+    "Adults may have failed to engage with their causal reasoning because the story is too simplistic. ", 
+    "The in-lab setting might facilitate participants’ performance by making them pay more attention to the computer screen. "
+  )
+) %>% 
+  kable( "latex", align = "l", longtable  = TRUE,
+      row.names = FALSE,
+       col.names = c("Task Name",
+                    "Difference between the current version and the original version",
+                    "Speculative reasons")) %>%
+kable_styling(full_width = TRUE,
+              bootstrap_options = c("condensed"))
+
+```
+
 

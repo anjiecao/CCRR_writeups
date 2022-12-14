@@ -280,6 +280,13 @@ d1_region_df <- bind_rows(clean_d1_ca,
   filter(grepl("region", term)) 
 
 
+d1_region_df <- d1_region_df %>% mutate(p.value_print = 
+                                          case_when(
+                                            p.value < 0.01 ~ "< 0.01",
+                                            TRUE ~ paste0("= ", round(p.value, 2))
+                                    
+                                          ))
+
 d1_region_df$p.adjusted = p.adjust(d1_region_df$p.value,
                                     method = "bonferroni")
 
@@ -335,6 +342,14 @@ d2_region_df <- d2_with_scale  %>%
   select(-mod, -data) |>
   unnest() %>% 
   filter(grepl("region", term)) 
+
+
+d2_region_df <- d2_region_df %>% mutate(p.value_print = 
+                                          case_when(
+                                            p.value < 0.01 ~ "< 0.01",
+                                            TRUE ~ paste0("= ", round(p.value, 2))
+                                    
+                                          ))
 
 d2_region_df$p.adjusted = p.adjust(d2_region_df$p.value,
                                     method = "bonferroni")

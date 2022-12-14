@@ -1,0 +1,116 @@
+
+The world’s cultures are strikingly different, and psychologists have long sought to measure and characterize this variation, with differences between Western and East Asian cultures as a particular case study of interest. These efforts have given rise to a rich literature documenting cultural differences in a wide range of psychological tasks. Across two experiments, we selected a range of tasks that had previously been shown to yield differences between Western and East Asian samples and replicated them with two relatively large online samples of US and Chinese participants. In this discussion, we first consider the limitations of our study since these contextualize the remainder of our conclusions. Next we consider the interpretation of our results within individual tasks. We end the discussion with a summary of the key findings of this work. 
+
+## General Limitations 
+
+As discussed above and in the introduction, we did not design our experiments to replicate prior work directly, and hence one important limitation of our work is simply that it cannot be used as a test of the reliability of prior findings. Instead, our measures provide estimates of US-China differences on a range of constructs, specifically for online convenience samples. These estimates are likely biased downward -- towards the null hypothesis of no difference between cultures -- by several features of our experimental design. 
+
+Online experiments (especially grouped into a long battery as ours were) likely receive slightly less attention than in-person studies, though overall these effects have tended to be small in US samples [@buhrmester2016amazon]. Contra this concern, however, participants did perform relatively accurately on those tasks that had correct answers (e.g., Raven’s Matrices, Ebbinghaus Illusion), and in our exploratory analysis, we found relatively high reliabilities on all tasks. Further, our pre-registered exclusion criteria removed participants who performed poorly. Thus, we do not believe that participants were inattentive overall. 
+
+Another limitation of our estimates of US-China differences comes from differences in sampling strategy between cultures. In Experiment 1, we used the same snowball sampling procedure, but this procedure may have yielded different samples due to differences in social networks or norms about sharing study information across cultures. In Experiment 2, because the platform we used to recruit U.S. participants (Prolific) was not accessible in China, we used a different platform to recruit Chinese participants (Naodao). Prolific and Naodao have different levels of popularity and different participant pools, resulting in some asymmetry between the US and Chinese samples. Despite these differences between samples both across and within experiments, we do not see indications that our estimates were dramatically biased by our sampling decisions. First, our results were largely comparable in the tasks that were included in both experiments (e.g. Picture Free Description; Ravens; and RMTS). Second, in our exploratory analyses we did not find strong associations between participant demographics and cross-cultural effects (with some small exceptions discussed in that section). Finally, we reran all of our preregistered analyses with an age-matched subset of U.S. participants in Experiment 2 and found our results were qualitatively identical. 
+
+Thus, while our samples are certainly not representative samples of US or Chinese national populations -- indeed to our knowledge, nearly all work to date has used convenience samples of one type or another -- they appear to yield stable cross-sample estimates that do not reflect large biases due to sampling strategy or demographics. 
+
+One of the main ways in which our samples may not have been representative is that they are likely to be more globalized than the population on average simply by being young (and thus less acculturated) and having access to a computer. Contra this concern, variation in local cultural identity did not strongly relate to variation in any of our tasks, but interestingly, we observed the strongest local identities (within our Chinese sample) among the youngest participants. 
+
+Last but not least, another difference between our experiments and previous work was the lack of an experimenter, and some of our tasks may be particularly sensitive to the presence of an experimenter. In a web experiment, participants are often isolated in front of their own computer. In contrast, when participating in an in-person experiment, participants need to interact with and perform the task in front of the experimenters who are often from the same social group. Indeed, in the uniqueness preference pen choice task, cross-cultural differences are dependent on the presence of an experimenter [@yamagishi2008preferences]. Our null results, obtained in the absence of an experimenter, can be seen as a conceptual replication of this work. 
+
+## Task-specific Limitations
+
+
+In addition to the general limitations discussed above, there are features of our experimental adaptations that may have affected performance in specific tasks. In this section, we highlight concerns about these issues and discuss their implications for interpreting the results of these tasks. See Table 2 for summary of task-specific discussion.
+
+In the case of the Uniqueness Preference task, it is possible that adapting the task to an online format in which resource scarcity was not strictly real and choices in this task had no lasting effect (in the form of a new pen), may have trivialized the choice and undermined the incentive for prosocial, harmonious behavior or expression. This possibility is consistent with the chance responding we observed in both groups. Alternatively, our results could be seen as a conceptual replication of @yamagishi2008preferences, who argue that differences in this task are moderated by the likelihood of evaluation, with no differences in pen choice observed in the absence of an experimenter. 
+
+The ambiguous developmental tasks, Ambiguous RMTS and Child Causal Attribution, may have been too heavy-handed in their key manipulations; both were designed to highlight ambiguity for young children, but it may be that their explicit cues and repetitive instructions impressed this ambiguity too strongly for adult audiences, resulting in the adults’ near-chance responding -- a reasonable response to such marked ambiguity. Cultural differences in causal reasoning and attribution may only manifest when the task design is age-appropriate. Consistent with this view, we did replicate previously attested differences in the Adult Causal Attribution task in Experiment 2, and other recent work has shown cross-cultural differences in causal attribution among 4- to 9-year-olds in Germany, Japan, and Ecuador using a design similar to the Child Causal Attribution task [@jurkat2022cultural]. 
+
+Last but not least, cultural variation within the broader constructs of East Asia and the West could explain some of our findings as a failure to extend previous work. Some of the tasks we included originally compared children and adults from other parts of East Asia and the West (e.g., Horizon Collage, Symbolic Self Inflation, Change Detection; but c.f. @masuda2016does for an alternative account of mixed findings in change detection paradigms). For example, the Taxonomic-Thematic Similarity task replicated previously attested cross-cultural differences between the US and China both here and in other work [@le2021] but these differences failed to generalize to a US-Vietnam comparison, despite the cultural, historical, and geographic similarities between China and Vietnam. This variation suggest that similar psychological tendencies could be expressed differently under distinct sociocultural contexts and traditions, even across regions and countries that share many similarities. As another example, responding in the Horizon Collage task could be modulated by variation between countries: Chinese and Japanese aesthetic traditions differ, so while Chinese and Japanese people may share a preference for highly contextualized information, this preference may typically be expressed through distinct visual techniques. 
+
+## Conclusion
+
+We conducted two sets of experiments to examine the robustness of several classic experimental paradigms in cross-cultural psychology. Our results showed a heterogeneous pattern of successes and failures: some tasks yielded robust cultural differences across both experiments, while others showed no difference between cultures. We estimated the reliability of the tasks to be moderate, with only minor cultural variations. In addition, we also explored the effect of a range of demographic variables, including explicit identification with global identity, regional differences within cultures, and several demographic characteristics. All of these had minimal relation to task performance. 
+
+Our goal here was not to perform direct replications that would shed light on the replicability of specific findings. Instead, since our methods, administration medium, sample, and analytic approach differed from the prior literature, our hope was to examine the robustness of these paradigms as a method for measuring US-China differences in an online context. Our work has several strengths relative to the prior literature, including larger samples of participants from the US and China, two broad groups of tasks implemented openly online (and reusable by future researchers), and a preregistered analysis plan that allows for the unbiased estimation of cross-cultural effects. In sum, we hope that our work here provides a foundation for future studies that seek to establish a robust and replicable science of cross-cultural difference.
+
+
+
+\begin{landscape}
+    \begin{longtable}{p{3cm}p{10cm}p{8cm}}\\
+    \caption{Tasks included in each experiment and the final sample size after exclusion.}\\
+        \hline
+        \bf{Task Name} & \bf{Difference between the current version and the original version} & \bf{Speculative reasons} \\
+        \hline
+        Ambiguous Relational Match-To-Sample (RMTS) & 
+        \begin{itemize}
+        \item Age: The original experiment was conducted with young children; the current experiment was conducted with adults.
+        \item Test Format: The original experiment was conducted in person with physical stimuli and live experimenters; the current experiment was conducted through web-based interfaces with animation. 
+        \end{itemize}&  
+        \begin{itemize}
+        \item The relation between objects might have been less salient when the stimuli were presented as schematic animation.
+     \item Adults may have been  overall less engaged with the tasks and paid less attention to the causal properties of the object pairs.
+    \end{itemize}\\
+
+Ebbinghaus Illusion & 
+    \begin{itemize}
+        \item Age: The original study was conducted with young children; the current experiment was conducted with adults.
+        \item Culture: The original experiment compared Japanese participants with Canadian participants; the current experiment compared Chinese participants with U.S. participants."
+    \end{itemize} & 
+    \begin{itemize}
+        \item Adults in both cultures reached ceiling performance. 
+        \item U.S. and Chinese participants may different levels of visual context sensitivity compared to Canadian and Japanese participants.
+    \end{itemize} \\
+
+Horizon Collage  & 
+    \begin{itemize}
+        \item Age: The original experiment was conducted with young children; the current experiment was conducted with adults.
+        \item Test Format: The original experiment was conducted in person with canvas and collage stickers; the current experiment was conducted through web-based interfaces.
+        \item Culture: The original experiment compared Japanese participants with Canadian participants; the current experiment compared Chinese participants with U.S. participants.
+    \end{itemize} &
+    \begin{itemize}
+        \item The task might have been too trivial for adults to engage with properly. 
+        \item The saliency of horizon height is diminished by the drag-and-drop online interface.
+    \end{itemize}
+    \\
+
+Symbolic Self-Inflation (Family version and Friends version) & 
+    \begin{itemize}
+        \item Test Format: The original experiment was conducted in person with pen and paper; the current experiment was conducted through web-based interfaces.
+        \item Test Prompt: The original experiment asked the participants to draw their close social network; the current experiment asked the participants to draw their family members or friends growing up.
+    \end{itemize} & 
+    \begin{itemize}
+        \item The online interface might have altered participants’ drawing process, making it more difficult to implicitly represent the symbolic meaning of the circle size.
+    \end{itemize}
+     \\
+
+Uniqueness Preference & 
+    \begin{itemize}
+        \item Test Format: The original experiment was conducted in person; the current experiment was conducted through web-based interfaces.
+        \item Stimulus: The original experiment was giving away physical pens; the current experiment was asking the participants to select virtual stickers.
+    \end{itemize}   & 
+    \begin{itemize}
+        \item The choice for a virtual sticker represents is less meaningful than a choice for a real pen.
+        \item The presence of a live experimenter might increase the social pressure on participants, causing them to consider the cultural perception of their choice.
+    \end{itemize} \\
+
+Child Causal Attribution & 
+    \begin{itemize}
+        \item Age: The original experiment was conducted with young children; the current experiment was conducted with adults.
+    \end{itemize}
+& \begin{itemize}
+    \item Adults may have failed to engage with their causal reasoning because the story is too simplistic.
+\end{itemize} \\
+
+Change Detection & 
+\begin{itemize}
+    \item Test Format: The original experiment was conducted in person; the current experiment was conducted through web-based interfaces.
+\end{itemize} & 
+\begin{itemize}
+    \item The in-lab setting might facilitate participants’ performance by making them pay more attention to the computer screen. 
+\end{itemize}\\
+
+    \hline
+    \end{longtable}
+
+
+\end{landscape}
+

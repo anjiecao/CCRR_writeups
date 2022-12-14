@@ -102,7 +102,7 @@ scale_fill_manual(values = c("red", "blue")) +
 guides(color = "none") + 
   theme_classic() + 
   xlab("") +
-  theme(text = element_text(size=4),
+  theme(text = element_text(size=12),
       plot.title = element_text(hjust = 0.5, size = 8), 
       plot.subtitle = element_text(hjust = 0.5, size = 6))  )
 
@@ -118,7 +118,7 @@ scale_fill_manual(values = c("red", "blue")) +
 guides(color = "none") + 
   theme_classic() + 
   xlab("") + 
-  theme(text = element_text(size=4),
+  theme(text = element_text(size=12),
       plot.title = element_text(hjust = 0.5, size = 8), 
       plot.subtitle = element_text(hjust = 0.5, size = 6)) 
   )
@@ -161,7 +161,7 @@ xlab("Size difference")+
 theme_classic()+
   theme(text = element_text(size=9)) + 
    labs(title = "Ebbinghaus Illusion") +
-theme(text = element_text(size=4),
+theme(text = element_text(size=8),
       plot.title = element_text(hjust = 0.5, size = 8), 
       plot.subtitle = element_text(hjust = 0.5, size = 6))  
 ```
@@ -204,9 +204,11 @@ theme_classic() +
 #         )  + 
   facet_wrap(~resp_type_print)+
   labs(title = "Causal Attribution") +
-theme(text = element_text(size=4),
+theme(text = element_text(size=12),
       plot.title = element_text(hjust = 0.5, size = 8), 
       plot.subtitle = element_text(hjust = 0.5, size = 6))  
+
+d1_ca_plot
 ```
 
 ## generics 
@@ -299,6 +301,25 @@ d1_all = plot_grid(d1_regular_plot, d1_wide_plot, ncol = 1, greedy = FALSE)
 ### CD 
 
 ```{r}
+
+ d2 %>% 
+  filter(task_name == "CD") %>% 
+  filter(subject %in% (raw_CD %>% 
+  filter(mean_log_rt < 8))$subject) %>% 
+  mutate(resp = log(as.numeric(resp))) %>% 
+  ungroup() %>% 
+  ggplot(aes(x = resp, fill = task_info)) +
+  geom_density(alpha = .3) + 
+  theme_classic() + 
+  xlab("log reaction time")
+  #geom_histogram(bins = 50) + 
+  #facet_wrap(~task_info)
+
+
+```
+
+
+```{r}
 raw_CD <- d2 %>% 
   filter(task_name == "CD") %>% 
   group_by(subject, task_info, culture) %>% 
@@ -322,9 +343,11 @@ xlab("")+
 theme_classic() +
   facet_wrap(~resp_type_print)+
   labs(title = "Change Detection")  + 
-  theme(text = element_text(size=4),
+  theme(text = element_text(size=12),
       plot.title = element_text(hjust = 0.5, size = 8), 
       plot.subtitle = element_text(hjust = 0.5, size = 6))  
+
+d2_cd_plot
 ```
 
 ### Causal Attribution 
@@ -353,9 +376,11 @@ xlab("")+
 theme_classic() +
   facet_wrap(~resp_type_print)+
   labs(title = "Causal Attribution")  + 
-  theme(text = element_text(size=4),
+  theme(text = element_text(size=12),
       plot.title = element_text(hjust = 0.5, size = 8), 
       plot.subtitle = element_text(hjust = 0.5, size = 6)) 
+
+d2_ca_plot
 ```
 
 
@@ -391,6 +416,28 @@ d2_rv_plot
 ```
 
 ### SeI 
+
+```{r}
+
+clean_d2_SeI %>% 
+  rename(resp = resp_num) %>% 
+ggplot( aes(x = culture, y = resp, color = culture)) +
+                    geom_point(alpha = .2, position = position_jitter(width = .1, height = .1)) + 
+                    stat_summary(fun.data = "mean_cl_boot", color = "black") + 
+scale_color_manual(values = c("red", "blue"))+
+scale_fill_manual(values = c("red", "blue")) + 
+  guides(fill = "none") +
+guides(color = "none") + 
+  theme_classic() + 
+  xlab("") + 
+  ylab("Proportion of Causal Historical Response") + 
+  labs(title = "Semantic Intuition")+
+  theme(text = element_text(size=12),
+      plot.title = element_text(hjust = 0.5, size = 8), 
+      plot.subtitle = element_text(hjust = 0.5, size = 6)) 
+  )
+```
+
 
 ```{r}
 d2_sei_plot <- d2_base_plot_list$SeI + 

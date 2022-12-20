@@ -40,14 +40,14 @@ Our goal here was not to perform direct replications that would shed light on th
         \hline
         \bf{Task Name} & \bf{Difference between the current version and the original version} & \bf{Speculative reasons} \\
         \hline
-        Ambiguous Relational Match-To-Sample (RMTS) & 
+        Ambiguous causal Relational Match-To-Sample (cRMTS) & 
         \begin{itemize}
-        \item Age: The original experiment was conducted with young children; the current experiment was conducted with adults.
+        \item Age: The original experiment was conducted with young children; the current experiment was conducted with adults (but cf. @goddu2021adults for non-chance adult performance in a very similar paradigm).
         \item Test Format: The original experiment was conducted in person with physical stimuli and live experimenters; the current experiment was conducted through web-based interfaces with animation. 
         \end{itemize}&  
         \begin{itemize}
         \item The relation between objects might have been less salient when the stimuli were presented as schematic animation.
-     \item Adults may have been  overall less engaged with the tasks and paid less attention to the causal properties of the object pairs.
+     \item Adults may have been overall less engaged with the tasks and paid less attention to the causal properties of the object pairs.
     \end{itemize}\\
 
 Ebbinghaus Illusion & 
@@ -57,13 +57,13 @@ Ebbinghaus Illusion &
     \end{itemize} & 
     \begin{itemize}
         \item Adults in both cultures reached ceiling performance. 
-        \item U.S. and Chinese participants may different levels of visual context sensitivity compared to Canadian and Japanese participants.
+        \item U.S. and Chinese participants may differ in visual context sensitivity compared to Canadian and Japanese participants.
     \end{itemize} \\
 
 Horizon Collage  & 
     \begin{itemize}
         \item Age: The original experiment was conducted with young children; the current experiment was conducted with adults.
-        \item Test Format: The original experiment was conducted in person with canvas and collage stickers; the current experiment was conducted through web-based interfaces.
+        \item Test Format: The original experiment was conducted in person with paper and collage stickers; the current experiment was conducted through web-based interfaces.
         \item Culture: The original experiment compared Japanese participants with Canadian participants; the current experiment compared Chinese participants with U.S. participants.
     \end{itemize} &
     \begin{itemize}
@@ -75,7 +75,7 @@ Horizon Collage  &
 Symbolic Self-Inflation (Family version and Friends version) & 
     \begin{itemize}
         \item Test Format: The original experiment was conducted in person with pen and paper; the current experiment was conducted through web-based interfaces.
-        \item Test Prompt: The original experiment asked the participants to draw their close social network; the current experiment asked the participants to draw their family members or friends growing up.
+        \item Test Prompt (Family version): The original experiment asked the participants to draw their close social network; the current experiment asked the participants to draw their family members or friends growing up.
     \end{itemize} & 
     \begin{itemize}
         \item The online interface might have altered participants’ drawing process, making it more difficult to implicitly represent the symbolic meaning of the circle size.
@@ -85,11 +85,13 @@ Symbolic Self-Inflation (Family version and Friends version) &
 Uniqueness Preference & 
     \begin{itemize}
         \item Test Format: The original experiment was conducted in person; the current experiment was conducted through web-based interfaces.
-        \item Stimulus: The original experiment was giving away physical pens; the current experiment was asking the participants to select virtual stickers.
+        \item Stimulus: The original experiment gave away physical pens to keep; the current experiment asked participants to select virtual stickers.
+        \item Test Context: The original experiment prompted participants to make their pen selection after completing a questionnaire indicating their aesthetic preference for abstract art with unique or repeating shapes.
     \end{itemize}   & 
     \begin{itemize}
-        \item The choice for a virtual sticker represents is less meaningful than a choice for a real pen.
+        \item The choice between virtual stickers is less meaningful than between real pens.
         \item The presence of a live experimenter might increase the social pressure on participants, causing them to consider the cultural perception of their choice.
+        \item This richer context may have prompted more careful consideration of the key prompt.
     \end{itemize} \\
 
 Child Causal Attribution & 
@@ -97,7 +99,7 @@ Child Causal Attribution &
         \item Age: The original experiment was conducted with young children; the current experiment was conducted with adults.
     \end{itemize}
 & \begin{itemize}
-    \item Adults may have failed to engage with their causal reasoning because the story is too simplistic.
+    \item Adults may have failed to engage deeply in causal reasoning because the story is too simplistic.
 \end{itemize} \\
 
 Change Detection & 

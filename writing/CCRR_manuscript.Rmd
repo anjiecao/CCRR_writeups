@@ -24,7 +24,7 @@ affiliation:
   - id            : "2"
     institution   : "Department of Psychology, University of California, San Diego"
   - id            : "3"
-    institution   : "University of Chicago"
+    institution   : "Department of Psychology, University of Chicago"
   
   
 
@@ -37,7 +37,7 @@ abstract: |
 
 
   
-keywords          : "replication; cross-cultural differences"
+keywords          : "replication; cross-cultural differences; cognition; perception; US; China"
 wordcount         : "FIXME"
 csl               : "apa6-meta.csl"
 bibliography      : "library.bib"
@@ -207,7 +207,7 @@ nocite: |
 
 ---
 nocite: | 
-   @na2020culture
+   @na2020culture, @goddu2021toddlers
 ...
 
 ::: {#refs custom-style="Bibliography"}

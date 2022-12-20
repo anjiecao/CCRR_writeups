@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.12.12)  20 DEC 2022 10:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.12.20)  20 DEC 2022 12:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **CCRR_manuscript.tex
 (./CCRR_manuscript.tex
 LaTeX2e <2022-11-01> patch level 1
-L3 programming layer <2022-11-02> (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/apa6/apa6.cls
+L3 programming layer <2022-12-17> (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/apa6/apa6.cls
 Document Class: apa6 2020/01/13 v2.34 APA formatting (6th edition)
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
@@ -392,7 +392,7 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 Failed to patch abstract.
 Failed to patch title.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/xpatch/xpatch.sty (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2022-11-02 L3 programming layer (loader) 
+Package: expl3 2022-12-17 L3 programming layer (loader) 
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2022-10-26 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count300
@@ -400,7 +400,7 @@ File: l3backend-pdftex.def 2022-10-26 L3 backend support: PDF output (pdfTeX)
 ))
 Package: xpatch 2020/03/25 v0.3a Extending etoolbox patching commands
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
-Package: xparse 2022-06-22 L3 Experimental document command parser
+Package: xparse 2022-12-17 L3 Experimental document command parser
 )) (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/lineno/lineno.sty
 Package: lineno 2022/07/30 line numbers on paragraphs v5.0
 \linenopenalty=\count301
@@ -1154,27 +1154,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 649--649
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 649--649
-\T1/lmr/m/n/12 Re-la-tional
+\T1/lmr/m/n/12 causal Re-la-
  []
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 649--649
-\T1/lmr/m/n/12 Match-To-
+\T1/lmr/m/n/12 tional Match-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 649--649
+\T1/lmr/m/n/12 To-Sample
  []
 
 
 Underfull \hbox (badness 2951) in paragraph at lines 662--663
 []\T1/lmr/m/n/12 Culture: The orig-i-nal ex-per-i-ment com-pared
- []
-
-
-Underfull \hbox (badness 1484) in paragraph at lines 666--667
-[]\T1/lmr/m/n/12 U.S. and Chi-nese par-tic-i-pants may
- []
-
-
-Underfull \hbox (badness 1424) in paragraph at lines 666--667
-\T1/lmr/m/n/12 si-tiv-ity com-pared to Cana-dian and
  []
 
 
@@ -1203,12 +1198,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 691--691
  []
 
 
-Underfull \hbox (badness 2126) in paragraph at lines 706--707
+Underfull \hbox (badness 2126) in paragraph at lines 708--709
 []\T1/lmr/m/n/12 Adults may have failed to en-gage
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 709--709
+Underfull \hbox (badness 10000) in paragraph at lines 711--711
 []|\T1/lmr/m/n/12 Change De-tec-
  []
 
@@ -1239,18 +1234,18 @@ Package rerunfilecheck Info: File `CCRR_manuscript.out' has not changed.
 (rerunfilecheck)             Checksum: DC3539CDE6BBC2B5FF5059724160C74B;7725.
  ) 
 Here is how much of TeX's memory you used:
- 18207 strings out of 476928
- 300154 string characters out of 5824379
- 679522 words of memory out of 5000000
- 38857 multiletter control sequences out of 15000+600000
- 552760 words of font info for 96 fonts, out of 8000000 for 9000
+ 18206 strings out of 478053
+ 300148 string characters out of 5839881
+ 1876793 words of memory out of 5000000
+ 37730 multiletter control sequences out of 15000+600000
+ 595788 words of font info for 100 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  72i,11n,77p,1592b,684s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb>
-Output written on CCRR_manuscript.pdf (49 pages, 760946 bytes).
+Output written on CCRR_manuscript.pdf (49 pages, 761745 bytes).
 PDF statistics:
- 710 PDF objects out of 1000 (max. 8388607)
- 622 compressed objects within 7 object streams
- 250 named destinations out of 1000 (max. 500000)
+ 711 PDF objects out of 1000 (max. 8388607)
+ 623 compressed objects within 7 object streams
+ 251 named destinations out of 1000 (max. 500000)
  392 words of extra memory for PDF output out of 10000 (max. 10000000)
 

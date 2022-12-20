@@ -42,7 +42,7 @@ Our goal here was not to perform direct replications that would shed light on th
         \hline
         Ambiguous causal Relational Match-To-Sample (cRMTS) & 
         \begin{itemize}
-        \item Age: The original experiment was conducted with young children; the current experiment was conducted with adults (but cf. @goddu2021adults for non-chance adult performance in a very similar paradigm).
+        \item Age: The original experiment was conducted with young children; the current experiment was conducted with adults (but cf. Goddu, Sullivan, \& Walker (2021) for non-chance adult performance in a very similar paradigm).
         \item Test Format: The original experiment was conducted in person with physical stimuli and live experimenters; the current experiment was conducted through web-based interfaces with animation. 
         \end{itemize}&  
         \begin{itemize}

@@ -1,18 +1,18 @@
 
-We conducted a set of exploratory analyses to consolidate results from the two experiments. We first performed a mini-meta analysis with the tasks from both experiments. Then, we assessed the reliability of the tasks that included multiple trials. Finally, we examined how explicit cultural identities and demographic factors relate to task performance.
+We conducted a set of exploratory analyses to consolidate results from the two experiments. We first performed a miniature meta-analysis with the tasks from both experiments. Then, we assessed the reliability of the tasks that included multiple trials, the relationships between tasks, and finally, how explicit cultural identities and demographic factors relate to task performance.
 
-## Mini-meta analysis 
+## Mini meta-analysis 
 
-As our first exploratory analysis, we identified the key effect of interest from our pre-registration (usually a main effect of culture or an interaction of culture, depending on task) and converted the coefficient into a standardized measure of effect size (standardized mean difference; SMD) via the method described by @westfall2014statistical. Because there is no “correct” direction for all of the tasks except Raven’s Matrices, we show the absolute value of effect size (Figure \@ref(fig:es-plot)). 
+As our first exploratory analysis, we identified the key effect of interest from our pre-registration (usually a main effect of culture or an interaction of culture, depending on task) and converted the coefficient into a standardized measure of effect size (standardized mean difference; SMD) via the method described by @westfall2014statistical. Because there is no “correct” direction for any task except Raven’s SPM, we show the absolute value of the effect sizes (Figure \@ref(fig:es-plot)). 
 
 
-```{r es-plot, fig.cap="Forest plot of effect sizes (standardized mean difference) for each task across both experiments. Point shape shows experiment number and color provides a guide to whether effects were consistent with prior literature."}
+```{r es-plot, fig.cap="Forest plot of effect sizes (standardized mean difference) for each task across both experiments. Point shape shows experiment number and color indicates whether effects were consistent with prior literature."}
 
 es <- readRDS(here("cached_results/ea/effect_sizes.RDS"))
 plot_es(es)
 ```
 
-Across our two experiments, we saw consistent and generally large differences (SMD > 0.6) in Free Description, Raven's Matrices, Adult Causal Attribution, Semantic Intuition and Triads tasks. Aside from Raven’s Matrices, all of these tasks had in common that they were deliberative linguistic tasks that tapped into relatively high-level cognitive constructs. In contrast, we observed effect sizes close to zero for our more aesthetic and perceptual tasks (Change Detection, Ebbinghaus Illusion, and Horizon). We also observed little consistent difference in four other tasks (RMTS, Symbolic Self-Inflation, Uniqueness Preference, and Children’s Causal Attribution), perhaps for reasons idiosyncratic to each. We return to the broader question of generalization across task types in the General Discussion. 
+Across our two experiments, we saw consistent and generally large differences (SMD > 0.6) in Free Description, Raven's SPM, Adult Causal Attribution, Semantic Intuition, and Taxonomic-Thematic Similarity tasks. Aside from Raven’s SPM, all of these tasks have in common that they are deliberative linguistic tasks that tapped into relatively high-level cognitive constructs. In contrast, we observed effect sizes close to zero for our more aesthetic and perceptual tasks (Change Detection, Ebbinghaus Illusion, and Horizon Collage). We also observed little consistent difference in four other tasks (Ambiguous cRMTS, Symbolic Self-Inflation, Uniqueness Preference, and Children’s Causal Attribution), perhaps for reasons idiosyncratic to each. We return to the broader question of generalization across task types in the General Discussion. 
 
-We next conducted a set of exploratory analyses to consolidate results from the two experiments. First, we assessed the reliability of the tasks that included multiple trials. We next examined whether there was shared variance between tasks. Finally, we examined how explicit cultural identities and demographic factors related to task performance.
+We conducted three additional exploratory analyses to consolidate results from the two experiments. First, we assessed the reliability of the tasks that included multiple trials. Second, we examined whether there was shared variance between tasks. Finally, we examined how explicit cultural identities and demographic factors relate to task performance.
 

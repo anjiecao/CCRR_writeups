@@ -3,24 +3,24 @@ plot_es <- function(d){
   d_abs_df <- d %>% 
     mutate(
       task_name_print = case_when(
-        grepl("RMTS", task_name) ~ "RMTS", 
-        grepl("RV", task_name) ~ "Ravens", 
-        grepl("SI", task_name) | grepl("SSI", task_name) ~ "Symbolic Self Inflation", 
+        grepl("RMTS", task_name) ~ "Ambiguous cRMTS", 
+        grepl("RV", task_name) ~ "Raven's SPM", 
+        grepl("SI", task_name) | grepl("SSI", task_name) ~ "Symbolic Self-Inflation", 
         grepl("FD", task_name) ~ "Free Description (first mention)", 
         grepl("CP", task_name) ~ "Uniqueness Preference", 
-        grepl("CA", task_name) & study_num == "Study 1" ~ "Children Causal Attribution", 
+        grepl("CA", task_name) & study_num == "Study 1" ~ "Child Causal Attribution", 
         grepl("CA", task_name) & study_num == "Study 2" ~ "Adult Causal Attribution", 
-        grepl("HZ", task_name) ~ "Horizon (Height)", 
+        grepl("HZ", task_name) ~ "Horizon Collage (Height)", 
         grepl("EBB", task_name) ~ "Ebbinghaus Illusion", 
         grepl("CD", task_name) ~ "Change Detection", 
-        grepl("TD", task_name) ~ "Triads", 
+        grepl("TD", task_name) ~ "Taxonomic-Thematic Similarity", 
         grepl("SeI", task_name) ~ "Semantic Intuition"
       )) %>% 
     mutate(significance =  !(d_ci_lower < 0 & d_ci_upper > 0), 
            consistent_with_prediction = case_when(
              task_name_print %in% c("Free Description (first mention)", "Adult Causal Attribution", 
-                                    "Ravens","Semantic Intuition", "Triads") & significance ~ "Consistent",
-             task_name_print == "Symbolic Self Inflation" & significance~ "Inconsistent",
+                                    "Raven's SPM","Semantic Intuition", "Taxonomic-Thematic Similarity") & significance ~ "Consistent",
+             task_name_print == "Symbolic Self-Inflation" & significance~ "Inconsistent",
              TRUE ~ "No difference"
            ),
            advantage = case_when(

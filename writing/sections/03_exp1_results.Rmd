@@ -1,6 +1,6 @@
 
 ```{r fig.cap = "Results from each task. Results from the CN sample are plotted in red, and the US in blue.",fig.width=8, fig.height=11}
-#plot_megaplogt()
+plot_megaplogt()
 ```
 
 
@@ -165,7 +165,7 @@ We examined cross-cultural preferences for uniqueness by running a simple logist
 
 The difference between our result and that of the original study by @kim1999deviance may be related to our use of an online format in our study. In the original study, participants were asked to pick a gift pen from five physical pens with different barrel colors. It could be that Asian American participants in the previous study chose the more common color because they wanted to leave a choice for the next participant in the face of resource scarcity, rather than because they were expressing values or identities influenced by East Asian cultural mandates favoring interpersonal harmony and similarity. Our finding is also consistent with previous work demonstrating that tendencies toward conformity in East Asian samples are linked to reputation management [@yamagishi2008preferences]; it may be that our online experiment did not establish a sufficient social context to motivate participants' concern about reputation, and accordingly failed to motivate reputation management in the form of a conformity preference. 
 
-### Causal Attribution 
+### Child Causal Attribution 
 
 ```{r ca_summary, warning=FALSE}
 CA_summary <- d %>% 

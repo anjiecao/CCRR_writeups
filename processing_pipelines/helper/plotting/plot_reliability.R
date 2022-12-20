@@ -3,9 +3,9 @@ plot_rl <- function(df){
   df %>% 
     mutate(
       print_task_name = case_when(
-        task_name == "TD" ~ "Triads", 
-        task_name == "RV" ~ "Ravens", 
-        task_name == "RMTS" ~ "RMTS", 
+        task_name == "TD" ~ "Taxonomic-Thematic Similarity",  
+        task_name == "RV" ~ "Raven's SPM", 
+        task_name == "RMTS" ~ "Ambiguous cRMTS", 
         task_name == "FD" ~ "Picture Free Description", 
         task_name == "EBB" ~ "Ebbinghaus Illusion",
         task_name == "CD" ~ "Change Detection", 

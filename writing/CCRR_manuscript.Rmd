@@ -29,7 +29,7 @@ affiliation:
   
 
 authornote: |
-  We gratefully acknowledge Alvin Tan, Joseph Outa, and the members of the Language and Cognition Lab at Stanford for comments and assistance. We are also grateful for feedback and suggestions from Jenny Yang, Catherine Thomas, Ellen Reinhart, Erik Santoro, Kengthsagn Louis, Leslie Remache, Hazel Markus, and Shinobu Kitayama. Experiment 1 was previously reported in abbreviated form in the Proceedings of the Cognitive Science Society as Carstensen et al. (2020).
+  We gratefully acknowledge Alvin Tan, Joseph Outa, and the members of the Language and Cognition Lab at Stanford for comments and assistance. We are grateful for feedback and suggestions from Jenny Yang, Catherine Thomas, Ellen Reinhart, Erik Santoro, Kengthsagn Louis, Leslie Remache, Hazel Markus, and Shinobu Kitayama. We also want to thank the authors who provided the original experiment materials. Experiment 1 was previously reported in abbreviated form in the Proceedings of the Cognitive Science Society as Carstensen et al. (2020).
   
 abstract: |
 
@@ -204,6 +204,11 @@ nocite: |
 \newpage
 
 # References
+
+---
+nocite: | 
+   @na2020culture
+...
 
 ::: {#refs custom-style="Bibliography"}
 :::

@@ -163,7 +163,7 @@ plot_megaplogt <- function(){
     #         plot.margin=grid::unit(c(0,0,0,0), "mm")
     #         )  + 
     facet_wrap(~resp_type_print)+
-    labs(title = "Causal Attribution") +
+    labs(title = "Child Causal Attribution") +
     theme(text = element_text(size=6),
           axis.text=element_text(size=10),
           strip.text = element_text(size=8),
@@ -221,7 +221,7 @@ plot_megaplogt <- function(){
     xlab("")+
     theme_classic() +
     facet_wrap(~resp_type_print)+
-    labs(title = "Causal Attribution")  + 
+    labs(title = "Adult Causal Attribution")  + 
     theme(text = element_text(size=6),
           axis.text=element_text(size=10),
           strip.text = element_text(size=8),
@@ -242,13 +242,13 @@ plot_megaplogt <- function(){
     labs(title = "Horizon Collage")
   d1_rmts_plot <- d1_base_plot_list$RMTS + 
     ylab("Proportion choosing relational match") + 
-    labs(title = "Ambiguous RMTS")
+    labs(title = "Ambiguous cRMTS")
   d1_rv_plot <- d1_base_plot_list$RV + 
     ylab("Proportion correct") + 
-    labs(title = "Ravens")
+    labs(title = "Raven's SPM")
   d1_ssi_plot <- d1_base_plot_list$SI + 
     ylab("Ratio of inflation") + 
-    labs(title = "Symbolic Self Inflation")
+    labs(title = "Symbolic Self-Inflation")
   
   
   ###########fine tuning d2 plot###########
@@ -258,16 +258,16 @@ plot_megaplogt <- function(){
     labs(title = "Free Description")
   d2_rmts_plot <- d2_base_plot_list$RMTS + 
     ylab("Proportion choosing relational match") + 
-    labs(title = "Ambiguous RMTS")
+    labs(title = "Ambiguous cRMTS")
   d2_rv_plot <- d2_base_plot_list$RV + 
     ylab("Proportion correct") + 
-    labs(title = "Ravens")
+    labs(title = "Raven's SPM")
   d2_sei_plot <- d2_base_plot_list$SeI + 
     ylab("N of Causal Historical Response") + 
     labs(title = "Semantic Intuition")
   d2_ssi_plot <- d2_base_plot_list$SSI + 
     ylab("N of Causal Historical Response") + 
-    labs(title = "Symbolic Self Inflation")
+    labs(title = "Symbolic Self-Inflation")
   d2_td_plot <- d2_base_plot_list$TD + 
     ylab("Proportion Taxonomic Match") + 
     labs(title = "Taxonomic-Thematic Similarity")

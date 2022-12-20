@@ -139,7 +139,7 @@ Both Japanese adults and children have been found to be more susceptible to the 
 @kim1999deviance tested East Asians’ and Americans’ preferences for harmony or uniqueness by asking them to pick one gift pen from five options. In the condition that we replicated, the options differed only in the barrel colors, with four that were the same and one that was unique. They found that European Americans were more likely to choose the unique colored pen than East Asian participants. We adapted our task to better fit the format of our online experiment by showing a virtual “sticker book” to measure progress through all tasks in our study. At the end of each task, participants received a virtual sticker. For the uniqueness preference task, we let them select one of five dinosaur stickers that were identical except for color: four blue and one yellow (with repeated and unique colors randomized between participants). Choice of the unique vs. repeated color was recorded.
 
 
-#### Causal Attribution 
+#### Child Causal Attribution 
 
 Previous work has shown that participants from South Korea and the U.S. attribute behaviors differently in situations where there is evidence in favor of situational explanations [ @choi1999causal]. Similarly, Chinese participants and media are more likely than their US counterparts to attribute a person’s behaviors to situational context as opposed to  individual traits  [@morris1994culture; @morris1995causal]. We adapted the deterministic situation condition in @seiver2013did, a task originally designed for children. In this task, two children both engage in one activity and avoid another, suggesting that situational constraints (e.g., the latter activity being dangerous) may be guiding their decisions. Participants watched a series of four short, animated vignettes in which two children both played in a pool and neither child played on a bicycle. We then asked participants to explain in text why each child did not play on the bicycle, making for two test trials per participant. We used the prompt question from @seiver2013did, which explicitly pits person attributions against situational ones: “Why didn’t Sally play on the bicycle? Is it because she’s the kind of person who gets scared, or because the bicycle is dangerous to play on?” We coded each response for per-trial count of (a) personal and (b) situational attributions.
 
@@ -151,7 +151,7 @@ As an additional attention check as well as an exploratory measure of relational
 
 ### Analyitic approach
 
-Data and analysis scripts are available at FIXME
+Data and analysis scripts are available at https://github.com/anjiecao/CCRR_writeups
 
 The papers that we drew on for our tasks used a heterogeneous set of analytic methods. Rather than planning to replicate these specific analyses, we instead attempted to follow current best practices by using linear mixed effects models with maximal random effect structure as a unified analytic framework [@barr2013random]. We fit a separate model to each task. In case of convergence failure, we followed lab standard operating procedures: pruning random slopes first and then random intercepts, always maintaining random intercepts by participant. For linear models, we report p-values derived from t-scores. For linear mixed models, we report p-values derived from z-scores, which is appropriate for relatively large samples [@blouin2004difference]. Our key tests of interest were typically either the coefficient for a main effect of country (US/China) or an interaction of country and condition. 
 

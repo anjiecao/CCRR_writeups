@@ -36,9 +36,9 @@ Our goal here was not to perform direct replications that would shed light on th
 
 \begin{landscape}
     \begin{longtable}{p{3cm}p{10cm}p{8cm}}\\
-    \caption{Tasks included in each experiment and the final sample size after exclusion.}\\
+    \caption{Differences between our tasks, the original refernce tasks, and speculation about how these differences may have impacted our results.}\\
         \hline
-        \bf{Task Name} & \bf{Difference between the current version and the original version} & \bf{Speculative reasons} \\
+        \bf{Task Name} & \bf{Difference between the current and original version} & \bf{Speculative reasons} \\
         \hline
         Ambiguous causal Relational Match-To-Sample (cRMTS) & 
         \begin{itemize}

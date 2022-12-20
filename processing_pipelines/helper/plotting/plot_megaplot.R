@@ -77,8 +77,8 @@ plot_megaplogt <- function(){
           xlab("") +
           theme(text = element_text(size=6),
                 axis.text=element_text(size=10),
-                plot.title = element_text(hjust = 0.5, size = 7.5), 
-                plot.subtitle = element_text(hjust = 0.5, size = 7.5)),
+                plot.title = element_text(hjust = 0.5, size = 7.2), 
+                plot.subtitle = element_text(hjust = 0.5, size = 7.2)),
                 plot.margin = unit(c(3, 3, 3, 3)))
   
   d2_base_plot_list <- d2_generics %>% 
@@ -95,8 +95,8 @@ plot_megaplogt <- function(){
           xlab("") + 
           theme(text = element_text(size=6),
                 axis.text=element_text(size=10),
-                plot.title = element_text(hjust = 0.5, size = 7.5), 
-                plot.subtitle = element_text(hjust = 0.5, size = 7.5)) 
+                plot.title = element_text(hjust = 0.5, size = 7.2), 
+                plot.subtitle = element_text(hjust = 0.5, size = 7.2)) 
     )
   
   ###########d1 non generic plot###########
@@ -132,8 +132,8 @@ plot_megaplogt <- function(){
           axis.text.y=element_text(size=10),
           axis.title.x = element_text(size=8),
           strip.text = element_text(size=8),
-          plot.title = element_text(hjust = 0.5, size = 7.5), 
-          plot.subtitle = element_text(hjust = 0.5, size = 7.5))  
+          plot.title = element_text(hjust = 0.5, size = 7.2), 
+          plot.subtitle = element_text(hjust = 0.5, size = 7.2))  
   
   CA_ms <- d1 %>%
     filter(task_name == "CA") %>% 
@@ -167,8 +167,8 @@ plot_megaplogt <- function(){
     theme(text = element_text(size=6),
           axis.text=element_text(size=10),
           strip.text = element_text(size=8),
-          plot.title = element_text(hjust = 0.5, size = 7.5), 
-          plot.subtitle = element_text(hjust = 0.5, size = 7.5))  
+          plot.title = element_text(hjust = 0.5, size = 7.2), 
+          plot.subtitle = element_text(hjust = 0.5, size = 7.2))  
   ###########d2 non generic plot###########
   raw_CD <- d2 %>% 
     filter(task_name == "CD") %>% 
@@ -196,8 +196,8 @@ plot_megaplogt <- function(){
     theme(text = element_text(size=6),
           strip.text = element_text(size=8),
           axis.text=element_text(size=10),
-          plot.title = element_text(hjust = 0.5, size = 7.5), 
-          plot.subtitle = element_text(hjust = 0.5, size = 7.5))  
+          plot.title = element_text(hjust = 0.5, size = 7.2), 
+          plot.subtitle = element_text(hjust = 0.5, size = 7.2))  
   
   raw_CA <- d2 %>% 
     filter(task_name == "CA") %>% 
@@ -225,8 +225,8 @@ plot_megaplogt <- function(){
     theme(text = element_text(size=6),
           axis.text=element_text(size=10),
           strip.text = element_text(size=8),
-          plot.title = element_text(hjust = 0.5, size = 7.5), 
-          plot.subtitle = element_text(hjust = 0.5, size = 7.5)) 
+          plot.title = element_text(hjust = 0.5, size = 7.2), 
+          plot.subtitle = element_text(hjust = 0.5, size = 7.2)) 
   
   
   ###########fine tuning d1 plot###########

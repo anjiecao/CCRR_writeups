@@ -37,7 +37,7 @@ abstract: |
 
 
   
-keywords          : "replication; cross-cultural differences; cognition; perception; US; China"
+keywords          : "replication; cross-cultural differences; cognition; perception; US-China Comparison"
 wordcount         : "10486"
 csl               : "apa6-meta.csl"
 bibliography      : "library.bib"

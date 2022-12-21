@@ -85,7 +85,7 @@ plot_megaplogt <- function(){
     group_split(task_name) %>%
     setNames(sort(unique(d2_generics$task_name))) %>% 
     map(~ggplot(., aes(x = culture, y = resp, color = culture)) +
-          geom_point(alpha = .2, position = position_jitter(width = .1)) + 
+          geom_point(alpha = .2, position = position_jitter(width = .1, height = 0.02)) + 
           stat_summary(fun.data = "mean_cl_boot", color = "black") + 
           scale_color_manual(values = c("red", "blue"))+
           scale_fill_manual(values = c("red", "blue")) + 

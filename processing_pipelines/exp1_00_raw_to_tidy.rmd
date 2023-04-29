@@ -11,7 +11,7 @@ library(tidyverse)
 library(here)
 library(jsonlite)
 library(DT)
-library(Dict)
+library(dict)
 library(ggforce)
 library(ggimage)
 library(stringr)
@@ -225,13 +225,10 @@ df.all_ex <- bind_rows(df.us_all_ex,
   rename(culture = culture.x)
 
 ex_id <- df.all_ex %>% 
-  # ignore reason_SI for subject level exclusion
-  filter(reason_abroad | reason_EBB | reason_CA | reason_FD | reason_HZ | reason_RMTS | reason_EBB_complete | reason_CA_complete | reason_FD_complete | reason_HZ_complete | reason_RMTS_complete) %>%
-  
+  # exclude subjects
+  filter(reason_abroad ) %>%
   select(subject) %>% 
   pull()
-  
-  
   
   
 trimmed_d <- merged_data %>%
@@ -270,9 +267,30 @@ TASK <- c("EBB",
           "CA"
           )
 
+
 main <- TASK %>% 
   map_df(~ eval(parse(text = paste0("get_", ., "_main(trimmed_d)"))))
 
+
+
+```
+
+```{r}
+# task specific exclusion 
+trimmed_main <- bind_rows(
+  main %>% filter(task_name == "EBB" & !(subject %in% filter(df.all_ex, reason_EBB | reason_EBB_complete)$subject)), 
+  main %>% filter(task_name == "CA" & !(subject %in% filter(df.all_ex, reason_CA | reason_CA_complete)$subject)), 
+  main %>% filter(task_name == "FD" & !(subject %in% filter(df.all_ex, reason_FD | reason_FD_complete)$subject)), 
+  main %>% filter(task_name == "HZ" & !(subject %in% filter(df.all_ex, reason_HZ | reason_HZ_complete)$subject)), 
+  main %>% filter(task_name == "RMTS" & !(subject %in% filter(df.all_ex, reason_RMTS | reason_RMTS_complete)$subject)), 
+  main %>% filter( task_name == "CP"), 
+  main %>% filter(task_name == "RV")
+)
+
+```
+
+
+```{r}
 # special treatment for symbolic self inflation task due to the coding pipelines
 
 # get_SI
@@ -284,7 +302,7 @@ SI_ex_id <- df.all_ex %>%
 si_df <- get_SI_main(trimmed_d, SI_ex_id)
 
 
-main <- bind_rows(si_df, main)
+main <- bind_rows(si_df, trimmed_main)
 write.csv(main,PROCESSED_MAIN_PATH)
 
 ```

@@ -113,9 +113,6 @@ hz_summary <- d %>%
     )
     )
 
-hz_height_bf <- e1_bfs_df %>% filter(bfs_type == "hz_height")
-hz_n_bf <- e1_bfs_df %>% filter(bfs_type == "hz_n")
-hz_stkr_area_bf <- e1_bfs_df %>% filter(bfs_type == "hz_area")
 ```
 
 

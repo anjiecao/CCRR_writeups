@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.12.20)  21 DEC 2022 12:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  28 APR 2023 16:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **CCRR_manuscript.tex
 (./CCRR_manuscript.tex
 LaTeX2e <2022-11-01> patch level 1
-L3 programming layer <2022-12-17> (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/apa6/apa6.cls
+L3 programming layer <2023-02-22> (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/apa6/apa6.cls
 Document Class: apa6 2020/01/13 v2.34 APA formatting (6th edition)
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
@@ -309,25 +309,23 @@ LaTeX Info: Redefining \addtolength on input line 81.
 \calc@Ccount=\count290
 \calc@Cskip=\skip80
 ) (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2022/11/30 3.83 The Babel package
+Package: babel 2023/02/13 3.86 The Babel package
 \babel@savecnt=\count291
 \U@D=\dimen183
 \l@unhyphenated=\language3
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/generic/babel/txtbabel.def)
 \bbl@readstream=\read2
 \bbl@dirlevel=\count292
-Package babel Info: You haven't specified a language. I'll use 'nil'
-(babel)             as the main language. Reported on input line 4452.
+Package babel Info: You haven't specified a language as a class or package
+(babel)             option. I'll load 'nil'. Reported on input line 4422.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/generic/babel/nil.ldf
-Language: nil 2022/11/30 3.83 Nil language
+Language: nil 2023/02/13 3.86 Nil language
 \l@nil=\language4
 ))
 \everypar=\toks27
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/generic/babel/locale/en/babel-english.tex)
 Package babel Info: Importing data for english
 (babel)             from babel-en.ini. Reported on input line 90.
-Package babel Info: Hyphen rules for 'english' set to \l@english
-(babel)             (\language0). Reported on input line 90.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/was/upgreek.sty
 Package: upgreek 2003/02/12 v2.0 (WaS)
 Package upgreek Info: Using Euler Roman for upright Greek on input line 31.
@@ -392,17 +390,17 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 Failed to patch abstract.
 Failed to patch title.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/xpatch/xpatch.sty (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2022-12-17 L3 programming layer (loader) 
+Package: expl3 2023-02-22 L3 programming layer (loader) 
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2022-10-26 L3 backend support: PDF output (pdfTeX)
+File: l3backend-pdftex.def 2023-01-16 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count300
 \l__pdf_internal_box=\box64
 ))
 Package: xpatch 2020/03/25 v0.3a Extending etoolbox patching commands
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
-Package: xparse 2022-12-17 L3 Experimental document command parser
+Package: xparse 2023-02-02 L3 Experimental document command parser
 )) (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/lineno/lineno.sty
-Package: lineno 2022/07/30 line numbers on paragraphs v5.0
+Package: lineno 2023/01/19 line numbers on paragraphs v5.1
 \linenopenalty=\count301
 \output=\toks31
 \linenoprevgraf=\count302
@@ -418,7 +416,7 @@ Package: lineno 2022/07/30 line numbers on paragraphs v5.0
 \bframesep=\dimen197
 \bframebox=\box65
 \linenoamsmath@ams@eqpen=\count308
-LaTeX Info: Redefining \\ on input line 3114.
+LaTeX Info: Redefining \\ on input line 3131.
 ) (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.sty
 Package: csquotes 2022-09-14 v5.2n context-sensitive quotations (JAW)
 \csq@reset=\count309
@@ -503,7 +501,7 @@ File: tc-pdftex.def 2019/01/04 v2.2 Clipping driver for pdftex
 ) (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2022/12/04 v6.7b set line spacing
 ) (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2022-11-13 v7.00u Hypertext links for LaTeX
+Package: hyperref 2023-02-07 v7.00v Hypertext links for LaTeX
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
 Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
 ) (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
@@ -541,7 +539,7 @@ Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 \Hy@linkcounter=\count324
 \Hy@pagecounter=\count325
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2022-11-13 v7.00u Hyperref: PDFDocEncoding definition (HO)
+File: pd1enc.def 2023-02-07 v7.00v Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 ) (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
@@ -551,24 +549,24 @@ Package: etexcmds 2019/12/15 v1.7 Avoid name clashes with e-TeX commands (HO)
 )
 \Hy@SavedSpaceFactor=\count326
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
-File: puenc.def 2022-11-13 v7.00u Hyperref: PDF Unicode definition (HO)
+File: puenc.def 2023-02-07 v7.00v Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
 )
-Package hyperref Info: Option `unicode' set `true' on input line 4045.
-Package hyperref Info: Hyper figures OFF on input line 4162.
-Package hyperref Info: Link nesting OFF on input line 4167.
-Package hyperref Info: Hyper index ON on input line 4170.
-Package hyperref Info: Plain pages OFF on input line 4177.
-Package hyperref Info: Backreferencing OFF on input line 4182.
+Package hyperref Info: Option `unicode' set `true' on input line 4060.
+Package hyperref Info: Hyper figures OFF on input line 4177.
+Package hyperref Info: Link nesting OFF on input line 4182.
+Package hyperref Info: Hyper index ON on input line 4185.
+Package hyperref Info: Plain pages OFF on input line 4192.
+Package hyperref Info: Backreferencing OFF on input line 4197.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4410.
+Package hyperref Info: Bookmarks ON on input line 4425.
 \c@Hy@tempcnt=\count327
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
-LaTeX Info: Redefining \url on input line 4748.
+LaTeX Info: Redefining \url on input line 4763.
 \XeTeXLinkMargin=\dimen278
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
@@ -578,13 +576,13 @@ Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
 \Fld@menulength=\count328
 \Field@Width=\dimen279
 \Fld@charsize=\dimen280
-Package hyperref Info: Hyper figures OFF on input line 6027.
-Package hyperref Info: Link nesting OFF on input line 6032.
-Package hyperref Info: Hyper index ON on input line 6035.
-Package hyperref Info: backreferencing OFF on input line 6042.
-Package hyperref Info: Link coloring OFF on input line 6047.
-Package hyperref Info: Link coloring with OCG OFF on input line 6052.
-Package hyperref Info: PDF/A mode OFF on input line 6057.
+Package hyperref Info: Hyper figures OFF on input line 6042.
+Package hyperref Info: Link nesting OFF on input line 6047.
+Package hyperref Info: Hyper index ON on input line 6050.
+Package hyperref Info: backreferencing OFF on input line 6057.
+Package hyperref Info: Link coloring OFF on input line 6062.
+Package hyperref Info: Link coloring with OCG OFF on input line 6067.
+Package hyperref Info: PDF/A mode OFF on input line 6072.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
@@ -595,7 +593,7 @@ package with kernel methods
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def
-File: hpdftex.def 2022-11-13 v7.00u Hyperref driver for pdfTeX
+File: hpdftex.def 2023-02-07 v7.00v Hyperref driver for pdfTeX
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty
 Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
 with kernel methods
@@ -773,12 +771,12 @@ Underfull \hbox (badness 6396) in paragraph at lines 243--243
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 243--243
-[]|\T1/lmr/m/n/12 167| 
+[]|\T1/lmr/m/n/12 186| 
  []
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 243--244
-[]|\T1/lmr/m/n/12 169| 
+[]|\T1/lmr/m/n/12 178| 
  []
 
 
@@ -788,12 +786,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 245--245
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 245--245
-[]|\T1/lmr/m/n/12 167| 
+[]|\T1/lmr/m/n/12 169| 
  []
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 245--246
-[]|\T1/lmr/m/n/12 169| 
+[]|\T1/lmr/m/n/12 172| 
  []
 
 
@@ -803,22 +801,22 @@ Underfull \hbox (badness 1694) in paragraph at lines 247--247
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 247--247
-[]|\T1/lmr/m/n/12 167| 
+[]|\T1/lmr/m/n/12 190| 
  []
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 247--248
-[]|\T1/lmr/m/n/12 169| 
+[]|\T1/lmr/m/n/12 180| 
  []
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 249--249
-[]|\T1/lmr/m/n/12 167| 
+[]|\T1/lmr/m/n/12 187| 
  []
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 249--250
-[]|\T1/lmr/m/n/12 169| 
+[]|\T1/lmr/m/n/12 175| 
  []
 
 
@@ -838,12 +836,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 251--251
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 251--251
-[]|\T1/lmr/m/n/12 141| 
+[]|\T1/lmr/m/n/12 150| 
  []
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 251--252
-[]|\T1/lmr/m/n/12 110| 
+[]|\T1/lmr/m/n/12 114| 
  []
 
 
@@ -868,12 +866,12 @@ Underfull \hbox (badness 1360) in paragraph at lines 253--253
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 253--253
-[]|\T1/lmr/m/n/12 167| 
+[]|\T1/lmr/m/n/12 191| 
  []
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 253--254
-[]|\T1/lmr/m/n/12 169| 
+[]|\T1/lmr/m/n/12 180| 
  []
 
 
@@ -883,12 +881,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 255--255
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 255--255
-[]|\T1/lmr/m/n/12 167| 
+[]|\T1/lmr/m/n/12 177| 
  []
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 255--256
-[]|\T1/lmr/m/n/12 169| 
+[]|\T1/lmr/m/n/12 170| 
  []
 
 
@@ -898,236 +896,236 @@ Underfull \hbox (badness 10000) in paragraph at lines 257--257
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 257--257
-[]|\T1/lmr/m/n/12 167| 
+[]|\T1/lmr/m/n/12 191| 
  []
 
 
 Overfull \hbox (3.17119pt too wide) in paragraph at lines 257--258
-[]|\T1/lmr/m/n/12 169| 
+[]|\T1/lmr/m/n/12 180| 
  []
 
 
-Underfull \hbox (badness 5637) in paragraph at lines 258--258
+Underfull \hbox (badness 5637) in paragraph at lines 261--261
 []|\T1/lmr/m/n/12 Ambiguous Re-
  []
 
 
-Underfull \hbox (badness 6173) in paragraph at lines 258--258
+Underfull \hbox (badness 6173) in paragraph at lines 261--261
 \T1/lmr/m/n/12 la-tional Match-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 258--258
+Underfull \hbox (badness 10000) in paragraph at lines 261--261
 \T1/lmr/m/n/12 To-Sample
  []
 
 
-Underfull \hbox (badness 5475) in paragraph at lines 258--258
+Underfull \hbox (badness 5475) in paragraph at lines 261--261
 []|\T1/lmr/m/n/12 Carstensen et al.
  []
 
 
-Underfull \hbox (badness 6396) in paragraph at lines 258--258
+Underfull \hbox (badness 6396) in paragraph at lines 261--261
 []|\T1/lmr/m/n/12 Infer whether an
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 258--258
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 261--261
 []|\T1/lmr/m/n/12 174| 
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 258--259
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 261--262
 []|\T1/lmr/m/n/12 293| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 260--260
+Underfull \hbox (badness 10000) in paragraph at lines 263--263
 []|\T1/lmr/m/n/12 Describe pic-tures
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 260--260
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 263--263
 []|\T1/lmr/m/n/12 132| 
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 260--261
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 263--264
 []|\T1/lmr/m/n/12 284| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 262--262
+Underfull \hbox (badness 10000) in paragraph at lines 265--265
 []|\T1/lmr/m/n/12 Change De-tec-
  []
 
 
-Underfull \hbox (badness 2478) in paragraph at lines 262--262
+Underfull \hbox (badness 2478) in paragraph at lines 265--265
 \T1/lmr/m/n/12 the fore-ground or
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 262--262
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 265--265
 []|\T1/lmr/m/n/12 160| 
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 262--263
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 265--266
 []|\T1/lmr/m/n/12 253| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 264--264
+Underfull \hbox (badness 10000) in paragraph at lines 267--267
 []|\T1/lmr/m/n/12 Symbolic
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 264--264
+Underfull \hbox (badness 10000) in paragraph at lines 267--267
 \T1/lmr/m/n/12 Self-Inflation
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 264--264
+Underfull \hbox (badness 10000) in paragraph at lines 267--267
 []|\T1/lmr/m/n/12 Kitayama et al.
  []
 
 
-Underfull \hbox (badness 1048) in paragraph at lines 264--264
+Underfull \hbox (badness 1048) in paragraph at lines 267--267
 []|\T1/lmr/m/n/12 Draw a so-ciogram
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 264--264
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 267--267
 []|\T1/lmr/m/n/12 158| 
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 264--265
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 267--268
 []|\T1/lmr/m/n/12 252| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 266--266
+Underfull \hbox (badness 10000) in paragraph at lines 269--269
 []|\T1/lmr/m/n/12 Morris & Peng
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 266--266
+Underfull \hbox (badness 10000) in paragraph at lines 269--269
 \T1/lmr/m/n/12 and ex-plain the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 266--266
+Underfull \hbox (badness 10000) in paragraph at lines 269--269
 \T1/lmr/m/n/12 crim-i-nal's mo-ti-va-
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 266--266
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 269--269
 []|\T1/lmr/m/n/12 114| 
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 266--267
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 269--270
 []|\T1/lmr/m/n/12 293| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--268
+Underfull \hbox (badness 10000) in paragraph at lines 271--271
 []|\T1/lmr/m/n/12 Taxonomic-
  []
 
 
-Underfull \hbox (badness 4726) in paragraph at lines 268--268
+Underfull \hbox (badness 4726) in paragraph at lines 271--271
 \T1/lmr/m/n/12 Thematic Sim-i-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--268
+Underfull \hbox (badness 10000) in paragraph at lines 271--271
 \T1/lmr/m/n/12 on tax-o-nomic or
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 268--268
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 271--271
 []|\T1/lmr/m/n/12 178| 
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 268--269
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 271--272
 []|\T1/lmr/m/n/12 295| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 270--270
+Underfull \hbox (badness 10000) in paragraph at lines 273--273
 []|\T1/lmr/m/n/12 Semantic In-tu-
  []
 
 
-Underfull \hbox (badness 2809) in paragraph at lines 270--270
+Underfull \hbox (badness 2809) in paragraph at lines 273--273
 []|\T1/lmr/m/n/12 Decide whether a
  []
 
 
-Underfull \hbox (badness 3623) in paragraph at lines 270--270
+Underfull \hbox (badness 3623) in paragraph at lines 273--273
 \T1/lmr/m/n/12 story refers to a
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 270--270
+Underfull \hbox (badness 10000) in paragraph at lines 273--273
 \T1/lmr/m/n/12 named char-ac-ter
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 270--270
+Underfull \hbox (badness 10000) in paragraph at lines 273--273
 \T1/lmr/m/n/12 mis-char-ac-ter-ized)
  []
 
 
-Underfull \hbox (badness 1558) in paragraph at lines 270--270
+Underfull \hbox (badness 1558) in paragraph at lines 273--273
 \T1/lmr/m/n/12 per-formed the ac-
  []
 
 
-Underfull \hbox (badness 2662) in paragraph at lines 270--270
+Underfull \hbox (badness 2662) in paragraph at lines 273--273
 \T1/lmr/m/n/12 tions (but had a
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 270--270
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 273--273
 []|\T1/lmr/m/n/12 181| 
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 270--271
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 273--274
 []|\T1/lmr/m/n/12 298| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 272--272
+Underfull \hbox (badness 10000) in paragraph at lines 275--275
 \T1/lmr/m/n/12 visually-presented
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 272--272
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 275--275
 []|\T1/lmr/m/n/12 181| 
  []
 
 
-Overfull \hbox (3.17119pt too wide) in paragraph at lines 272--273
+Overfull \hbox (3.17119pt too wide) in paragraph at lines 275--276
 []|\T1/lmr/m/n/12 298| 
  []
 
 [7] [8]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 287.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 290.
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [9] [10] [11] [12] [13] [14]
 <CCRR_manuscript_files/figure-latex/unnamed-chunk-14-1.pdf, id=291, 570.13pt x 787.94376pt>
 File: CCRR_manuscript_files/figure-latex/unnamed-chunk-14-1.pdf Graphic file (type pdf)
 <use CCRR_manuscript_files/figure-latex/unnamed-chunk-14-1.pdf>
-Package pdftex.def Info: CCRR_manuscript_files/figure-latex/unnamed-chunk-14-1.pdf  used on input line 361.
+Package pdftex.def Info: CCRR_manuscript_files/figure-latex/unnamed-chunk-14-1.pdf  used on input line 364.
 (pdftex.def)             Requested size: 469.7541pt x 649.22002pt.
 
-LaTeX Warning: Float too large for page by 37.79pt on input line 363.
+LaTeX Warning: Float too large for page by 37.79pt on input line 366.
 
 [15] [16 <./CCRR_manuscript_files/figure-latex/unnamed-chunk-14-1.pdf>] [17] [18] [19] [20] [21] [22] [23]
 Underfull \vbox (badness 2189) has occurred while \output is active []
@@ -1136,74 +1134,74 @@ Underfull \vbox (badness 2189) has occurred while \output is active []
 <CCRR_manuscript_files/figure-latex/es-plot-1.pdf, id=410, 440.64626pt x 316.18124pt>
 File: CCRR_manuscript_files/figure-latex/es-plot-1.pdf Graphic file (type pdf)
 <use CCRR_manuscript_files/figure-latex/es-plot-1.pdf>
-Package pdftex.def Info: CCRR_manuscript_files/figure-latex/es-plot-1.pdf  used on input line 553.
+Package pdftex.def Info: CCRR_manuscript_files/figure-latex/es-plot-1.pdf  used on input line 556.
 (pdftex.def)             Requested size: 440.66533pt x 316.19493pt.
 [29]
 <CCRR_manuscript_files/figure-latex/reliability-1.pdf, id=418, 440.64626pt x 316.18124pt>
 File: CCRR_manuscript_files/figure-latex/reliability-1.pdf Graphic file (type pdf)
 <use CCRR_manuscript_files/figure-latex/reliability-1.pdf>
-Package pdftex.def Info: CCRR_manuscript_files/figure-latex/reliability-1.pdf  used on input line 566.
+Package pdftex.def Info: CCRR_manuscript_files/figure-latex/reliability-1.pdf  used on input line 569.
 (pdftex.def)             Requested size: 440.66533pt x 316.19493pt.
 [30 <./CCRR_manuscript_files/figure-latex/es-plot-1.pdf>] [31 <./CCRR_manuscript_files/figure-latex/reliability-1.pdf>] [32] [33] [34] [35]
 Underfull \vbox (badness 3977) has occurred while \output is active []
 
 [36] [37] [38] [39]
-Underfull \hbox (badness 10000) in paragraph at lines 649--649
+Underfull \hbox (badness 10000) in paragraph at lines 652--652
 []|\T1/lmr/m/n/12 Ambiguous
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 649--649
+Underfull \hbox (badness 10000) in paragraph at lines 652--652
 \T1/lmr/m/n/12 causal Re-la-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 649--649
+Underfull \hbox (badness 10000) in paragraph at lines 652--652
 \T1/lmr/m/n/12 tional Match-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 649--649
+Underfull \hbox (badness 10000) in paragraph at lines 652--652
 \T1/lmr/m/n/12 To-Sample
  []
 
 
-Underfull \hbox (badness 2951) in paragraph at lines 662--663
+Underfull \hbox (badness 2951) in paragraph at lines 665--666
 []\T1/lmr/m/n/12 Culture: The orig-i-nal ex-per-i-ment com-pared
  []
 
 
-Underfull \hbox (badness 2951) in paragraph at lines 673--674
+Underfull \hbox (badness 2951) in paragraph at lines 676--677
 []\T1/lmr/m/n/12 Culture: The orig-i-nal ex-per-i-ment com-pared
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 681--681
+Underfull \hbox (badness 10000) in paragraph at lines 684--684
 []|\T1/lmr/m/n/12 Symbolic Self-
  []
 
 
-Underfull \hbox (badness 4940) in paragraph at lines 681--681
+Underfull \hbox (badness 4940) in paragraph at lines 684--684
 \T1/lmr/m/n/12 Inflation (Fam-
  []
 
 
-Underfull \hbox (badness 1609) in paragraph at lines 681--681
+Underfull \hbox (badness 1609) in paragraph at lines 684--684
 \T1/lmr/m/n/12 ily ver-sion and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 691--691
+Underfull \hbox (badness 10000) in paragraph at lines 694--694
 []|\T1/lmr/m/n/12 Uniqueness
  []
 
 
-Underfull \hbox (badness 2126) in paragraph at lines 708--709
+Underfull \hbox (badness 2126) in paragraph at lines 711--712
 []\T1/lmr/m/n/12 Adults may have failed to en-gage
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 711--711
+Underfull \hbox (badness 10000) in paragraph at lines 714--714
 []|\T1/lmr/m/n/12 Change De-tec-
  []
 
@@ -1234,15 +1232,15 @@ Package rerunfilecheck Info: File `CCRR_manuscript.out' has not changed.
 (rerunfilecheck)             Checksum: DC3539CDE6BBC2B5FF5059724160C74B;7725.
  ) 
 Here is how much of TeX's memory you used:
- 18206 strings out of 478053
- 300148 string characters out of 5839881
- 1876793 words of memory out of 5000000
- 37730 multiletter control sequences out of 15000+600000
+ 18207 strings out of 477984
+ 300185 string characters out of 5838315
+ 1877388 words of memory out of 5000000
+ 37800 multiletter control sequences out of 15000+600000
  595788 words of font info for 100 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 72i,11n,77p,1592b,684s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,77p,1592b,684s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb>
-Output written on CCRR_manuscript.pdf (49 pages, 761529 bytes).
+Output written on CCRR_manuscript.pdf (49 pages, 761741 bytes).
 PDF statistics:
  711 PDF objects out of 1000 (max. 8388607)
  623 compressed objects within 7 object streams

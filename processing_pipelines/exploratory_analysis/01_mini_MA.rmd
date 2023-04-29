@@ -18,6 +18,16 @@ d2 <- read_csv(here("data/03_processed_data/exp2/tidy_main.csv"))
 # ES for study 1
 
 ```{r}
+
+fd_mention_df <- d %>% 
+  filter(task_name == "FD", resp_type == "first_mention_focal") %>% 
+    mutate(first_mention = case_when(
+    resp == "1" ~ 1, # focal
+    resp == "0" ~ 0), # background
+    scene = trial_info) %>% 
+  select(-resp, -task_info, -resp_type, -trial_info)
+
+
 # read in all the cached model
 List_RDS <- list.files(here("cached_results/exp1/raw_models/glmer_models/"))
 res <- lapply(List_RDS, function(x){
@@ -122,7 +132,7 @@ d_abs_df <- d_abs %>%
          consistent_with_prediction = case_when(
            task_name_print %in% c("Free Description (first mention)", "Adult Causal Attribution", 
                                   "Ravens","Semantic Intuition", "Triads") & significance ~ "Consistent",
-           task_name_print == "Symbolic Self Inflation" & significance~ "Inconsistent",
+           task_name_print %in% c( "Symbolic Self Inflation", "Horizon (Height)") & significance~ "Inconsistent",
            TRUE ~ "No difference"
          ),
          advantage = case_when(

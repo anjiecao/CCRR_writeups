@@ -91,7 +91,7 @@ complete_exclusion_by_task <- function(raw_data){
   
   ##### Set up iterating materials ##### 
   
-  task_dict <- Dict$new()
+  task_dict <- dict()
   task_dict["ebbinghaus-keyboard"] <- 34
   #task_dict["draw-circles"] <- 1
   #task_dict["circle-label"] <- 1

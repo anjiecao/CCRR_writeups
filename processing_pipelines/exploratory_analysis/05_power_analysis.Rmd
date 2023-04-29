@@ -1,0 +1,62 @@
+---
+title: "05_power_analysis.Rmd"
+output: html_document
+date: "`r Sys.Date()`"
+---
+
+
+```{r}
+library(tidyverse)
+library(here)
+library(simr) # for power analysis
+```
+
+
+# Reading in all cached model 
+```{r}
+List_RDS <- list.files(here("cached_results/exp1/raw_models/glmer_models/"))
+res <- lapply(List_RDS, function(x){
+                      readRDS(paste0(here("cached_results/exp1/raw_models/glmer_models/"), 
+                                                    x))
+
+                })
+                  
+for (i in seq(1, length(List_RDS))){
+  assign(gsub(".RDS", "",List_RDS[i]), res[[i]])
+}
+```
+
+```{r}
+d <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv"))
+
+fd_mention_df <- d %>% 
+  filter(task_name == "FD", resp_type == "first_mention_focal") %>% 
+    mutate(first_mention = case_when(
+    resp == "1" ~ 1, # focal
+    resp == "0" ~ 0), # background
+    scene = trial_info) %>% 
+  select(-resp, -task_info, -resp_type, -trial_info)
+
+
+fd_basic_model <- glmer(first_mention ~ culture + (1 | subject), family = binomial, data = fd_mention_df)
+
+fd_ps <- powerSim(fd_basic_model)
+```
+
+
+```{r}
+up_df <- d %>% 
+  filter(task_name == "CP") %>% 
+  mutate(choice = case_when(
+    resp == "1" ~ 1,       #unique
+    resp == "0" ~ 0)  #non-unique
+         ) %>% 
+  select(-resp, -task_info, -trial_info, -resp_type)
+powerSim(up_model)
+```
+
+```{r}
+pc <- powerCurve(up_model)
+print(pc)
+```
+

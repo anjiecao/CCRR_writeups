@@ -33,21 +33,24 @@ We make all code and data from our experiments available for further data collec
     
     \bf{Experiment} & \bf{Task} & \bf{Citation} & \bf{Task Description} & \bf{CN} & \bf{US} \\
     \hline
-        1 & Ambiguous Relational Match-To-Sample (cRMTS) & Carstensen et al. (2019) & Infer whether an object or relation is causally relevant &  167  &  169 \\
+        1 & Ambiguous Relational Match-To-Sample (cRMTS) & Carstensen et al. (2019) & Infer whether an object or relation is causally relevant &  186  &  178 \\
 
-& Picture Free Description & Imada, Carlson, \& Itakura (2013) & Describe pictures from memory after a brief study period &  167 &  169\\
+& Picture Free Description & Imada, Carlson, \& Itakura (2013) & Describe pictures from memory after a brief study period &  169 &  172\\
 
-& Ebbinghaus Illusion & Imada, Carlson, \& Itakura (2013) & Judge the size of circles in a context designed to bias size judgments &  167  &  169\\
+& Ebbinghaus Illusion & Imada, Carlson, \& Itakura (2013) & Judge the size of circles in a context designed to bias size judgments &  190  &  180\\
 
-& Horizon Collage & Senzaki, Masuda, \& Nand (2014) & Make an image by dragging and dropping stickers onto a display &  167  &  169\\
+& Horizon Collage & Senzaki, Masuda, \& Nand (2014) & Make an image by dragging and dropping stickers onto a display &  187  &  175\\
 
-& Symbolic Self-Inflation (Family) & Kitayama et al. (2009) & Draw self and family members as circles &  141 &  110\\
+& Symbolic Self-Inflation (Family) & Kitayama et al. (2009) & Draw self and family members as circles &  150 &  114\\
 
-& Uniqueness Preference & Kim \& Markus (1999) & Choose a sticker from five stickers, four of which are the same color &  167 &  169\\
+& Uniqueness Preference & Kim \& Markus (1999) & Choose a sticker from five stickers, four of which are the same color &  191 &  180\\
 
-& Child Causal Attribution & Seiver, Gopnik, \& Goodman (2013) & Watch short vignettes and explain the decisions of the characters &  167 &  169\\
+& Child Causal Attribution & Seiver, Gopnik, \& Goodman (2013) & Watch short vignettes and explain the decisions of the characters &  177 &  170\\
 
-& Raven's Progressive Matrices & Su (2020) & Use analogical reasoning to complete visually-presented patterns &  167 &  169\\
+& Raven's Progressive Matrices & Su (2020) & Use analogical reasoning to complete visually-presented patterns &  191 &  180\\
+
+
+
 2 & Ambiguous Relational Match-To-Sample (cRMTS) & Carstensen et al. (2019) & Infer whether an object or relation is causally relevant &  174 &  293\\
 
 & Picture Free Description & Imada, Carlson, \& Itakura (2013) & Describe pictures from memory after a brief study period &  132 &  284\\

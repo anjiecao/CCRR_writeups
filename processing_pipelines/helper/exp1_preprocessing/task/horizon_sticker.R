@@ -2,7 +2,7 @@ get_HZ_raw <- function(raw_d){
   sticker_dir = here("processing_pipelines/helper/exp1_preprocessing/material_stickers/")
   stickers = list.files(sticker_dir)
   
-  d <- Dict$new()
+  d <- dict::dict()
   for (s in stickers){
     img <- readPNG(file.path(sticker_dir, s)) 
     dim <- dim(img)

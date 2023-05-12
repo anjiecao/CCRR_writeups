@@ -522,3 +522,41 @@ saveRDS(demog_d12_mod, here("cached_results/ea/d12_demog_df.RDS"))
 ```
 
 
+# select the non-corrected one
+
+```{r}
+demog_d12_mod <- readRDS(here("cached_results/ea/d12_demog_df.RDS"))
+ 
+demog_d12_mod %>% 
+  filter(p.value < .05, term != "(Intercept)") %>%
+  filter(!demog_type %in% c("gender", "age", "objectiveses")) %>% 
+  arrange(demog_type)
+```
+
+# Maternal education binned version
+```{r}
+
+cat_objective_ses_df <- d12_joint_df %>% 
+  left_join(cleaned_basic_demog_df, 
+            by = c("subject", "culture", "study")) %>% 
+  rename(demog_type = demog_question) %>% 
+  filter(demog_type == "objectiveses") %>% 
+  ungroup() %>% 
+  mutate(objectiveses_cat = if_else(demog_response > 3, "high", "low")) %>% 
+  select(culture, task_name, study, subject, objectiveses_cat, resp_num)
+
+categorical_variable <- cat_objective_ses_df %>% 
+  group_by(culture, task_name, study) %>% 
+    nest() %>% 
+  mutate(mod = map(data, function (df) lm(resp_num ~ objectiveses_cat, data = df)), 
+         tidy = map(mod, tidy)) %>% 
+  select(-mod, -data) %>% 
+  unnest(cols = c(tidy))
+
+categorical_variable %>%
+  filter(p.value < 0.05)
+
+```
+
+
+

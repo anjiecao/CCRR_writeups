@@ -20,7 +20,7 @@ plot_es <- function(d){
            consistent_with_prediction = case_when(
              task_name_print %in% c("Free Description (first mention)", "Adult Causal Attribution", 
                                     "Raven's SPM","Semantic Intuition", "Taxonomic-Thematic Similarity") & significance ~ "Consistent",
-             task_name_print == "Symbolic Self-Inflation" & significance~ "Inconsistent",
+             task_name_print %in% c("Symbolic Self-Inflation", "Horizon Collage (Height)") & significance~ "Inconsistent",
              TRUE ~ "No difference"
            ),
            advantage = case_when(

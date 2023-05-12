@@ -1,0 +1,136 @@
+```{r}
+demog_d12_mod <- readRDS(here("cached_results/ea/d12_demog_df.RDS"))
+ 
+demog_print <- demog_d12_mod %>% 
+  filter(p.value < .05, term != "(Intercept)") %>%
+  filter(!demog_type %in% c("gender", "age")) %>% 
+  arrange(demog_type) %>% 
+  select(culture, study, task_name, estimate, std.error, statistic, p.value)
+```
+
+
+# Demographic variation in responses 
+
+In the exploratory analysis section, we explored how basic demographic variables could moderate the task performances within each culture. To do so, we fit an fixed effect model predicting the each task's response in each culture, with each demographic variable as the predictor. We fit 192 exploratory regression models in total. 26 models were statistically significant, but only 1 survived Bonferroni correction. However, given that some of the demographic variables have been previously found to moderate task performance, we can  treat this post-hoc exploratory analysis as a proxy for a conceptual replication. Therefore, we report some uncorrected model results that are significant for key demographic variables in the tables below. These results should be interpreted with great cautions. 
+
+
+## Residential Mobility 
+
+Higher residential mobility has been found to be related to individual's stronger emphasis on the independent self over the inter-dependent self [@oishi2022socio; @ishii2020residential]. In our exploratory analysis's uncorrected models, we found residential mobility is a significant predictor to three task responses. 
+
+```{r}
+rm_table <- demog_print %>% 
+  filter(demog_type == "resimobinum") %>% 
+  mutate(
+    study = case_when(
+    study == "d1" ~ "Experiment 1", 
+    study == "d2" ~ "Experiment 2"
+    ), 
+    task_name = case_when(
+      task_name == "EBB" ~ "Ebbinghaus Illusion", 
+      task_name == "FD" ~ "Free Description", 
+      task_name == "TD" ~ "Taxonomic-Thematic Similarity" 
+    )
+  ) %>% 
+  rename(
+    Study = study, 
+    Culture = culture, 
+    `Task Name` = task_name, 
+    `Beta` = estimate, 
+    SE = std.error, 
+    t = statistic, 
+    p = p.value
+  ) %>% 
+  ungroup() %>% 
+  select(-demog_type) %>% 
+  mutate_if(is.numeric, round, 2) %>% 
+  select(Study, Culture, `Task Name`, Beta, SE, t, p)
+
+
+rm_table %>% 
+  kable(format = "latex", linesep = '') %>% 
+  kable_styling(full_width = F)
+```
+
+
+## Socioeconomic Status
+
+### Mac-Arthur Ladder 
+
+something something 
+
+```{r}
+demog_print %>% 
+  filter(demog_type == "subjectiveses") %>% 
+  mutate(
+    study = case_when(
+    study == "d1" ~ "Experiment 1", 
+    study == "d2" ~ "Experiment 2"
+    ), 
+    task_name = case_when(
+      task_name == "CP" ~ "Uniqueness Preference",
+      task_name == "RMTS" ~ "Causal RMTS", 
+      task_name == "RV" ~ "Raven's Progressive Matrices", 
+      task_name == "CD" ~ "Change Detection", 
+      task_name == "TD" ~ "Taxonomic-Thematic Similarity" 
+    )
+  ) %>% 
+  rename(
+    Study = study, 
+    Culture = culture, 
+    `Task Name` = task_name, 
+    `Beta` = estimate, 
+    SE = std.error, 
+    t = statistic, 
+    p = p.value
+  ) %>% 
+  ungroup() %>% 
+  select(-demog_type) %>% 
+  mutate_if(is.numeric, round, 2) %>% 
+  select(Study, Culture, `Task Name`, Beta, SE, t, p) %>% 
+  kable(format = "latex", linesep = '') %>% 
+  kable_styling(full_width = F)
+```
+
+### Maternal Education
+
+Maternal education is often regarded as a proxy for socioeconomic status [@hauser1994measuring; @hoff2005socioeconomic]. In the exploratory analysis, we first treated maternal education as a continuous variable. There was only one significant result, which was reported in the table below. Following common practices in the literature, we also binned the maternal education into a binary variable -- whether participants have received college education or not. The binary variable was not significantly related to any task performance. 
+
+```{r}
+demog_print %>% 
+  filter(demog_type == "objectiveses") %>% 
+  mutate(
+    study = case_when(
+    study == "d1" ~ "Experiment 1", 
+    study == "d2" ~ "Experiment 2"
+    ), 
+    task_name = case_when(
+      task_name == "CA" ~ "Causal Attribution", 
+    )
+  ) %>% 
+  rename(
+    Study = study, 
+    Culture = culture, 
+    `Task Name` = task_name, 
+    `Beta` = estimate, 
+    SE = std.error, 
+    t = statistic, 
+    p = p.value
+  ) %>% 
+  ungroup() %>% 
+  select(-demog_type) %>% 
+  mutate_if(is.numeric, round, 2) %>% 
+  select(Study, Culture, `Task Name`, Beta, SE, t, p) %>% 
+  kable(format = "latex", linesep = '') %>% 
+  kable_styling(full_width = F)
+```
+
+
+### Continuous 
+
+### Binary 
+
+
+## Subjective Socio-economic Status
+
+### section 2?

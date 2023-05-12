@@ -423,12 +423,34 @@ si_df_diff <- d %>%
   mutate(score = resp) %>% 
   select(-resp, -task_info, -trial_info, -resp_type)
 
+
+si_circle_n_df <- readRDS(here("cached_results/exp1/si_circle_n_df.Rds")) %>% 
+  distinct(subject, culture, circle_n)
+
+
+si_df_r_with_circle_n <- si_df_r %>% 
+  left_join(si_circle_n_df, by = c("culture", "subject"))
+
+
+
+
 ssi_ratio_model <- glm(score ~ culture, family=gaussian, data = si_df_r)
 ssi_diff_model <- glm(score ~ culture, family=gaussian, data = si_df_diff)
+si_circle_n_model <- glm(circle_n ~ culture, family=gaussian, data = si_circle_n_df)
+ssi_ratio_with_n <- glm(score ~ culture + circle_n, family=gaussian, data = si_df_r_with_circle_n)
+
 
 save_model(ssi_ratio_model, GLMER_MODEL_DIR)
 save_model(ssi_diff_model, GLMER_MODEL_DIR)
+save_model(si_circle_n_df, GLMER_MODEL_DIR)
+save_model(ssi_ratio_with_n, GLMER_MODEL_DIR)
+
+# cache the model separately 
+si_ratio_model_df <- tidy_model_main("ssi_ratio_with_n.Rds")
+saveRDS(si_ratio_model_df, here("cached_results/exp1/si_ratio_model_df.Rds"))
 ```
+
+### add the 
 
 
 ### bayes 

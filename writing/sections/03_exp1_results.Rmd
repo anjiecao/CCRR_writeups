@@ -1,5 +1,5 @@
 
-```{r fig.cap = "Results from each task. Results from the CN sample are plotted in red, and the US in blue.",fig.width=8, fig.height=11}
+```{r fig.cap = "Results from each task. Results from the CN sample are plotted in red, and the US in blue. Panel A and B includes results from experiment 1 and 2 respectively. ",fig.width=8, fig.height=11}
 plot_megaplogt()
 ```
 
@@ -113,16 +113,18 @@ hz_summary <- d %>%
     )
     )
 
+
+hz_height_df <- e1_lmer_df %>% filter(grepl("hz", model_name)) %>% filter(model_name == "hz_height_model")
 ```
 
 
-In the Horizon Collage task, three key measurements were calculated from the “collage” participants created: the height of the horizon (in proportion to the height of the frame), the number of stickers, and the total area that the stickers covered (following the original analysis, we added up the area occupied by each individual sticker). @senzaki2014holistic found that Japanese children tended to put the horizon higher, include more stickers, and cover more area in their collage, compared with Canadian children. We ran a fixed effect linear model with culture as the main predictor for each of the measurements. Culture did not significantly predict any of the three measurements (Sticker height: US: *M* = `r filter(hz_summary, culture == "US"&resp_type == "hz_height")$culture_mean`, *SD* = `r filter(hz_summary, culture == "US"&resp_type == "hz_height")$culture_sd`; CN: *M* = `r filter(hz_summary, culture == "CN"&resp_type == "hz_height")$culture_mean`, *SD* = `r filter(hz_summary, culture == "CN"&resp_type == "hz_height")$culture_sd`; Sticker number: US: *M* = `r filter(hz_summary, culture == "US"&resp_type == "stkr_count")$culture_mean`, *SD* = `r filter(hz_summary, culture == "US"&resp_type == "stkr_count")$culture_sd`; CN: *M* = `r filter(hz_summary, culture == "CN"&resp_type == "stkr_count")$culture_mean`, *SD* = `r filter(hz_summary, culture == "CN"&resp_type == "stkr_count")$culture_sd`; Sticker area: US: *M* = `r filter(hz_summary, culture == "US"&resp_type == "stkr_area")$culture_mean`, *SD* = `r filter(hz_summary, culture == "US"&resp_type == "stkr_area")$culture_sd`; CN: *M* = `r filter(hz_summary, culture == "CN"&resp_type == "stkr_area")$culture_mean`, *SD* = `r filter(hz_summary, culture == "CN"&resp_type == "stkr_area")$culture_sd`; All $\beta$ < 0.03; All *p* > 0.1). <!-- All bayes factors suggest that there are only anecdotal evidence supporting the culture effect (Sticker height: *BF* = `r hz_height_bf$bf_print`; Sticker number: *BF* = `r hz_n_bf$bf_print`; Sticker area: *BF* = `r hz_stkr_area_bf$bf_print`). -->
+In the Horizon Collage task, three key measurements were calculated from the “collage” participants created: the height of the horizon (in proportion to the height of the frame), the number of stickers, and the total area that the stickers covered (following the original analysis, we added up the area occupied by each individual sticker). @senzaki2014holistic found that Japanese children tended to put the horizon higher, include more stickers, and cover more area in their collage, compared with Canadian children. We ran a fixed effect linear model with culture as the main predictor for each of the measurements. Culture significantly predict the horizon height, but the effect was in the opposite direction direction, with U.S. participants putting the horizon sticker at higher than the Chinese participants (Sticker height: US: *M* = `r filter(hz_summary, culture == "US"&resp_type == "hz_height")$culture_mean`, *SD* = `r filter(hz_summary, culture == "US"&resp_type == "hz_height")$culture_sd`; CN: *M* = `r filter(hz_summary, culture == "CN"&resp_type == "hz_height")$culture_mean`, *SD* = `r filter(hz_summary, culture == "CN"&resp_type == "hz_height")$culture_sd`; $\beta$ = `r filter(hz_height_df, predictor == "cultureUS")$estimate_print`, *SE* = `r filter(hz_height_df, predictor == "cultureUS")$se_print`, *t* = `r filter(hz_height_df, predictor == "cultureUS")$t_print`, *p* `r filter(hz_height_df, predictor == "cultureUS")$p_print`). Culture did not significantly predict any of the other two measurements (Sticker number: US: *M* = `r filter(hz_summary, culture == "US"&resp_type == "stkr_count")$culture_mean`, *SD* = `r filter(hz_summary, culture == "US"&resp_type == "stkr_count")$culture_sd`; CN: *M* = `r filter(hz_summary, culture == "CN"&resp_type == "stkr_count")$culture_mean`, *SD* = `r filter(hz_summary, culture == "CN"&resp_type == "stkr_count")$culture_sd`; Sticker area: US: *M* = `r filter(hz_summary, culture == "US"&resp_type == "stkr_area")$culture_mean`, *SD* = `r filter(hz_summary, culture == "US"&resp_type == "stkr_area")$culture_sd`; CN: *M* = `r filter(hz_summary, culture == "CN"&resp_type == "stkr_area")$culture_mean`, *SD* = `r filter(hz_summary, culture == "CN"&resp_type == "stkr_area")$culture_sd`; Both $\beta$ < 0.03; Both *p* > 0.1). 
 
 Our experiment contrasted Chinese and US adults, rather than Japanese and Canadian children. Although @senzaki2014holistic found that the cultural differences were more salient in older children than younger children, suggesting that cultural differences might increase with development, interpretation of our failure to replicate is still qualified by differences in culture and medium of administration. 
 
 ### Symbolic Self-Inflation 
 
-```{r ssi_summary, warning=FALSE}
+```{r ssi_summary, message=FALSE, warning=FALSE, include=FALSE}
 ssi_summary <- d %>% 
   filter(task_name == "SI") %>% 
   group_by(culture, subject, task_info, resp_type) %>% 
@@ -135,10 +137,26 @@ ssi_summary <- d %>%
     culture_sd = round(sd(mean_resp),2)
   )
 
+
 ssi_ratio_tidy_model <- e1_lmer_df %>% filter(model_name == "ssi_ratio_model") 
+
+# ADDED post review for exploratory analysis
+
+si_circle_n_df <- readRDS(here("cached_results/exp1/si_circle_n_df.Rds"))
+si_ratio_model_df <- readRDS(here("cached_results/exp1/si_ratio_model_df.Rds"))
+
+
+circle_n_summary <- si_circle_n_df %>% 
+  distinct(subject, culture, circle_n) %>% 
+  # take out the self circle
+  mutate(circle_n = circle_n -1) %>% 
+  group_by(culture) %>% 
+  summarise(mean_circle_n  = mean(circle_n), sd_circle_n = sd(circle_n))
 ```
 
 To test whether US adults have a larger symbolic self than Chinese adults, we ran a linear regression predicting percent inflation (the diameter of the self circle divided by the average diameter of circles for others) with country (US or China) as a fixed effect. No difference was found in the degree of symbolic self-inflation between US and Chinese adults based on percent inflation (US: *M* = `r filter(ssi_summary, culture == "US", resp_type == "inflation_score_ratio")$culture_mean`, *SD* = `r filter(ssi_summary, culture == "US", resp_type == "inflation_score_ratio")$culture_sd`; CN: *M* = `r filter(ssi_summary, culture == "CN", resp_type == "inflation_score_ratio")$culture_mean`, *SD* = `r filter(ssi_summary, culture == "CN", resp_type == "inflation_score_ratio")$culture_sd`; $\beta$  = `r filter(ssi_ratio_tidy_model, predictor == "cultureUS")$estimate_print`, *SE* = `r filter(ssi_ratio_tidy_model, predictor == "cultureUS")$se_print`, *t* = `r filter(ssi_ratio_tidy_model, predictor == "cultureUS")$t_print`, *p* `r filter(ssi_ratio_tidy_model, predictor == "cultureUS")$p_print`).
+
+As an exploratory analysis, we also considered whether the number of circles drawn for others could be a potential confounding factor for the effect. Due to the limited space on the canvas, people who drew more circles may draw each circle smaller, resulting in less symbolic self-inflation. We found culture to be a significant predictor of the number of others circles drawn, with US participants drawing more others circles than Chinese participants (US: *M* = `r filter(circle_n_summary, culture == "US")$mean_circle_n`, *SD* = `r filter(circle_n_summary, culture == "US")$sd_circle_n`; CN: *M* = `r filter(circle_n_summary, culture == "CN")$mean_circle_n`, *SD* = `r filter(circle_n_summary, culture == "CN")$sd_circle_n`). However, when controlling for the number of circles drawn, there was still no difference between US and Chinese adults on the percent inflation ($\beta$  = `r filter(si_ratio_model_df, predictor == "cultureUS")$estimate_print`, *SE* = `r filter(si_ratio_model_df, predictor == "cultureUS")$se_print`, *t* = `r filter(si_ratio_model_df, predictor == "cultureUS")$t_print`, *p* `r filter(si_ratio_model_df, predictor == "cultureUS")$p_print`). 
 
 One possible explanation for our null result is that there are cultural differences between Japan and China in self-concept; Japanese samples typically demonstrate characteristics previously associated with East Asian cultures in general, with Chinese samples deviating from these characteristics at times [@bailey1997conceptions; @church2012self; @church2014relating]. In addition, the null results could also be attributed to differences between our task design and that of @kitayama2009cultural. Instead of asking participants to draw their social network, our design asked participants to draw themselves and the family members they grew up with. During the coding process, we noticed that people from both cultures tended to draw older people, e.g., their parents, as larger circles, which might have resulted in larger circles for others than for the self in both cultures, masking any US-China difference in the degree of self-inflation. We follow up on this possibility by changing the task prompt in Experiment 2.
 

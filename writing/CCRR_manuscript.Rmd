@@ -65,6 +65,10 @@ header-includes   :
     - \usepackage{setspace}% http://ctan.org/pkg/setspace
     - \AtBeginEnvironment{longtable}{\singlespacing}{\small}
 
+appendix: 
+  - "writing/sections/appendix_a.rmd"
+  - "writing/sections/appendix_b.rmd"
+
 
 ---
 
@@ -79,6 +83,7 @@ library(glue)
 library(cowplot)
 library(kableExtra)
 library(glue)
+library(latex2exp)
 
 here::i_am("writing/CCRR_manuscript.Rmd")
 
@@ -212,3 +217,20 @@ nocite: |
 
 ::: {#refs custom-style="Bibliography"}
 :::
+
+
+\newpage
+
+
+
+
+\newpage
+
+# (APPENDIX) Appendix {-}
+
+```{r child = "writing/sections/appendix_a.rmd"}
+```
+
+```{r child = "writing/sections/appendix_b.rmd"}
+```
+

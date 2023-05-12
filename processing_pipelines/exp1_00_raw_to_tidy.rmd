@@ -307,6 +307,39 @@ write.csv(main,PROCESSED_MAIN_PATH)
 
 ```
 
+## process raw dataset for SI exploratory analysis
+
+```{r}
+cn_si_d <- read_csv(here("data/01b_annotated_data/exp1/CN/cn_si_merged_coded.csv"))
+us_si_d <- read_csv(here("data/01b_annotated_data/exp1/US/us_si_coded.csv"))
+main_d <- read_csv(PROCESSED_MAIN_PATH)
+
+
+
+include_si_subject <- main_d %>% 
+  filter(task_name == "SI") %>% 
+  distinct(subject) %>% 
+  pull()
+
+circle_n_df <- bind_rows(cn_si_d %>% mutate(culture = "CN"), 
+          us_si_d %>% mutate(culture = "US")) %>% 
+  group_by(culture, subject) %>% 
+  filter(codeable == 1) %>% 
+  count() %>% 
+  rename(circle_n = n) %>% 
+  filter(subject %in% include_si_subject)
+
+
+circle_n_df <- main_d %>% 
+  filter(task_name == "SI") %>% 
+  left_join(circle_n_df, by = c("subject", "culture"))
+
+
+saveRDS(circle_n_df, here("cached_results/exp1/si_circle_n_df.Rds"))
+
+```
+
+
 
 
 # Appendix 

@@ -274,18 +274,46 @@ plot_megaplogt <- function(){
   
   ###########putting d1 plots together###########
   
-  d1_regular_plot = cowplot::plot_grid(d1_up_plot, d1_fd_plot, d1_hz_plot, d1_rmts_plot, d1_rv_plot, d1_ssi_plot, ncol = 2)
-  d1_wide_plot = cowplot::plot_grid(d1_ca_plot, d1_ebb_plot, ncol = 1)
   
-  d1_all = plot_grid(d1_regular_plot, d1_wide_plot, ncol = 1, greedy = FALSE)
+  
+  #d1_regular_plot = cowplot::plot_grid(d1_rmts_plot,d1_fd_plot,d1_hz_plot,d1_ssi_plot,d1_up_plot,d1_rv_plot, ncol = 2)
+  #d1_wide_plot = cowplot::plot_grid(d1_ca_plot, d1_ebb_plot, ncol = 1)
+  
+  #d1_all = plot_grid(d1_regular_plot, d1_wide_plot, ncol = 1, greedy = FALSE)
+  
+  d1_regular_plot_first_half = cowplot::plot_grid(d1_rmts_plot,d1_fd_plot, ncol = 2)
+  d1_first_half = plot_grid(d1_regular_plot_first_half, d1_ebb_plot, ncol = 1, rel_heights = c(1, 1))
+  d1_regular_plot_second_half = cowplot::plot_grid(d1_hz_plot,d1_ssi_plot, d1_up_plot, d1_rv_plot, 
+                                                   ncol = 2, rel_heights = c(1, 1))
+  d2_second_half =  plot_grid(d1_regular_plot_second_half, d1_ca_plot, ncol = 1, 
+                              rel_heights = c(2, 1))
+  
+  d1_all = plot_grid(d1_first_half, d2_second_half, ncol = 1, greedy = FALSE, rel_heights = c(2, 3))
+  
+  
   
   ###########putting d2 plots together###########
   
-  d2_regular_plot = cowplot::plot_grid(d2_fd_plot,d2_rmts_plot,d2_rv_plot,
-                                       d2_sei_plot, d2_ssi_plot, d2_td_plot, ncol = 2)
-  d2_wide_plot = cowplot::plot_grid(d2_ca_plot, d2_cd_plot, ncol = 1)
+  #d2_regular_plot = cowplot::plot_grid(d2_fd_plot,d2_rmts_plot,d2_rv_plot,
+                                       #d2_sei_plot, d2_ssi_plot, d2_td_plot, ncol = 2)
+  #d2_wide_plot = cowplot::plot_grid(d2_ca_plot, d2_cd_plot, ncol = 1)
   
-  d2_all = plot_grid(d2_regular_plot, d2_wide_plot, ncol = 1)
+  #d2_all = plot_grid(d2_regular_plot, d2_wide_plot, ncol = 1)
+  
+  d2_regular_plot_first_singles = cowplot::plot_grid(d2_rmts_plot,d2_fd_plot, ncol = 2)
+  d2_regular_plot_first_segment = plot_grid(d2_regular_plot_first_singles, 
+                                            d2_cd_plot, ncol = 1, rel_heights = c(1, 1))
+  
+  d2_regular_plot_second_singles = cowplot::plot_grid(d2_ssi_plot,d2_td_plot, ncol = 2)
+  d2_regular_plot_second_segment = plot_grid(d2_regular_plot_second_singles, 
+                                             d2_ca_plot, ncol = 1, rel_heights = c(1, 1))
+  
+  d2_up =cowplot::plot_grid(d2_regular_plot_first_segment,d2_regular_plot_second_segment, 
+                            ncol = 1, rel_heights = c(1, 1))
+  
+  d2_bottom = cowplot::plot_grid(d2_sei_plot,d2_rv_plot, ncol = 2)
+  
+  d2_all = plot_grid(d2_up, d2_bottom, rel_heights = c(4, 1), ncol = 1)
   
   ###########putting all plots together###########
   

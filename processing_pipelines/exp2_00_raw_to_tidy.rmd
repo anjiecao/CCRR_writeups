@@ -305,6 +305,51 @@ write_csv(attrition_df, MAIN_ATTRITION_PATH)
 
 # Appendix
 
+
+## Get CD accuracy data per reviewer suggestion 
+
+```{r}
+us_cd_acc <- read_csv(here("data/01b_annotated_data/exp2/US/CD_wr.csv"))
+cn_cd_acc <- read_csv(here("data/01b_annotated_data/exp2/CN/CD_wr.csv"))
+cd_res <-  read_csv(here("processing_pipelines/helper/exp2_preprocessing/task/cd_answer.csv")) %>% 
+  janitor::clean_names() %>% 
+  select(change_type, prompt)
+
+
+cd_subject <- d2 %>% filter(task_name == "CD") %>% distinct(subject) %>% pull()
+
+cd_acc <- bind_rows(us_cd_acc %>% mutate(culture = "US"), 
+                    cn_cd_acc %>% mutate(culture = "CN"))
+
+
+
+cd_acc_summary <- cd_acc %>% 
+  left_join(cd_res, by = c("prompt")) %>% 
+  group_by(culture, change_type) %>% 
+ summarise(m_correct = mean(correct), 
+            sd_correct = sd(correct))
+
+cd_acc_df <- cd_acc %>% 
+  left_join(cd_res, by = c("prompt")) 
+
+cd_acc_model <- glm(correct ~ change_type * culture, family = "binomial", data = cd_acc_df)
+save_model(cd_acc_model, GLMER_MODEL_DIR)
+cd_acc_model_df <- tidy_model_main("cd_acc_model.Rds")
+
+saveRDS(cd_acc_df, here("cached_results/exp2/cd_acc_info.Rds"))
+saveRDS(cd_acc_model_df, here("cached_results/exp2/cd_acc_model_df.Rds"))
+
+
+
+cd_acc %>% 
+  left_join(cd_res, by = c("prompt")) %>% 
+  ggplot(aes(x = culture, y = correct)) + 
+  stat_summary(fun.data = "mean_cl_boot") + 
+  facet_wrap(~change_type)
+
+```
+
+
 ## Create all raw coding materials for human coder needed task 
 
 ```{r}

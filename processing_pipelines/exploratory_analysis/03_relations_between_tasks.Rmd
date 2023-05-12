@@ -108,15 +108,15 @@ d1_task_summary <- bind_rows(clean_d1_ca,
           clean_d1_up) %>% 
   pivot_wider(names_from = task_name, 
               values_from = resp_num) %>% 
-  select(-subject)
+  ungroup() 
 
-d1_corr_mat <- cor(d2_task_summary)
-melted_d1_corr_mat <- melt(d1_corr_mat)
-melted_d1_corr_mat %>% 
-  ggplot(aes(x = Var1, y = Var2, fill = value)) + 
-  geom_tile() 
+#d1_corr_mat <- cor(d1_task_summary)
+#melted_d1_corr_mat <- melt(d1_corr_mat)
+#melted_d1_corr_mat %>% 
+  #ggplot(aes(x = Var1, y = Var2, fill = value)) + 
+  #geom_tile() 
 
-corrplot(d1_corr_mat, method = "number")
+#corrplot(d1_corr_mat, method = "number")
 
 ```
 ## imputed with mean value 

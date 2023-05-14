@@ -534,6 +534,8 @@ demog_d12_mod %>%
 ```
 
 # Maternal education binned version
+
+
 ```{r}
 
 cat_objective_ses_df <- d12_joint_df %>% 
@@ -558,5 +560,99 @@ categorical_variable %>%
 
 ```
 
+# Counting region each number of participants 
+
+```{r}
+d1_coast_us_by_task_df <- bind_rows(clean_d1_ca, 
+          clean_d1_ebb, 
+          clean_d1_fd, 
+          clean_d1_hz, 
+          clean_d1_rmts, 
+          clean_d1_rv, 
+          clean_d1_ssi, 
+          clean_d1_up) %>% 
+  left_join(us_d1_region_d %>% select(subject, culture, coast, region), by = c("subject", "culture")) %>% 
+  left_join(cn_d1_region_d %>% select(subject, culture, rice_cat), by = c("subject", "culture")) %>% 
+   select(subject, culture, task_name, resp_num, rice_cat, coast,region) %>% 
+  distinct(subject, task_name, coast, region, rice_cat, culture) %>% 
+  ungroup() %>% 
+  group_by(coast, culture, task_name) %>% 
+  count() %>% 
+  filter(culture != "CN")
+
+d1_region_us_by_task_df <- bind_rows(clean_d1_ca, 
+          clean_d1_ebb, 
+          clean_d1_fd, 
+          clean_d1_hz, 
+          clean_d1_rmts, 
+          clean_d1_rv, 
+          clean_d1_ssi, 
+          clean_d1_up) %>% 
+  left_join(us_d1_region_d %>% select(subject, culture, coast, region), by = c("subject", "culture")) %>% 
+  left_join(cn_d1_region_d %>% select(subject, culture, rice_cat), by = c("subject", "culture")) %>% 
+   select(subject, culture, task_name, resp_num, rice_cat, coast,region) %>% 
+  distinct(subject, task_name, coast, region, rice_cat, culture) %>% 
+  ungroup() %>% 
+  group_by(region, culture, task_name) %>% 
+  count() %>% 
+  filter(culture != "CN")
+
+d1_us_region_coast_df <- bind_rows(d1_coast_us_by_task_df, d1_region_us_by_task_df) %>% 
+  mutate(exp = "experiment1")
+
+
+
+d2_coast_us_by_task_df <- d2_with_scale  %>% 
+  filter(task_name %in% c("RMTS","RV","FD"))  %>% 
+  mutate(resp_num = as.numeric(resp))  %>% 
+  group_by(subject, culture, task_name, scale_sum_score) %>% 
+  summarise(resp_num = mean(resp_num)) %>% 
+  bind_rows(clean_d2_CD, clean_d2_SSI, clean_d2_CA, 
+            clean_d2_TD, clean_d2_SeI) %>% 
+  select(-scale_sum_score) %>% 
+# start combining the demographic information   
+  left_join(cn_d2_region_d %>% select(subject, 
+                                      culture, 
+                                      rice_cat), by = c("subject", "culture")) %>% 
+  left_join( us_d2_region_d %>% select(subject, culture, coast, region), 
+             by = c("subject", "culture")) %>% 
+  select(subject, culture, task_name, resp_num, rice_cat, coast,region) %>% 
+  ungroup() %>% 
+   distinct(subject, task_name, coast, region, rice_cat, culture) %>% 
+  ungroup() %>% 
+  group_by(coast, culture, task_name) %>% 
+  count() %>% 
+  filter(culture != "CN")
+
+d2_region_us_by_task_df <- d2_with_scale  %>% 
+  filter(task_name %in% c("RMTS","RV","FD"))  %>% 
+  mutate(resp_num = as.numeric(resp))  %>% 
+  group_by(subject, culture, task_name, scale_sum_score) %>% 
+  summarise(resp_num = mean(resp_num)) %>% 
+  bind_rows(clean_d2_CD, clean_d2_SSI, clean_d2_CA, 
+            clean_d2_TD, clean_d2_SeI) %>% 
+  select(-scale_sum_score) %>% 
+# start combining the demographic information   
+  left_join(cn_d2_region_d %>% select(subject, 
+                                      culture, 
+                                      rice_cat), by = c("subject", "culture")) %>% 
+  left_join( us_d2_region_d %>% select(subject, culture, coast, region), 
+             by = c("subject", "culture")) %>% 
+  select(subject, culture, task_name, resp_num, rice_cat, coast,region) %>% 
+  ungroup() %>% 
+   distinct(subject, task_name, coast, region, rice_cat, culture) %>% 
+  ungroup() %>% 
+  group_by(region, culture, task_name) %>% 
+  count() %>% 
+  filter(culture != "CN")
+
+d2_us_region_coast_df <- bind_rows(d2_coast_us_by_task_df, d2_region_us_by_task_df) %>% 
+   mutate(exp = "experiment2")
+
+us_region_coast_n_df <- bind_rows(d1_us_region_coast_df, d2_us_region_coast_df) %>% 
+  filter(!(is.na(coast) & is.na(region)))
+
+saveRDS(us_region_coast_n_df, here("cached_results/ea/d12_us_region_coast_n_df.Rds"))
+```
 
 

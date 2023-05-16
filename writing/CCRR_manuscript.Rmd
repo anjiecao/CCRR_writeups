@@ -84,11 +84,12 @@ library(cowplot)
 library(kableExtra)
 library(glue)
 library(latex2exp)
+library(ggcorrplot)
+library(cowplot)
 
 here::i_am("writing/CCRR_manuscript.Rmd")
 
 r_refs("library.bib")
-
 source(here("processing_pipelines/helper/plotting/plot_es.R"))
 source(here("processing_pipelines/helper/plotting/plot_reliability.R"))
 source(here("processing_pipelines/helper/plotting/plot_megaplot.R"))

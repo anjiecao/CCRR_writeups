@@ -181,13 +181,49 @@ deletion_d1_task_summary <- drop_na(d1_task_summary)
 
 
 deletion_d1_corr_mat <- cor(deletion_d1_task_summary %>% ungroup() %>% select(-subject, -culture))
+
+
+
+
 melted_deletion_d1_corr_mat <- melt(deletion_d1_corr_mat)
 melted_deletion_d1_corr_mat %>% 
   ggplot(aes(x = Var1, y = Var2, fill = value)) + 
-  geom_tile() 
+  geom_tile()  + 
+  facet_wrap(~culture)
 
 corrplot(deletion_d1_corr_mat, method = "number")
 ```
+
+### by culture
+
+```{r}
+us_deletion_d1_corr_mat <- cor(deletion_d1_task_summary %>% rename(SSI = SI, UP = CP) %>% filter(culture == "US") %>% ungroup() %>% select(-subject, -culture))
+cn_deletion_d1_corr_mat <- cor(deletion_d1_task_summary %>% rename(SSI = SI, UP = CP) %>% filter(culture == "CN") %>% ungroup() %>% select(-subject, -culture))
+
+saveRDS(us_deletion_d1_corr_mat, here("cached_results/ea/corr_mat_us_d1.Rds"))
+saveRDS(cn_deletion_d1_corr_mat, here("cached_results/ea/corr_mat_cn_d1.Rds"))
+
+us_melted_deletion_d1_corr_mat <- melt(us_deletion_d1_corr_mat)
+us_melted_deletion_d1_corr_mat %>% 
+  ggplot(aes(x = Var1, y = Var2, fill = value)) + 
+  geom_tile()  + 
+  labs(title = "Experiment 1 - US") + 
+  xlab("") + 
+  ylab("")
+
+cn_melted_deletion_d1_corr_mat <- melt(cn_deletion_d1_corr_mat)
+cn_melted_deletion_d1_corr_mat %>% 
+  ggplot(aes(x = Var1, y = Var2, fill = value)) + 
+  geom_tile()  + 
+  labs(title = "Experiment 1 - CN") + 
+  xlab("") + 
+  ylab("")
+
+corrplot(us_deletion_d1_corr_mat, method = "number")
+corrplot(cn_deletion_d1_corr_mat, method = "number") 
+
+```
+
 
 
 
@@ -327,6 +363,35 @@ melted_d2_corr_mat %>%
   ggplot(aes(x = Var1, y = Var2, fill = value)) + 
   geom_tile() 
 ```
+## by culture
+
+```{r}
+
+d2_task_summary <- d2 %>% 
+  filter(task_name %in% c("RMTS","RV","FD"))  %>% 
+  mutate(resp_num = as.numeric(resp))  %>% 
+  group_by(subject, culture, task_name) %>% 
+  summarise(resp_num = mean(resp_num)) %>%
+  bind_rows(clean_d2_CD, clean_d2_SSI, clean_d2_CA, 
+            clean_d2_TD, clean_d2_SeI)  %>% 
+  select(subject, culture, task_name, resp_num) %>% 
+  ungroup() %>% 
+  pivot_wider(names_from = task_name, 
+              values_from = resp_num) %>% 
+  rename(TTS = TD)
+
+
+deletion_d2_task_summary <- drop_na(d2_task_summary)
+
+us_deletion_d2_corr_mat <- cor(deletion_d2_task_summary %>% filter(culture == "US") %>% ungroup() %>% select(-subject, -culture))
+cn_deletion_d2_corr_mat <- cor(deletion_d2_task_summary %>% filter(culture == "CN") %>% ungroup() %>% select(-subject, -culture))
+
+saveRDS(us_deletion_d2_corr_mat, here("cached_results/ea/corr_mat_us_d2.Rds"))
+saveRDS(cn_deletion_d2_corr_mat, here("cached_results/ea/corr_mat_cn_d2.Rds"))
+
+```
+
+
 # cached the correlation matrices 
 
 ```{r}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  14 MAY 2023 14:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  16 MAY 2023 09:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1119,7 +1119,7 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 29
 (/Users/caoanjie/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [9] [10] [11] [12] [13] [14]
-<CCRR_manuscript_files/figure-latex/unnamed-chunk-16-1.pdf, id=315, 570.13pt x 776.9025pt>
+<CCRR_manuscript_files/figure-latex/unnamed-chunk-16-1.pdf, id=323, 570.13pt x 776.9025pt>
 File: CCRR_manuscript_files/figure-latex/unnamed-chunk-16-1.pdf Graphic file (type pdf)
 <use CCRR_manuscript_files/figure-latex/unnamed-chunk-16-1.pdf>
 Package pdftex.def Info: CCRR_manuscript_files/figure-latex/unnamed-chunk-16-1.pdf  used on input line 364.
@@ -1137,80 +1137,77 @@ Underfull \vbox (badness 1406) has occurred while \output is active []
 Underfull \vbox (badness 4621) has occurred while \output is active []
 
 [29]
-<CCRR_manuscript_files/figure-latex/es-plot-1.pdf, id=439, 440.64626pt x 316.18124pt>
+<CCRR_manuscript_files/figure-latex/es-plot-1.pdf, id=447, 440.64626pt x 316.18124pt>
 File: CCRR_manuscript_files/figure-latex/es-plot-1.pdf Graphic file (type pdf)
 <use CCRR_manuscript_files/figure-latex/es-plot-1.pdf>
 Package pdftex.def Info: CCRR_manuscript_files/figure-latex/es-plot-1.pdf  used on input line 563.
 (pdftex.def)             Requested size: 440.66533pt x 316.19493pt.
 [30]
-<CCRR_manuscript_files/figure-latex/reliability-1.pdf, id=446, 440.64626pt x 316.18124pt>
+<CCRR_manuscript_files/figure-latex/reliability-1.pdf, id=454, 440.64626pt x 316.18124pt>
 File: CCRR_manuscript_files/figure-latex/reliability-1.pdf Graphic file (type pdf)
 <use CCRR_manuscript_files/figure-latex/reliability-1.pdf>
 Package pdftex.def Info: CCRR_manuscript_files/figure-latex/reliability-1.pdf  used on input line 576.
 (pdftex.def)             Requested size: 440.66533pt x 316.19493pt.
-[31 <./CCRR_manuscript_files/figure-latex/es-plot-1.pdf>] [32 <./CCRR_manuscript_files/figure-latex/reliability-1.pdf>] [33] [34]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[35] [36] [37]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+[31 <./CCRR_manuscript_files/figure-latex/es-plot-1.pdf>] [32 <./CCRR_manuscript_files/figure-latex/reliability-1.pdf>] [33] [34] [35] [36] [37]
+Underfull \vbox (badness 3977) has occurred while \output is active []
 
 [38] [39] [40] [41]
-Underfull \hbox (badness 10000) in paragraph at lines 661--661
+Underfull \hbox (badness 10000) in paragraph at lines 663--663
 []|\T1/lmr/m/n/12 Ambiguous
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 661--661
+Underfull \hbox (badness 10000) in paragraph at lines 663--663
 \T1/lmr/m/n/12 causal Re-la-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 661--661
+Underfull \hbox (badness 10000) in paragraph at lines 663--663
 \T1/lmr/m/n/12 tional Match-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 661--661
+Underfull \hbox (badness 10000) in paragraph at lines 663--663
 \T1/lmr/m/n/12 To-Sample
  []
 
 
-Underfull \hbox (badness 2951) in paragraph at lines 674--675
+Underfull \hbox (badness 2951) in paragraph at lines 676--677
 []\T1/lmr/m/n/12 Culture: The orig-i-nal ex-per-i-ment com-pared
  []
 
 
-Underfull \hbox (badness 2951) in paragraph at lines 685--686
+Underfull \hbox (badness 2951) in paragraph at lines 687--688
 []\T1/lmr/m/n/12 Culture: The orig-i-nal ex-per-i-ment com-pared
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 693--693
+Underfull \hbox (badness 10000) in paragraph at lines 695--695
 []|\T1/lmr/m/n/12 Symbolic Self-
  []
 
 
-Underfull \hbox (badness 4940) in paragraph at lines 693--693
+Underfull \hbox (badness 4940) in paragraph at lines 695--695
 \T1/lmr/m/n/12 Inflation (Fam-
  []
 
 
-Underfull \hbox (badness 1609) in paragraph at lines 693--693
+Underfull \hbox (badness 1609) in paragraph at lines 695--695
 \T1/lmr/m/n/12 ily ver-sion and
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 703--703
+Underfull \hbox (badness 10000) in paragraph at lines 705--705
 []|\T1/lmr/m/n/12 Uniqueness
  []
 
 
-Underfull \hbox (badness 2126) in paragraph at lines 720--721
+Underfull \hbox (badness 2126) in paragraph at lines 722--723
 []\T1/lmr/m/n/12 Adults may have failed to en-gage
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 723--723
+Underfull \hbox (badness 10000) in paragraph at lines 725--725
 []|\T1/lmr/m/n/12 Change De-tec-
  []
 
@@ -1242,41 +1239,64 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [51] [52]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\\' on input line 1001.
+(hyperref)                removing `\\' on input line 1003.
+
+<CCRR_manuscript_files/figure-latex/unnamed-chunk-39-1.pdf, id=659, 406.51875pt x 204.765pt>
+File: CCRR_manuscript_files/figure-latex/unnamed-chunk-39-1.pdf Graphic file (type pdf)
+<use CCRR_manuscript_files/figure-latex/unnamed-chunk-39-1.pdf>
+Package pdftex.def Info: CCRR_manuscript_files/figure-latex/unnamed-chunk-39-1.pdf  used on input line 1010.
+(pdftex.def)             Requested size: 406.53015pt x 204.77072pt.
+
+Overfull \hbox (1.81767pt too wide) in paragraph at lines 1010--1011
+ [][]  
+ []
+
+<CCRR_manuscript_files/figure-latex/unnamed-chunk-40-1.pdf, id=660, 406.51875pt x 204.765pt>
+File: CCRR_manuscript_files/figure-latex/unnamed-chunk-40-1.pdf Graphic file (type pdf)
+<use CCRR_manuscript_files/figure-latex/unnamed-chunk-40-1.pdf>
+Package pdftex.def Info: CCRR_manuscript_files/figure-latex/unnamed-chunk-40-1.pdf  used on input line 1015.
+(pdftex.def)             Requested size: 406.53015pt x 204.77072pt.
+
+Overfull \hbox (1.81767pt too wide) in paragraph at lines 1015--1016
+ [][]  
+ []
+
+
+Underfull \vbox (badness 5939) has occurred while \output is active []
 
 [53
 
-]
+ <./CCRR_manuscript_files/figure-latex/unnamed-chunk-39-1.pdf>] [54 <./CCRR_manuscript_files/figure-latex/unnamed-chunk-40-1.pdf>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\\' on input line 1004.
+(hyperref)                removing `\\' on input line 1018.
 
-LaTeX Font Info:    Calculating math sizes for size <9.5> on input line 1016.
+LaTeX Font Info:    Calculating math sizes for size <9.5> on input line 1030.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9.5> on input line 1016.
+(Font)              <9.5> on input line 1030.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6.64996> on input line 1016.
+(Font)              <6.64996> on input line 1030.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <4.75> on input line 1016.
-[54
+(Font)              <4.75> on input line 1030.
+[55
 
-] [55] AED endfloat: Processing end Figures and Tables [56] (./CCRR_manuscript.aux)
+] [56] AED endfloat: Processing end Figures and Tables [57] (./CCRR_manuscript.aux)
 Package rerunfilecheck Info: File `CCRR_manuscript.out' has not changed.
-(rerunfilecheck)             Checksum: 7FA09B4BA3EC1665301F7E00D5654CBB;8787.
+(rerunfilecheck)             Checksum: 87E9E1A0EFA2E74FE7FFEE79809E663E;9262.
  ) 
 Here is how much of TeX's memory you used:
- 18287 strings out of 477984
- 301448 string characters out of 5838315
+ 18310 strings out of 477984
+ 302491 string characters out of 5838315
  1877388 words of memory out of 5000000
- 37848 multiletter control sequences out of 15000+600000
+ 37864 multiletter control sequences out of 15000+600000
  622447 words of font info for 128 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,11n,77p,1595b,684s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb>
-Output written on CCRR_manuscript.pdf (56 pages, 786100 bytes).
+Output written on CCRR_manuscript.pdf (57 pages, 801210 bytes).
 PDF statistics:
- 790 PDF objects out of 1000 (max. 8388607)
- 695 compressed objects within 7 object streams
- 283 named destinations out of 1000 (max. 500000)
- 440 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 821 PDF objects out of 1000 (max. 8388607)
+ 718 compressed objects within 8 object streams
+ 288 named destinations out of 1000 (max. 500000)
+ 466 words of extra memory for PDF output out of 10000 (max. 10000000)
 

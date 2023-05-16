@@ -1,1 +1,37 @@
-# APPENDIX A
+```{r}
+corr_mat_us_d1 <- readRDS(here("cached_results/ea/corr_mat_us_d1.Rds"))
+corr_mat_cn_d1 <- readRDS(here("cached_results/ea/corr_mat_cn_d1.Rds"))
+corr_mat_us_d2 <- readRDS(here("cached_results/ea/corr_mat_us_d2.Rds"))
+corr_mat_cn_d2 <- readRDS(here("cached_results/ea/corr_mat_cn_d2.Rds"))
+```
+
+# Within-culture analysis on relationships between tasks. 
+
+@na2010cultural found neglible correlations among a battery of tasks that revealed cultural differences within each culture. We found similar patterns in our data. Here we report four correlation matrices: US participants' correlation matrix is on the left, and Chinese participants' on the right. Each cell has a number indicating the correlation between the task marked on the column head and the task marked on the row head (Experiment 1: CA = Child Causal Attribution; EBB: Ebbinghaus Illusion; FD = Free Description; HZ =  Horizon Collage; RMTS = Ambiguous cRMTS; RV = Raven's Progressive Matrices; SSI = Symbolic Self-Inflation; UP = Uniqueness Preference; Experiment 2:  RMTS = Ambiguous cRMTS; RV = Raven's Progressive Matrices; FD = Free Description; CD = Change Detection; SSI = Symbolic Self-Inflation; CA = Causal Attribution; TTS = Taxonomic-Thematic Similarity; SeI = Semantic Intuition). 
+
+
+## Experiment 1
+
+
+```{r fig.width=6, fig.height=3}
+
+
+d1_us <- ggcorrplot(corr_mat_us_d1, lab = TRUE, show.legend = FALSE, lab_size = 2.5, tl.cex = 8) + labs(title = "US")
+d1_cn <- ggcorrplot(corr_mat_cn_d1, lab = TRUE, show.legend = FALSE, lab_size = 2.5, tl.cex = 8) + labs(title = "CN")
+
+
+cowplot::plot_grid(d1_us, d1_cn)
+```
+
+## Experiment 2
+
+
+```{r fig.width=6, fig.height=3, fig.pos="!h"}
+
+
+d2_us <- ggcorrplot(corr_mat_us_d2, lab = TRUE, show.legend = FALSE, lab_size = 2.5, tl.cex = 8) + labs(title = "US")
+d2_cn <- ggcorrplot(corr_mat_cn_d2, lab = TRUE, show.legend = FALSE, lab_size = 2.5, tl.cex = 8) + labs(title = "CN")
+
+
+cowplot::plot_grid(d2_us, d2_cn)
+```

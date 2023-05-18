@@ -305,6 +305,51 @@ write_csv(attrition_df, MAIN_ATTRITION_PATH)
 
 # Appendix
 
+```{r}
+d2 <- read_csv(here("data/03_processed_data/exp2/tidy_main.csv"))
+```
+
+
+## Incorporate background coding per reviewer suggestion 
+
+```{r}
+fd_subject <- d2 %>% filter(task_name == "FD") %>% distinct(subject) %>% pull(subject)
+
+us_fd_background <- read_csv(here("data/01b_annotated_data/exp2/US/fd_background.csv"))
+cn_fd_background <- read_csv(here("data/01b_annotated_data/exp2/CN/fd_background.csv"))
+d2_fd_background <- bind_rows(
+  us_fd_background %>% mutate(culture = "US") %>% filter(subject %in% fd_subject), 
+  cn_fd_background %>% mutate(culture = "CN") %>% filter(subject %in% fd_subject)
+) %>% 
+  filter(codeable != 0)
+
+clean_fd_background <- d2_fd_background %>% 
+  select(subject, culture,stimulus, imada_bckgrd_description, imada_focal_description) %>% 
+  pivot_longer(cols = c("imada_bckgrd_description", "imada_focal_description"), 
+               names_to = "resp_type", 
+               values_to = "resp") %>% 
+  rename(trial_info = stimulus) %>% 
+  mutate(task_name = "FD", task_info = "FD") %>% 
+  select(subject, culture, task_name, task_info, trial_info, resp_type, resp) 
+  
+write_csv(clean_fd_background, here("data/03_processed_data/exp2/tidy_background.csv"))
+
+```
+
+
+```{r}
+#fd_descriptive_model <- glmer(resp ~ resp_type * culture + (resp_type | subject) + (culture | trial_info), family=poisson, data = clean_fd_background)
+
+fd_descriptive_model <- glmer(resp ~ resp_type * culture + (1 | subject) + (1 | trial_info), family=poisson, data = clean_fd_background)
+
+
+clean_fd_background %>% 
+  ggplot(aes(x = resp_type, y = resp)) + 
+  stat_summary(fun.data = "mean_cl_boot") + 
+  facet_wrap(~culture)
+```
+
+
 
 ## Get CD accuracy data per reviewer suggestion 
 

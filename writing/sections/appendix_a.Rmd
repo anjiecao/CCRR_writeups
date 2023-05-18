@@ -1,37 +1,140 @@
 ```{r}
-corr_mat_us_d1 <- readRDS(here("cached_results/ea/corr_mat_us_d1.Rds"))
-corr_mat_cn_d1 <- readRDS(here("cached_results/ea/corr_mat_cn_d1.Rds"))
-corr_mat_us_d2 <- readRDS(here("cached_results/ea/corr_mat_us_d2.Rds"))
-corr_mat_cn_d2 <- readRDS(here("cached_results/ea/corr_mat_cn_d2.Rds"))
+library(cowplot)
 ```
 
-# Within-culture analysis on relationships between tasks. 
+# Additional Visualizations for Task Results
 
-@na2010cultural found neglible correlations among a battery of tasks that revealed cultural differences within each culture. We found similar patterns in our data. Here we report four correlation matrices: US participants' correlation matrix is on the left, and Chinese participants' on the right. Each cell has a number indicating the correlation between the task marked on the column head and the task marked on the row head (Experiment 1: CA = Child Causal Attribution; EBB: Ebbinghaus Illusion; FD = Free Description; HZ =  Horizon Collage; RMTS = Ambiguous cRMTS; RV = Raven's Progressive Matrices; SSI = Symbolic Self-Inflation; UP = Uniqueness Preference; Experiment 2:  RMTS = Ambiguous cRMTS; RV = Raven's Progressive Matrices; FD = Free Description; CD = Change Detection; SSI = Symbolic Self-Inflation; CA = Causal Attribution; TTS = Taxonomic-Thematic Similarity; SeI = Semantic Intuition). 
+## Free Description
 
-
-## Experiment 1
-
-
-```{r fig.width=6, fig.height=3}
+One measure from the Picture Free Description task is the number of descriptive accounts directed at the focal objects versus the background objects. In Experiment 1, we found a main effect of culture, with U.S. participants providing more description overall. We also found an interaction effect between culture and description types, with U.S. participants providing more background descriptions than focal descriptions. This pattern was inconsistent with the results reported in @imada2013east. However, we found a pattern consistent with the original findings in experiment 2: Chinese participants provided more descriptive accounts directed at the background objects than the focal objects relative to U.S. participants. We reported the descriptive and inferential statistics in the main text. 
 
 
-d1_us <- ggcorrplot(corr_mat_us_d1, lab = TRUE, show.legend = FALSE, lab_size = 2.5, tl.cex = 8) + labs(title = "US")
-d1_cn <- ggcorrplot(corr_mat_cn_d1, lab = TRUE, show.legend = FALSE, lab_size = 2.5, tl.cex = 8) + labs(title = "CN")
+```{r}
+d1_background <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv")) %>% 
+  filter(task_name == "FD") %>% 
+  filter(grepl("imada", resp_type)) %>% 
+  mutate(exp = "experiment 1")
+d2_background <- read_csv(here("data/03_processed_data/exp2/tidy_background.csv")) %>% 
+  mutate(exp = "experiment 2")
+background <- bind_rows(d1_background,d2_background) %>% 
+  mutate(resp_type_print = 
+           case_when(resp_type == "imada_bckgrd_description" ~ "Background", 
+                     resp_type == "imada_focal_description" ~ "Focal"))
 
-
-cowplot::plot_grid(d1_us, d1_cn)
 ```
 
-## Experiment 2
+
+```{r fig.width=5, fig.height = 3, fig.pos = "H", fig.cap = "Results from the Picture Free Description task's descriptive accounts measures for experiment 1 and experiment 2 respectively. Each dot represents the number of descriptive accounts directed at either the focal object or the background object in each trial. Red indicates Chinese participants' responses, and blue indicates U.S. participants' responses. The black dots are the mean values for each group, with error bars showing 95\\% confidence intervals"}
+d1_fd_p <- background %>% 
+  filter(exp == "experiment 1") %>% 
+  ggplot(aes(x = culture, y = resp, color = culture)) + 
+  geom_point(alpha = .1, position = position_jitter(width = .1)) + 
+  stat_summary(fun.data = "mean_cl_boot", color = "black")+
+  scale_color_manual(values = c("red", "blue"))+
+    guides(fill = "none") +
+    guides(color = "none") +
+    ylab("Number of Descriptive Accounts") + 
+    xlab("")+
+    theme_classic() +
+    facet_wrap(~resp_type_print)+
+    theme(text = element_text(size=6),
+          strip.text = element_text(size=8),
+          axis.text=element_text(size=10),
+          plot.title = element_text(hjust = 0.5, size = 7.2), 
+          plot.subtitle = element_text(hjust = 0.5, size = 7.2))   + 
+      labs(subtitle = "Exp. 1")+ 
+  ylim(0, 10)
+
+d2_fd_p <- background %>% 
+  filter(exp == "experiment 2") %>% 
+  ggplot(aes(x = culture, y = resp, color = culture)) + 
+  geom_point(alpha = .1, position = position_jitter(width = .1)) + 
+  stat_summary(fun.data = "mean_cl_boot", color = "black")+
+  scale_color_manual(values = c("red", "blue"))+
+  
+    guides(fill = "none") +
+    guides(color = "none") +
+    ylab("") + 
+    xlab("")+
+    labs(subtitle = "Exp. 2") + 
+    theme_classic() +
+    facet_wrap(~resp_type_print)+
+    theme(text = element_text(size=6),
+          strip.text = element_text(size=8),
+          axis.text=element_text(size=10),
+          plot.title = element_text(hjust = 0.5, size = 7.2), 
+          plot.subtitle = element_text(hjust = 0.5, size = 7.2))+ 
+  ylim(0, 10)
 
 
-```{r fig.width=6, fig.height=3, fig.pos="!h"}
+plot_grid(d1_fd_p, d2_fd_p)
 
-
-d2_us <- ggcorrplot(corr_mat_us_d2, lab = TRUE, show.legend = FALSE, lab_size = 2.5, tl.cex = 8) + labs(title = "US")
-d2_cn <- ggcorrplot(corr_mat_cn_d2, lab = TRUE, show.legend = FALSE, lab_size = 2.5, tl.cex = 8) + labs(title = "CN")
-
-
-cowplot::plot_grid(d2_us, d2_cn)
+ 
+ 
+  
 ```
+
+## Horizon Collage 
+
+In Horizon Collage task, we included two other measures in addition to the height of horizon: the number of stickers and the total area that the stickers covered. Here we included the visualization for the latter two measures. Unlike @senzaki2014holistic, we did not see any cultural difference in either measure. We reported the descriptive and inferential statistics in the main text. 
+
+
+
+```{r}
+d1_hz <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv")) %>% 
+  filter(task_name == "HZ") %>% 
+  filter(resp_type %in% c("stkr_count", "stkr_area")) %>% 
+  mutate(resp_type_print = case_when(
+    resp_type == "stkr_count" ~ "Sticker Count", 
+    resp_type == "stkr_area" ~ "Sticker Area"
+  ))
+
+```
+
+
+```{r fig.width=5, fig.height = 3, fig.cap = "Results from the Horizon Collage task's sticker number and sticker covered area measures. Each dot represents one participant's response. Red indicates Chinese participants' responses, and blue indicates U.S. participants' responses. The black dots are the mean values for each group, with error bars showing 95\\% confidence intervals"}
+d1_hz_n_p <- d1_hz %>% 
+  filter(resp_type == "stkr_count") %>% 
+  ggplot(aes(x = culture, y = resp, color = culture)) + 
+  geom_point(alpha = .1, position = position_jitter(width = .1)) + 
+  stat_summary(fun.data = "mean_cl_boot", color = "black")+
+  scale_color_manual(values = c("red", "blue"))+
+    guides(fill = "none") +
+    guides(color = "none") +
+    ylab("Number of stickers") + 
+    xlab("")+
+    theme_classic() +
+    labs(title = "Sticker count")+ 
+    #facet_wrap(~resp_type_print, scale = "free_y")+
+    theme(text = element_text(size=6),
+          strip.text = element_text(size=8),
+          axis.text=element_text(size=10),
+          plot.title = element_text(hjust = 0.5, size = 7.2), 
+          plot.subtitle = element_text(hjust = 0.5, size = 7.2))  
+
+d1_hz_area_p <- d1_hz %>% 
+  filter(resp_type == "stkr_area") %>% 
+  mutate(resp = resp/(75*75*3*3)) %>% 
+  ggplot(aes(x = culture, y = resp, color = culture)) + 
+  geom_point(alpha = .1, position = position_jitter(width = .1)) + 
+  stat_summary(fun.data = "mean_cl_boot", color = "black")+
+  scale_color_manual(values = c("red", "blue"))+
+    guides(fill = "none") +
+    guides(color = "none") +
+    ylab("Total Square Inch") + 
+    xlab("")+
+    theme_classic() +
+    labs(title = "Sticker covered area")+ 
+    #facet_wrap(~resp_type_print, scale = "free_y")+
+    theme(text = element_text(size=6),
+          strip.text = element_text(size=8),
+          axis.text=element_text(size=10),
+          plot.title = element_text(hjust = 0.5, size = 7.2), 
+          plot.subtitle = element_text(hjust = 0.5, size = 7.2))  
+
+plot_grid(d1_hz_n_p, d1_hz_area_p)
+
+```
+
+
+

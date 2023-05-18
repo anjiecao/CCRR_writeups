@@ -99,8 +99,12 @@ mention_df <- tidy_d %>%
   select(-resp, -task_info, -resp_type, -trial_info)
 fd_mention_model <- glmer(first_mention ~ culture + (1 | subject)+(culture | scene), family = binomial, data = mention_df)
 
-save_model(fd_mention_model, GLMER_MODEL_DIR)
+fd_description_df <- read_csv(here("data/03_processed_data/exp2/tidy_background.csv"))
+fd_descriptive_model <- glmer(resp ~ resp_type * culture + (1 | subject) + (1 | trial_info), family=poisson, data = fd_description_df)
 
+
+save_model(fd_mention_model, GLMER_MODEL_DIR)
+save_model(fd_descriptive_model, GLMER_MODEL_DIR)
 ```
 
 ### bayes 
@@ -472,6 +476,15 @@ all_models_str <- list.files(GLMER_MODEL_DIR)
 all_model_results <- lapply(all_models_str, tidy_model_main) %>% bind_rows()
 saveRDS(all_model_results,GLMER_SUMMARY_PATH)
 ```
+
+#### fd descriptive mod 
+```{r}
+fd_description_res <- tidy_model_main("fd_descriptive_model.Rds")
+saveRDS(fd_description_res, here("cached_results/exp2/fd_descriptive_info.Rds"))
+```
+
+
+
 
 ### tidy bayes model
 

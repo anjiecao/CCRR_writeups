@@ -1,5 +1,5 @@
 
-```{r fig.cap = "Results from each task. Results from the CN sample are plotted in red, and the US in blue. Panel A and B includes results from experiment 1 and 2 respectively. The results for other measures used in the Free Description and Horizon Collage were included in Appendix A.",fig.width=8, fig.height=11}
+```{r fig.cap = "Results from each task. Results from the CN sample are plotted in red, and the US in blue. Panel A and B includes results from experiment 1 and 2 respectively. The results for other measures used in the Free Description and Horizon Collage were included in Appendix B.",fig.width=8, fig.height=11}
 plot_megaplogt()
 ```
 

@@ -15,7 +15,7 @@ max_cor_df <- cor_tasks %>%
 
 Correlations between task scores were quite low on average, suggesting limited support for a single factor explanation. Across both experiments, the largest absolute magnitude of correlations observed were `r round(filter(max_cor_df, task_1 == "TD", task_2 == "CA")$value, 2)` (Taxonomic-Thematic Similarity and Adult Causal Attribution in Experiment 2), `r round(filter(max_cor_df, task_1 == "FD", task_2 == "RV")$value, 2)` (Free Description and Raven's SPM in Experiment 2), and `r round(filter(max_cor_df, task_1 == "CA", task_2 == "FD")$value, 2)` (Adult Causal Attribution and Free Description in Experiment 2). All other correlations were between -0.23 and 0.23. Hence, the amount of shared variation between tasks was quite limited and our attempts at exploratory factor analysis discovered structures with many distinct factors and very low loading on the first factor. 
 
-We also applied the same correlation analysis within each culture. Again, we found limited correlations between tasks. This pattern replicated the findings from a previous work showing negligible relationships among a battery of tasks that revealed cultural differences [@na2010cultural] (See Appendix A).
+We also applied the same correlation analysis within each culture. Again, we found limited correlations between tasks. This pattern replicated the findings from a previous work showing negligible relationships among a battery of tasks that revealed cultural differences [@na2010cultural] (See Appendix C).
 
 <!-- We did not pursue this direction further though we welcome further explorations of this type using our dataset.  -->
 

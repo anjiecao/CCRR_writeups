@@ -26,7 +26,7 @@ We make all code and data from our experiments available for further data collec
 
 
 \begin{longtable}{l p{1.2in} p{1.4in} p{1.4in} p{.2in} p{.2in}}
-    \caption{Tasks included in each experiment and the final sample size after exclusions.}\\
+    \caption{Tasks included in each experiment and the final sample size after exclusions. We conducted simulations for power analysis and found that our sample sizes are well-powered to detect medium and above effect sizes. We included the power analyses in Appendix A.}\\
     \small  % Switch from 12pt to 11pt; otherwise, table won't fit
     \setlength\LTleft{0pt}            
     \setlength\LTright{0pt}         

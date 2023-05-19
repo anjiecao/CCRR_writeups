@@ -70,6 +70,7 @@ appendix:
   - "writing/sections/appendix_a.rmd"
   - "writing/sections/appendix_b.rmd"
   - "writing/sections/appendix_c.rmd"
+  - "writing/sections/appendix_d.rmd"
 
 
 ---
@@ -91,6 +92,7 @@ library(cowplot)
 library(ggthemes)
 library(pwr)
 library(simr)
+library(compute.es)
 
 here::i_am("writing/CCRR_manuscript.Rmd")
 
@@ -241,5 +243,8 @@ nocite: |
 ```
 
 ```{r child = "writing/sections/appendix_c.rmd"}
+```
+
+```{r child = "writing/sections/appendix_d.rmd"}
 ```
 

@@ -1,140 +1,132 @@
-```{r}
-library(cowplot)
-```
+# Prospective Power analysis
 
-# Additional Visualizations for Task Results
+We conducted two power analyses: a low assumption t-test power analysis and a high assumption linear mixed effects model power analysis. Under both power analysis frameworks, we showed that our sample sizes are well-powered to detect medium and larger effect sizes. 
 
-## Free Description
+## Low assumption t-test power analysis
 
-One measure from the Picture Free Description task is the number of descriptive accounts directed at the focal objects versus the background objects. In Experiment 1, we found a main effect of culture, with U.S. participants providing more description overall. We also found an interaction effect between culture and description types, with U.S. participants providing more background descriptions than focal descriptions. This pattern was inconsistent with the results reported in @imada2013east. However, we found a pattern consistent with the original findings in experiment 2: Chinese participants provided more descriptive accounts directed at the background objects than the focal objects relative to U.S. participants. We reported the descriptive and inferential statistics in the main text. 
-
+In this framework, we assumed the cultural differences are evaluated with a simple t-test between two samples. We varied the hypothetical effect sizes of the cultural differences. This analysis was conducted using the `pwr` package [@champely2018package].
 
 ```{r}
-d1_background <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv")) %>% 
-  filter(task_name == "FD") %>% 
-  filter(grepl("imada", resp_type)) %>% 
-  mutate(exp = "experiment 1")
-d2_background <- read_csv(here("data/03_processed_data/exp2/tidy_background.csv")) %>% 
-  mutate(exp = "experiment 2")
-background <- bind_rows(d1_background,d2_background) %>% 
-  mutate(resp_type_print = 
-           case_when(resp_type == "imada_bckgrd_description" ~ "Background", 
-                     resp_type == "imada_focal_description" ~ "Focal"))
-
-```
+get_power <- function(n, d){
+  pwr.t.test(n,d,sig.level=.05)$power
+}
 
 
-```{r fig.width=5, fig.height = 3, fig.pos = "H", fig.cap = "Results from the Picture Free Description task's descriptive accounts measures for experiment 1 and experiment 2 respectively. Each dot represents the number of descriptive accounts directed at either the focal object or the background object in each trial. Red indicates Chinese participants' responses, and blue indicates U.S. participants' responses. The black dots are the mean values for each group, with error bars showing 95\\% confidence intervals"}
-d1_fd_p <- background %>% 
-  filter(exp == "experiment 1") %>% 
-  ggplot(aes(x = culture, y = resp, color = culture)) + 
-  geom_point(alpha = .1, position = position_jitter(width = .1)) + 
-  stat_summary(fun.data = "mean_cl_boot", color = "black")+
-  scale_color_manual(values = c("red", "blue"))+
-    guides(fill = "none") +
-    guides(color = "none") +
-    ylab("Number of Descriptive Accounts") + 
-    xlab("")+
-    theme_classic() +
-    facet_wrap(~resp_type_print)+
-    theme(text = element_text(size=6),
-          strip.text = element_text(size=8),
+sim_d <- merge(
+  tibble(
+  n = seq(20, 400, 10)
+), 
+tibble(
+  d = seq(0.2, 1.4, 0.1) 
+)
+) 
+
+sim_d$power <- unlist(pmap(sim_d, get_power))
+
+t_p <- sim_d %>% 
+  filter(d < 1.4) %>% 
+  ggplot(aes(x = n, y = power, color = as.factor(d), group = d)) + 
+  geom_point() + 
+  geom_line()+ 
+  xlim(10, 350) + 
+  ylim(0, 1) + 
+  theme_few() + 
+  geom_hline(yintercept = 0.8, linetype = 2, color = "gray") + 
+  geom_vline(xintercept = 114, linetype = 3, color = "green", alpha = .7) + 
+  geom_vline(xintercept = 298, linetype = 3, color = "purple", alpha = .7) + 
+  guides(color="none") + 
+  labs(title = "Prospective Power Analysis: t-test", 
+       color = "Hypothetical Cohen's d") + 
+  xlab("Number of Participants (N)") +
+  ylab("Power to reject the null at p < .05") + 
+  theme(text = element_text(size=6),
           axis.text=element_text(size=10),
           plot.title = element_text(hjust = 0.5, size = 7.2), 
-          plot.subtitle = element_text(hjust = 0.5, size = 7.2))   + 
-      labs(subtitle = "Exp. 1")+ 
-  ylim(0, 10)
-
-d2_fd_p <- background %>% 
-  filter(exp == "experiment 2") %>% 
-  ggplot(aes(x = culture, y = resp, color = culture)) + 
-  geom_point(alpha = .1, position = position_jitter(width = .1)) + 
-  stat_summary(fun.data = "mean_cl_boot", color = "black")+
-  scale_color_manual(values = c("red", "blue"))+
+          plot.subtitle = element_text(hjust = 0.5, size = 7.2))
   
-    guides(fill = "none") +
-    guides(color = "none") +
-    ylab("") + 
-    xlab("")+
-    labs(subtitle = "Exp. 2") + 
-    theme_classic() +
-    facet_wrap(~resp_type_print)+
-    theme(text = element_text(size=6),
-          strip.text = element_text(size=8),
-          axis.text=element_text(size=10),
-          plot.title = element_text(hjust = 0.5, size = 7.2), 
-          plot.subtitle = element_text(hjust = 0.5, size = 7.2))+ 
-  ylim(0, 10)
 
-
-plot_grid(d1_fd_p, d2_fd_p)
-
- 
- 
-  
 ```
 
-## Horizon Collage 
 
-In Horizon Collage task, we included two other measures in addition to the height of horizon: the number of stickers and the total area that the stickers covered. Here we included the visualization for the latter two measures. Unlike @senzaki2014holistic, we did not see any cultural difference in either measure. We reported the descriptive and inferential statistics in the main text. 
+## High assumption mixed effects linear regression power analysis
+
+Conducting prospective power analysis for mixed-effects linear regression requires more assumptions. Here we specify a simplified model to run the power simulation on. The model predicts a response with culture as the fixed effect, and subjects as the random intercepts. We assumed the fixed effect's intercept and slope as 0.1 and 0.5, respectively. We varied the effect sizes of the model by manipulating different residual standard deviation. We conducted this analysis in the `simr` package [@green2016simr].
+
+
+```{r eval=FALSE, include=FALSE}
+get_sample_size_and_n <- function(fixed_intercept, fixed_slope, df, res, 
+                                  rand = list(.5), 
+                                  sample_size_range = seq(10, 200, 20)){
+  
+  fixed <- c(fixed_intercept, fixed_slope)
+  model <- makeLmer(y ~ culture + (1|subject), fixef=fixed, VarCorr=rand, sigma=res, data=df)
+  
+  model_ext <- extend(model, within = "culture" , n = 200)
+  
+  pcurve <- powerCurve(model_ext, within="culture", breaks = sample_size_range)
+  
+  pcurve_info <- pcurve$ps
+  
+  df <- lapply(pcurve_info, 
+    function(x){
+      return (tibble(
+        power = x$x,
+        n = x$nrow
+      ))
+    }
+  ) %>% 
+    bind_rows() %>% 
+    mutate(
+      d = fixed_slope / res
+    )
+  
+  return (df)
+}
+
+simulation <- lapply(
+  # this is to make sure the d we looked at is consistent with the ones in the t-test
+  0.5 / seq(0.2, 1.4, 0.1) , 
+  function (sigma){
+    get_sample_size_and_n(0.1, 0.5, data_df, res = sigma)
+
+  }
+) %>% bind_rows()
+saveRDS(simulation, here("cached_results/ea/power_analysis.Rds"))
+
+```
+
 
 
 
 ```{r}
-d1_hz <- read_csv(here("data/03_processed_data/exp1/tidy_main.csv")) %>% 
-  filter(task_name == "HZ") %>% 
-  filter(resp_type %in% c("stkr_count", "stkr_area")) %>% 
-  mutate(resp_type_print = case_when(
-    resp_type == "stkr_count" ~ "Sticker Count", 
-    resp_type == "stkr_area" ~ "Sticker Area"
-  ))
+simulation <- readRDS(here("cached_results/ea/power_analysis.Rds"))
 
+lmer_p <- simulation %>% 
+  filter(d < 1.4) %>%
+  mutate(d = round(d, 2), 
+         power = power / 100) %>% 
+  ggplot(aes(x = n , y = power, color = as.factor(d))) + 
+  geom_point() + 
+  geom_line() + 
+  theme_few() + 
+  labs(color = "Cohen's d") + 
+  geom_hline(yintercept = 0.8, linetype = 2, color = "gray") + 
+  geom_vline(xintercept = 114, linetype = 3, color = "green", alpha = .7) + 
+  geom_vline(xintercept = 298, linetype = 3, color = "purple", alpha = .7)  + 
+  labs(title = "Prospective Power Analysis: mixed effect model", 
+       color = "Hypothetical Cohen's d") + 
+  xlab("Number of Participants (N)") +
+  theme(text = element_text(size=6),
+          axis.text=element_text(size=10),
+          plot.title = element_text(hjust = 0.5, size = 7.2), 
+          plot.subtitle = element_text(hjust = 0.5, size = 7.2), 
+         legend.position = "bottom")
+  
+  #ylab("Power to reject the null at p < .05")
 ```
 
 
-```{r fig.width=5, fig.height = 3, fig.cap = "Results from the Horizon Collage task's sticker number and sticker covered area measures. Each dot represents one participant's response. Red indicates Chinese participants' responses, and blue indicates U.S. participants' responses. The black dots are the mean values for each group, with error bars showing 95\\% confidence intervals"}
-d1_hz_n_p <- d1_hz %>% 
-  filter(resp_type == "stkr_count") %>% 
-  ggplot(aes(x = culture, y = resp, color = culture)) + 
-  geom_point(alpha = .1, position = position_jitter(width = .1)) + 
-  stat_summary(fun.data = "mean_cl_boot", color = "black")+
-  scale_color_manual(values = c("red", "blue"))+
-    guides(fill = "none") +
-    guides(color = "none") +
-    ylab("Number of stickers") + 
-    xlab("")+
-    theme_classic() +
-    labs(title = "Sticker count")+ 
-    #facet_wrap(~resp_type_print, scale = "free_y")+
-    theme(text = element_text(size=6),
-          strip.text = element_text(size=8),
-          axis.text=element_text(size=10),
-          plot.title = element_text(hjust = 0.5, size = 7.2), 
-          plot.subtitle = element_text(hjust = 0.5, size = 7.2))  
-
-d1_hz_area_p <- d1_hz %>% 
-  filter(resp_type == "stkr_area") %>% 
-  mutate(resp = resp/(75*75*3*3)) %>% 
-  ggplot(aes(x = culture, y = resp, color = culture)) + 
-  geom_point(alpha = .1, position = position_jitter(width = .1)) + 
-  stat_summary(fun.data = "mean_cl_boot", color = "black")+
-  scale_color_manual(values = c("red", "blue"))+
-    guides(fill = "none") +
-    guides(color = "none") +
-    ylab("Total Square Inch") + 
-    xlab("")+
-    theme_classic() +
-    labs(title = "Sticker covered area")+ 
-    #facet_wrap(~resp_type_print, scale = "free_y")+
-    theme(text = element_text(size=6),
-          strip.text = element_text(size=8),
-          axis.text=element_text(size=10),
-          plot.title = element_text(hjust = 0.5, size = 7.2), 
-          plot.subtitle = element_text(hjust = 0.5, size = 7.2))  
-
-plot_grid(d1_hz_n_p, d1_hz_area_p)
-
+```{r fig.height= 7, fig.width=4, fig.cap = "Simulation of power under different sample sizes and effect sizes. The top panel is under t-test assumptions, and the bottom panel is under linear mixed effect model assumptions. X-axis represents the number of particints in each condition. Y-axis represents the estimated power based on the effect sizes and the sample sizes. The horizontal gray dotted line on each plot represents 80\\% power. The two vertical lines, green and purple, represents the minimum sample size and the maximum sample size in our study, respectively."}
+plot_grid(t_p, lmer_p, nrow = 2, rel_heights = c(1,1.4))
 ```
-
-
 

@@ -53,7 +53,7 @@ n_sig_demog_models <- nrow(d12_demog_df %>%
   
 ```
 
-We fit `r n_demog_models` exploratory regression models to see if basic demographic factors could predict task performance. The demographic factors we explored were age, gender identity, residential mobility, number of international experiences, maternal education level, and subjective socioeconomic status as measured by the MacArthur Ladder [@adler2000relationship]. `r n_sig_demog_models` were statistically significant, but only one model survived Bonferroni correction. Change detection was predicted by age in the US sample, with older participants taking longer to respond than younger participants (adjusted *p* < 0.01). Given some of the models could be considered as conceptual replications of previous work, we reported selected models with significant uncorrected results in Appendix B.  
+We fit `r n_demog_models` exploratory regression models to see if basic demographic factors could predict task performance. The demographic factors we explored were age, gender identity, residential mobility, number of international experiences, maternal education level, and subjective socioeconomic status as measured by the MacArthur Ladder [@adler2000relationship]. `r n_sig_demog_models` were statistically significant, but only one model survived Bonferroni correction. Change detection was predicted by age in the US sample, with older participants taking longer to respond than younger participants (adjusted *p* < 0.01). Given some of the models could be considered as conceptual replications of previous work, we reported selected models with significant uncorrected results in Appendix D.  
 
 
 

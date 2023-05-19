@@ -1,0 +1,73 @@
+# Prospective Power analysis
+```{r}
+
+```
+
+
+## Low assumption t-test power analysis
+
+
+```{r}
+get_power <- function(n, d){
+  pwr.t.test(n,d,sig.level=.05)$power
+}
+
+
+sim_d <- merge(
+  tibble(
+  n = seq(20, 400, 10)
+), 
+tibble(
+  d = seq(0.2, 1.4, 0.1) 
+)
+) 
+
+sim_d$power <- unlist(pmap(sim_d, get_power))
+
+sim_d %>% 
+  ggplot(aes(x = n, y = power, color = as.factor(d), group = d)) + 
+  geom_point() + 
+  geom_line()+ 
+  xlim(10, 400) + 
+  ylim(0, 1) + 
+  theme_few() + 
+  geom_hline(yintercept = 0.8, linetype = 2, color = "gray") + 
+  geom_vline(xintercept = 114, linetype = 3, color = "green", alpha = .7) + 
+  geom_vline(xintercept = 298, linetype = 3, color = "purple", alpha = .7) + 
+  labs(title = "Prospective Power Analysis", 
+       subtitle = "t-test", 
+       color = "Cohen's d")
+
+```
+
+https://rpubs.com/anjiecao/SBMA_SI
+
+
+
+## High assumption mixed effects power analysis
+
+
+```{r}
+subj <- seq(1, 10, 1)
+culture <- c("US", "CN")
+
+df <- merge(
+  tibble(subject = subj), 
+  tibble(culture = culture)
+)
+## Intercept and slopes for intervention, time1, time2, intervention:time1, intervention:time2
+fixed <- c(0.5, 1)
+
+## Random intercepts for participants clustered by class
+rand <- list(0.5)
+
+## residual variance
+res <- 2
+
+model <- makeLmer(y ~ culture + (1|subject), fixef=fixed, VarCorr=rand, sigma=res, data=df)
+```
+
+
+```{r}
+```
+

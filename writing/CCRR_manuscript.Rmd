@@ -88,6 +88,9 @@ library(glue)
 library(latex2exp)
 library(ggcorrplot)
 library(cowplot)
+library(ggthemes)
+library(pwr)
+library(simr)
 
 here::i_am("writing/CCRR_manuscript.Rmd")
 

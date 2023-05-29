@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  19 MAY 2023 11:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2023.3.17)  29 MAY 2023 15:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1327,7 +1327,7 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  75i,11n,77p,1595b,684s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}</Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb></Users/caoanjie/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
-Output written on CCRR_manuscript.pdf (61 pages, 1447084 bytes).
+Output written on CCRR_manuscript.pdf (61 pages, 1439367 bytes).
 PDF statistics:
  916 PDF objects out of 1000 (max. 8388607)
  798 compressed objects within 8 object streams

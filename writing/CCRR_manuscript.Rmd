@@ -71,10 +71,7 @@ appendix:
   - "writing/sections/appendix_b.rmd"
   - "writing/sections/appendix_c.rmd"
   - "writing/sections/appendix_d.rmd"
-
-
 ---
-
 
 ```{r load_utility_packages, include = FALSE}
 library(papaja)
@@ -104,7 +101,6 @@ source(here("processing_pipelines/helper/plotting/plot_table.R"))
 
 ```
 
-
 ```{r global_options, include = FALSE}
 
 knitr::opts_chunk$set(warning = FALSE, 
@@ -120,43 +116,29 @@ knitr::opts_knit$set(root.dir = here())
 theme_set(theme_classic(base_size = 11))
 ```
 
-
-
 # Introduction
 
 ```{r child = "writing/sections/01_intro.Rmd"}
 ```
 
-
 <!-- \end{landscape} -->
 
 # Experiment 1
 
-
-
-
 ```{r child = "writing/sections/02_exp1_methods.Rmd"}
 ```
 
-
-
-
 ## Results
 
-```{r child = "writing/sections/03_exp1_results.Rmd"}
-```  
-
+# ```{r child = "writing/sections/03_exp1_results.Rmd"}
+# ```
 
 ## Discussion
 
 ```{r child = "writing/sections/04_exp1_discussion.Rmd"}
 ```
 
-
-
 # Experiment 2
-
-
 
 ```{r child = "writing/sections/05_exp2_methods.Rmd"}
 ```
@@ -166,13 +148,11 @@ theme_set(theme_classic(base_size = 11))
 ```{r child = "writing/sections/06_exp2_results.Rmd"}
 ```
 
-## Discussion 
+## Discussion
 
 ```{r child = "writing/sections/07_exp2_discussion.Rmd"}
 
 ```
-
-
 
 # Exploratory analyses
 
@@ -201,19 +181,18 @@ theme_set(theme_classic(base_size = 11))
 ```{r child = "writing/sections/12_general_discussion.Rmd"}
 ```
 
-
-
 ---
 nocite: | 
-...
-  
+---
+
 ```{r appendix}
 #render_appendix("appendix.Rmd")
 ```
 
+```{=tex}
 \setlength{\parindent}{-0.5in}
 \setlength{\leftskip}{0.5in}
-
+```
 \newpage
 
 # References
@@ -221,20 +200,16 @@ nocite: |
 ---
 nocite: | 
    @na2020culture, @goddu2021toddlers
-...
+---
 
 ::: {#refs custom-style="Bibliography"}
 :::
 
+\newpage
 
 \newpage
 
-
-
-
-\newpage
-
-# (APPENDIX) Appendix {-}
+# (APPENDIX) Appendix {.unnumbered}
 
 ```{r child = "writing/sections/appendix_a.rmd"}
 ```
@@ -247,4 +222,8 @@ nocite: |
 
 ```{r child = "writing/sections/appendix_d.rmd"}
 ```
+
+```{r child = "writing/sections/appendix_e.rmd"}
+```
+
 

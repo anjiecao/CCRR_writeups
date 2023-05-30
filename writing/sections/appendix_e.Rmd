@@ -1,0 +1,133 @@
+# Examples of Tasks
+
+
+
+## Experiment 1
+
+
+### Ambiguous Relational Match-To-Sample (cRMTS)
+
+In the ambiguous cRMTS task [@carstensen2019context, Experiment 3], participants were shown two pairs of objects, AB (A: blue square in the example setup shown in Figure \@ref(fig:crmts-example); B: yellow circle) and AC (C: red triangle), activating a music machine during the training phase. In the test phase, they were given a forced choice between an object-based solution (a *same* pair of object A, i.e., a pair of blue squared in the example) and a relational solution (a *different* pair BC, i.e., yellow circle and red triangle in the example).
+
+```{r crmts-example, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Ambiguous relational match-to-sample (cRMTS) task. Participants were given a forced choice between object-based solution (Option 1) and relational solution (Option 2) during the test phase.', out.width='1\\linewidth', out.height = '200px', fig.pos='H'}
+# NOTE: path should be set w.r.t the "CCRR_manuscript.tex" file instead of the current rmd file
+knitr::include_graphics("CCRR_manuscript_files/appendix_task_examples/e1_crmts.pdf")
+```
+
+
+### Picture Free Description
+
+In the picture free description task [@imada2013east], Participants were shown a series of images with focal and background objects. For each image, they were asked to study it for 5 seconds, and then typed a description for it from memory.
+
+```{r free-description, echo = FALSE, message=FALSE, fig.align='center', fig.cap='A practice trial in picture free description task. In this image, the cat is the focal object, and the rest are background objects.', out.width='1\\linewidth', out.height = '200px', fig.pos='H'}
+# NOTE: path should be set w.r.t the "CCRR_manuscript.tex" file instead of the current rmd file
+knitr::include_graphics("CCRR_manuscript_files/appendix_task_examples/e1_fd.pdf")
+```
+
+
+### Ebbinghaus Illusion
+
+In the Ebbinghaus illusion task [@imada2013east], participants were asked to indicate which of the two orange circles (see Figure \@ref(fig:ebbinghaus)) was larger. They completed the task in two blocks: (1) no context block (upper right panel), where the two orange circles appeared independently; (2) illusional context block (bottom right panel), where each of the two orange circles were flanked by a grid of 8 gray circles which are all smaller or larger than the center orange circle.
+
+```{r ebbinghaus, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Ebbinghaus illusion task. Upper right panel: no context block. Bottom right panel: illusional context block.', out.width='1\\linewidth', out.height = '200px', fig.pos='H'}
+# NOTE: path should be set w.r.t the "CCRR_manuscript.tex" file instead of the current rmd file
+knitr::include_graphics("CCRR_manuscript_files/appendix_task_examples/e1_ebbinghaus.pdf")
+```
+
+
+### Horizon Collage
+
+In the horizon collage task [@senzaki2014holistic], participants were asked to create “a picture of the outside” by dragging-and-dropping sticker objects onto a rectangular "canvas." They were told to include a horizon line and could use any number of other stickers to create their image.
+
+```{r horizon, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Horizon collage task. Participants created an image of the outside by dragging-and-dropping sticker objects onto a rectangular "canvas."', out.width='1\\linewidth', out.height = '200px', fig.pos='H'}
+# NOTE: path should be set w.r.t the "CCRR_manuscript.tex" file instead of the current rmd file
+knitr::include_graphics("CCRR_manuscript_files/appendix_task_examples/e1_horizon.pdf")
+```
+
+
+### Symbolic Self-Inflation (Family)
+
+In the adapted symbolic self-inflation task [@kitayama2009cultural], we asked participants to draw themselves and their family members as circles by clicking-and-dragging their mouse on a rectangular "canvas."
+
+```{r si-family, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Symbolic self-inflation task, family version. In this example, three circles were drawn representing the participant, their mother, and their father, respectively.', out.width='1\\linewidth', out.height = '200px', fig.pos='H'}
+# NOTE: path should be set w.r.t the "CCRR_manuscript.tex" file instead of the current rmd file
+knitr::include_graphics("CCRR_manuscript_files/appendix_task_examples/e1_si_family.pdf")
+```
+
+
+### Uniqueness Preference
+
+In this adapted version of the uniqueness preference task [@kim1999deviance], participants were asked to select one of the five dinosaur "stickers" that were identical except for color (four blue and one yellow).
+
+```{r uniqueness, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Uniqueness preference task. Participants were asked to select one of the five dinosaur "stickers."', out.width='1\\linewidth', out.height = '200px', fig.pos='H'}
+# NOTE: path should be set w.r.t the "CCRR_manuscript.tex" file instead of the current rmd file
+knitr::include_graphics("CCRR_manuscript_files/appendix_task_examples/e1_uniqueness.pdf")
+```
+
+
+### Child Causal Attribution
+
+In the child causal attribution task [@seiver2013did], participants watched a series of four short, animated vignettes in which two children both played in a pool and neither child played on a bicycle. They were then asked to explain in text why each child did not play on the bicycle.
+
+```{r ca-child, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Child causal attribution task. Participants were asked to explain why each child did not play on the bicycle', out.width='1\\linewidth', out.height = '200px', fig.pos='H'}
+# NOTE: path should be set w.r.t the "CCRR_manuscript.tex" file instead of the current rmd file
+knitr::include_graphics("CCRR_manuscript_files/appendix_task_examples/e1_ca_child.pdf")
+```
+
+
+### Raven’s Standard Progressive Matrices
+
+In Raven's standard progressive matrices task, participants were asked to select from a series of given options one that best completed the patterns demonstrated in the prompts.
+
+```{r raven, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Raven\'s standard progressive matrices task. Participants were asked to select one option that best completed the patterns demonstrated in the prompts (upper panel).', out.width='1\\linewidth', out.height = '200px', fig.pos='H'}
+# NOTE: path should be set w.r.t the "CCRR_manuscript.tex" file instead of the current rmd file
+knitr::include_graphics("CCRR_manuscript_files/appendix_task_examples/e1_raven.pdf")
+```
+
+
+
+## Experiment 2
+
+In Experiment 2, the following tasks followed the same procedures as in Experiment 1: ambiguous relational match-to-sample (ambiguous cRMTS), picture free description, and Raven’s progressive matrices. The symbolic self-inflation task also followed similar procedures as in Experiment 1, except that participants were told to draw themselves and their *friends* into circles this time, as opposed to drawing draw themselves and their *family members* into circles in Experiment 1. We show examples for the remaining four tasks in Experiment 2 below.
+
+
+### Adult Causal Attribution
+
+In the adult version causal attribution task [@morris1994culture], participants were randomly assigned to read one of two crime stories (Royal Oak shooting or Iowa shooting). They were then asked to write a short explanation for the murderer’s behaviors and rate a list of statements about the causes of the murder (attributing to personal or situational factors) on a 7-point Likert scale.
+
+```{r ca-adult, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Adult causal attribution task. Participants were randomly assiged to read one of two crime stories (Royal Oak shooting or Iowa shooting) and make attributions for the murder.', out.width='1\\linewidth', out.height = '200px', fig.pos='H'}
+# NOTE: path should be set w.r.t the "CCRR_manuscript.tex" file instead of the current rmd file
+knitr::include_graphics("CCRR_manuscript_files/appendix_task_examples/e2_ca_adult.pdf")
+```
+
+
+### Change Detection
+
+In each trial of the change detection task [@masuda2006culture], a pair of images would alternate on the screen, each presented for 560ms with a blank screen in between images for 80ms. The two pictures were almost identical with subtle differences, either in the focal object (e.g., a tractor with or without a wheel, as shown in the left panel of Figure \@ref(fig:change-detection)) or the background (e.g., a scaffold in the distance with varying size, as shown in the right panel of Figure \@ref(fig:change-detection)). Participants were instructed to press a key when they spotted the difference, and then describe the difference in a text box. If they did not detect a difference within 60 seconds, the trial timed out.
+
+```{r change-detection, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Change detection task. Participants were instructed to detect the difference in each pair of images as quickly as they could. Left panel: change happened in a focal object. Right panel: change happened in the background.', out.width='1\\linewidth', out.height = '200px', fig.pos='H'}
+# NOTE: path should be set w.r.t the "CCRR_manuscript.tex" file instead of the current rmd file
+knitr::include_graphics("CCRR_manuscript_files/appendix_task_examples/e2_cd.pdf")
+```
+
+
+### Taxonomic-Thematic Similarity
+
+In the taxonomic-thematic similarity task [@ji2004culture; @le2021], participants were presented with triads containing a cue word and two match options. In each test triad (as shown in Figure \@ref(fig:similarity)), one option was a taxonomic match (e.g., ladybug and bee are both insects) and the other a thematic match (e.g., bees usually appear in gardens). In each filler triads, the cue item and the options were broadly similar, thematically and taxonomically, making for a more ambiguous decision (e.g., monkey: elephant, tiger). Participants completed a two-alternative forced choice task in which they chose one match for each cue item.
+
+```{r similarity, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Taxonomic-thematic similarity task. Participants completed a two-alternative forced choice task in which they chose one match for each cue item.', out.width='1\\linewidth', out.height = '200px', fig.pos='H'}
+# NOTE: path should be set w.r.t the "CCRR_manuscript.tex" file instead of the current rmd file
+knitr::include_graphics("CCRR_manuscript_files/appendix_task_examples/e2_similarity.pdf")
+```
+
+
+### Semantic Intuition
+
+In the semantic intuition task [@li2018name], participants read five stories and judged the correctness of statements referring to a character after each story. The correctness judgement reflected their semantic intuition of either the descriptivist view (i.e., determine the referent of a name based on the description of the speaker) or the causal-historical view (i.e., determine the referent based on the original usage).
+
+```{r semantic, echo = FALSE, message=FALSE, fig.align='center', fig.cap='Semantic intuition task. In this specific example, judging the statement as "true" indicates a descriptivist view, and judging it as "false" indicates a causal-historical view.', out.width='1\\linewidth', out.height = '200px', fig.pos='H'}
+# NOTE: path should be set w.r.t the "CCRR_manuscript.tex" file instead of the current rmd file
+knitr::include_graphics("CCRR_manuscript_files/appendix_task_examples/e2_semantic.pdf")
+```
+
+

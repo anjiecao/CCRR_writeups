@@ -130,8 +130,8 @@ theme_set(theme_classic(base_size = 11))
 
 ## Results
 
-# ```{r child = "writing/sections/03_exp1_results.Rmd"}
-# ```
+```{r child = "writing/sections/03_exp1_results.Rmd"}
+```
 
 ## Discussion
 

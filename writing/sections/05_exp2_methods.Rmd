@@ -23,7 +23,23 @@ raw_n_subject <- d2_raw %>%
 
 We recruited participants through online crowdsourcing websites. For the US, we used Prolific and applied the following screening criteria: a) US nationality, b) born in the US, and c) currently residing in the US; For China, we used Naodao (www.naodao.com), a platform designed for conducting online experiments in mainland China. Participants in US received \$12.25 in compensation and in China ¥35. 
 
-We recruited `r filter(raw_n_subject, culture == "US")$n` participants from the U.S. and `r filter(raw_n_subject, culture == "CN")$n` participants from China. `r d2_attrition %>% filter(exclusion_type == "whole_participant") %>% count() %>% pull()` participants were excluded because they did not meet our demographic inclusion criteria. Following our preregistration (available at https://osf.io/u7mzg), we applied a task-based exclusion procedure in which we excluded a participant's responses in a particular task if they a) showed a response bias for a single response button or value, b) had missing data on more than 25% of trials, or c) failed to meet the inclusion criteria for that task as specified in the preregistration. 
+We recruited `r filter(raw_n_subject, culture == "US")$n` participants from the U.S. and `r filter(raw_n_subject, culture == "CN")$n` participants from China. `r d2_attrition %>% filter(exclusion_type == "whole_participant") %>% count() %>% pull()` participants were excluded because they did not meet our demographic inclusion criteria^[
+Demographic exclusions: we would exclude data from [CN/US] participants who reported living abroad for more than 2 years in regions with predominantly [European/Asian] populations (respectively); and [CN/US] participants who reported speaking or understanding [English/any Chinese language or dialect] with proficiency at or above 3 out of 10. If this led to 20% or more of participants being excluded from either test population (US/CN), we would drop this exclusion criterion for the relevant population and use exploratory regressions to examine how the factor relates to responding in our tasks.
+]. Following our preregistration (available at https://osf.io/u7mzg), we applied a task-based exclusion procedure in which we excluded a participant's responses in a particular task if they a) showed a response bias for a single response button or value^[
+If more than 90% of selections by a participant in a 2AFC task were a single response button (left/right in RMTS or top/bottom in taxonomic/thematic similarity), data from this participant in this task would be excluded. If 100% of selections by a participant in a scalar (e.g., Likert scale used in causal attribution or in the demographics section) or multiple choice task (e.g. Raven’s SPM) used a single response button/value, data from this participant in this task would be excluded.
+], b) had missing data on more than 25% of trials^[
+If no data/more than 25% missing/data not codeable/side bias/participant did not follow instructions for any one task, then we would exclude all data from that participant, across tasks. If this led to 20% or more of participants being excluded, we would not apply this exclusion criteria to all data from the participant -- only at the level of individual tasks.
+], or c) failed to meet the inclusion criteria for that task as specified in the preregistration^[
+Additional task and trial-level exclusions:   
+(1) Change detection: trials where the participant incorrectly identified the change would not be analyzed (but will not be counted as missing data unless a response was not attempted).   
+(2) Free description: trials where the response was not code-able would be discarded and considered missing data.   
+(3) Causal attribution: none.   
+(4) Symbolic self-inflation: data from participants who failed to draw exactly one “self” circle would be excluded, as well as data from participants who drew only a “self” circle.   
+(5) Taxonomic/thematic similarity task: There were two unambiguous catch trials intermixed with regular trials in this task (e.g., Choose cat: cat, dog). If a participant missed either unambiguous catch trial, all triad data from that participant would be excluded.   
+(6) Semantic intuition: Participants would be excluded for missing any of the 5 control questions.   
+(7) Ambiguous RMTS: none.   
+(8) Raven’s SPM: none.
+]. 
 
 Similar to Experiment 1, we collected demographic information from participants, including subjective socioeconomic status, the state or province the participant grew up in and the one they currently reside in, residential mobility, number of international experiences, education, and undergraduate area of study (STEM or non-STEM). We also administered scales to collect explicit measures of participants’ cultural identities and behaviors [@cleveland2007acculturaton; @cleveland2015intersection]. 
 

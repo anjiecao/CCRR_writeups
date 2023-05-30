@@ -1,0 +1,23 @@
+```{r}
+library(tidyverse)
+library(here)
+
+d <- read_csv(here("data/01b_annotated_data/exp1/US/us_fd_coded.csv"))
+```
+
+
+```{r}
+d %>% 
+  filter(grepl("squirrel", stimulus)) %>% 
+  select(trial_raw, first_mention_focal) %>% 
+  mutate(code = case_when(
+    first_mention_focal == 1 ~ "yes", 
+    TRUE ~ "no"
+  )) %>% 
+  select(trial_raw, code) %>% 
+  rename(data = trial_raw) %>% 
+  mutate(context = data) %>% 
+  select(data, context, code) %>% 
+  write_csv(here("data_FD.csv"))
+```
+

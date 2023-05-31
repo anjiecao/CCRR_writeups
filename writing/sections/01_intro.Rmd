@@ -55,7 +55,7 @@ We make all code and data from our experiments available for further data collec
 
 & Picture Free Description & Imada, Carlson, \& Itakura (2013) & Describe pictures from memory after a brief study period &  132 &  284\\
 
-& Change Detection & Mausda \& Nisbett (2007) & Find differences in the foreground or background of two images &  160 &  253\\
+& Change Detection & Masuda \& Nisbett (2006) & Find differences in the foreground or background of two images &  160 &  253\\
 
 & Symbolic Self-Inflation (Friends) & Kitayama et al. (2009) & Draw a sociogram with self and friends as nodes, relationships as edges &  158 &  252\\
 

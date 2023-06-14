@@ -26,7 +26,7 @@ We make all code and data from our experiments available for further data collec
 
 
 \begin{longtable}{l p{1.2in} p{1.4in} p{1.4in} p{.2in} p{.2in}}
-    \caption{Tasks included in each experiment and the final sample size after exclusions. We conducted simulations for power analysis and found that our sample sizes are well-powered to detect medium and above effect sizes. We included the power analyses in Appendix A.}\\
+    \caption{Tasks included in each experiment and the final sample size after exclusions. We conducted simulations for power analysis and found that our sample sizes are well-powered to detect medium and larger effect sizes, with more than 0.8 power for effect size (Cohen's d) greater than 0.5 for all sample sizes above our minimum sample size (N = 114) under low assumption simulations. We included the power analyses in Appendix A.}\\
     \small  % Switch from 12pt to 11pt; otherwise, table won't fit
     \setlength\LTleft{0pt}            
     \setlength\LTright{0pt}         

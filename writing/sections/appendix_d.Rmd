@@ -102,7 +102,7 @@ demog_print %>%
 
 ### Maternal Education
 
-Maternal education is often regarded as a proxy for socioeconomic status [@hauser1994measuring; @hoff2005socioeconomic]. In the exploratory analysis, we first treated maternal education as a continuous variable. There was only one significant result: Chinese participants reported having higher maternal education made less situational attribution in the Causal Attribution task. Following common practices in the literature, we also binned the maternal education into a binary variable -- whether participants have received college education or not. The binary variable was not significantly related to any task performance. 
+Maternal education is often regarded as a proxy for socioeconomic status [@hauser1994measuring; @hoff2005socioeconomic]. In the exploratory analysis, we first treated maternal education as a continuous variable. There was only one significant result: Chinese participants reported having higher maternal education made less situational attribution in the Causal Attribution task. Following common practices in the literature, we also binned the maternal education into a binary variable -- whether participants have completed college education or not. The binary variable was not significantly related to any task performance. 
 
 ```{r}
 demog_print %>% 

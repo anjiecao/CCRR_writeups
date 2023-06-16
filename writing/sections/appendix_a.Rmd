@@ -1,6 +1,6 @@
-# Prospective Power analysis
+# Power analysis
 
-We conducted two power analyses: a low assumption t-test power analysis and a high assumption linear mixed effects model power analysis. Under both power analysis frameworks, we showed that our sample sizes are well-powered to detect medium and larger effect sizes. 
+We conducted two power analyses: a low assumption t-test power analysis and a high assumption linear mixed effects model power analysis. Under both power analysis frameworks, our sample sizes are well-powered to detect medium and larger effect sizes. 
 
 ## Low assumption t-test power analysis
 
@@ -126,7 +126,7 @@ lmer_p <- simulation %>%
 ```
 
 
-```{r fig.height= 7, fig.width=4, fig.cap = "Simulation of power under different sample sizes and effect sizes. The top panel is under t-test assumptions, and the bottom panel is under linear mixed effect model assumptions. X-axis represents the number of particints in each condition. Y-axis represents the estimated power based on the effect sizes and the sample sizes. The horizontal gray dotted line on each plot represents 80\\% power. The two vertical lines, green and purple, represents the minimum sample size and the maximum sample size in our study, respectively."}
+```{r fig.height= 7, fig.width=4, fig.cap = "Simulation of power under different sample sizes and effect sizes. The top panel is under t-test assumptions, and the bottom panel is under linear mixed effect model assumptions. X-axis represents the number of particints in each condition. Y-axis represents the estimated power based on the effect sizes and the sample sizes. The horizontal gray dotted line on each plot represents 80\\% power. The two vertical lines, green and purple, represent the minimum sample size and the maximum sample size in our experiments, respectively."}
 plot_grid(t_p, lmer_p, nrow = 2, rel_heights = c(1,1.4))
 ```
 

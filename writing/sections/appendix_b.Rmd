@@ -6,7 +6,7 @@ library(cowplot)
 
 ## Free Description
 
-One measure from the Picture Free Description task is the number of descriptive accounts directed at the focal objects versus the background objects. In Experiment 1, we found a main effect of culture, with U.S. participants providing more description overall. We also found an interaction effect between culture and description types, with U.S. participants providing more background descriptions than focal descriptions. This pattern was inconsistent with the results reported in @imada2013east. However, we found a pattern consistent with the original findings in experiment 2: Chinese participants provided more descriptive accounts directed at the background objects than the focal objects relative to U.S. participants. We reported the descriptive and inferential statistics in the main text. 
+One measure from the Picture Free Description task is the number of descriptive accounts directed at the focal objects versus the background objects. In Experiment 1, we found a main effect of culture, with U.S. participants providing more description overall. We also found an interaction effect between culture and description types, with U.S. participants providing more background descriptions than focal descriptions. This pattern was inconsistent with the results reported in @imada2013east. However, we found a pattern consistent with the original findings in Experiment 2: Chinese participants provided more descriptive accounts directed at the background objects than the focal objects relative to U.S. participants. We reported the descriptive and inferential statistics in the main text. 
 
 
 ```{r}
@@ -76,7 +76,7 @@ plot_grid(d1_fd_p, d2_fd_p)
 
 ## Horizon Collage 
 
-In Horizon Collage task, we included two other measures in addition to the height of horizon: the number of stickers and the total area that the stickers covered. Here we included the visualization for the latter two measures. Unlike @senzaki2014holistic, we did not see any cultural difference in either measure. We reported the descriptive and inferential statistics in the main text. 
+In Horizon Collage task, we included two other measures in addition to the height of horizon: the number of stickers and the total area that the stickers covered. Here we show a visualization of the latter two measures. Unlike @senzaki2014holistic, we did not see any cultural difference in either measure. We report the descriptive and inferential statistics in the main text. 
 
 
 

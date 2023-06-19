@@ -9,7 +9,7 @@ Online experiments (especially grouped into a long battery as ours were) likely 
 
 A second potential issue is the collection of reaction time measures through online experiments (e.g. Ebbinghaus Illusion and Change Detection). Due to variations in individual participants' hardware and internet conditions,  reaction times could potentially be more variable online than in in-person experiments. However, the validity of online reaction time measures has been shown for many different classic cognitive psychology tasks, suggesting browser-based experiments typically yield useful reaction time data [@crump2013evaluating]. It is worth noting also that the only task for which reaction times were the key dependent measure in our studies was Change Detection, in which average reaction times were upwards of 10 seconds. The accuracy and reliability of reaction times gathered through jsPsych, the specific JavaScript library that we used here, has been found to be high for even 10--100 millisecond level contrasts [@pinet2017measuring; @anwyl2021realistic]. Therefore, there is no reason to believe that the variability in online reaction time measures was a key cause of non-replication. 
 
-A more substantial limitation of our estimates of US-China differences comes from variation in our sampling strategy between cultures. In Experiment 1, we used the same snowball sampling procedure, but this procedure may have yielded different samples due to differences in social networks or norms about sharing study information across cultures. In Experiment 2, because the platform we used to recruit US participants (Prolific) was not accessible in China, we used a different platform to recruit Chinese participants (Naodao). Prolific and Naodao have different levels of popularity and different participant pools, resulting in some asymmetry between the US and Chinese samples. Despite these differences between samples both across and within experiments, we do not see indications that our estimates were dramatically biased by our sampling decisions. First, our results were largely comparable in the tasks that were included in both experiments (e.g. Picture Free Description; Raven's SPM; and Ambiguous cRMTS). Second, in our exploratory analyses we did not find strong associations between participant demographics and cross-cultural effects (with some small exceptions discussed in that section). Finally, we reran all of our preregistered analyses with an age-matched subset of U.S. participants in Experiment 2 and found our results were qualitatively identical. 
+A more substantial limitation of our estimates of US-China differences comes from variation in our sampling strategy between cultures. In Experiment 1, we used the same snowball sampling procedure, but this procedure may have yielded different samples due to differences in social networks or norms about sharing study information across cultures. In Experiment 2, because the platform we used to recruit US participants (Prolific) was not accessible in China, we used a different platform to recruit Chinese participants (Naodao). Prolific and Naodao have different levels of popularity and different participant pools, resulting in some asymmetry between the US and Chinese samples, with U.S. samples being older on average and exhibiting a wider range in age than Chinese samples. Despite these differences between samples both across and within experiments, we do not see indications that our estimates were dramatically biased by our sampling decisions. First, our results were largely comparable in the tasks that were included in both experiments (e.g. Picture Free Description; Raven's SPM; and Ambiguous cRMTS). Second, in our exploratory analyses we did not find strong associations between participant demographics and cross-cultural effects (with some small exceptions discussed in that section). Finally, we reran all of our preregistered analyses with an age-matched subset of U.S. participants in Experiment 2 and found our results were qualitatively identical. 
 
 Thus, while our samples are certainly not representative samples of US or Chinese national populations -- indeed to our knowledge, nearly all work to date has used convenience samples of one type or another -- they appear to yield stable cross-sample estimates that do not reflect large biases due to sampling strategy or demographics. 
 
@@ -37,7 +37,7 @@ Our goal here was not to perform direct replications that would shed light on th
 
 \begin{landscape}
     \begin{longtable}{p{3cm}p{10cm}p{8cm}}\\
-    \caption{Differences between our tasks, the original refernce tasks, and speculation about how these differences may have impacted our results.}\\
+    \caption{Differences between our tasks and the original refernce tasks, with speculation about how these differences may have impacted our results.}\\
         \hline
         \bf{Task Name} & \bf{Difference between the current and original version} & \bf{Speculative reasons} \\
         \hline
@@ -54,7 +54,7 @@ Our goal here was not to perform direct replications that would shed light on th
 Ebbinghaus Illusion & 
     \begin{itemize}
         \item Age: The original study was conducted with young children; the current experiment was conducted with adults.
-        \item Culture: The original experiment compared Japanese participants with Canadian participants; the current experiment compared Chinese participants with U.S. participants."
+        \item Culture: The original experiment compared Japanese participants with Canadian participants; the current experiment compared Chinese participants with U.S. participants.
     \end{itemize} & 
     \begin{itemize}
         \item Adults in both cultures reached ceiling performance. 
@@ -69,7 +69,7 @@ Horizon Collage  &
     \end{itemize} &
     \begin{itemize}
         \item The task might have been too trivial for adults to engage with properly. 
-        \item The saliency of horizon height is diminished by the drag-and-drop online interface.
+        \item The saliency of horizon height is diminished by the drag-and-drop online interfaces.
     \end{itemize}
     \\
 
@@ -79,7 +79,7 @@ Symbolic Self-Inflation (Family version and Friends version) &
         \item Test Prompt (Family version): The original experiment asked the participants to draw their close social network; the current experiment asked the participants to draw their family members or friends growing up.
     \end{itemize} & 
     \begin{itemize}
-        \item The online interface might have altered participants’ drawing process, making it more difficult to implicitly represent the symbolic meaning of the circle size.
+        \item The online interfaces might have altered participants’ drawing process, making it more difficult to implicitly represent the symbolic meaning of the circle size.
     \end{itemize}
      \\
 

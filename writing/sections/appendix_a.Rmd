@@ -4,7 +4,7 @@ We conducted two power analyses: a low assumption t-test power analysis and a hi
 
 ## Low assumption t-test power analysis
 
-In this framework, we assumed the cultural differences are evaluated with a simple t-test between two samples. We varied the hypothetical effect sizes of the cultural differences. This analysis was conducted using the `pwr` package [@champely2018package].
+In this framework, we assumed the cultural differences are evaluated with a simple t-test between two samples. We varied the hypothetical effect sizes of the cultural differences. This analysis was conducted using the `pwr` package [@champely2018package]. Under this framework, our sample sizes have more than 80% power to detect effect sizes greater than 0.4 (Cohen’s d).
 
 ```{r}
 get_power <- function(n, d){
@@ -50,7 +50,7 @@ t_p <- sim_d %>%
 
 ## High assumption mixed effects linear regression power analysis
 
-Conducting prospective power analysis for mixed-effects linear regression requires more assumptions. Here we specify a simplified model to run the power simulation on. The model predicts a response with culture as the fixed effect, and subjects as the random intercepts. We assumed the fixed effect's intercept and slope as 0.1 and 0.5, respectively. We varied the effect sizes of the model by manipulating different residual standard deviation. We conducted this analysis in the `simr` package [@green2016simr].
+Conducting prospective power analysis for mixed-effects linear regression requires more assumptions. Here we specify a simplified model to run the power simulation on. The model predicts a response with culture as the fixed effect, and subjects as the random intercepts. We assumed the fixed effect's intercept and slope as 0.1 and 0.5, respectively. We varied the effect sizes of the model by manipulating different residual standard deviation. We conducted this analysis in the `simr` package [@green2016simr]. Under this framework, our sample sizes have more than 80% power to detect effect sizes greater than 0.6 (Cohen’s d).
 
 
 ```{r eval=FALSE, include=FALSE}
@@ -126,7 +126,7 @@ lmer_p <- simulation %>%
 ```
 
 
-```{r fig.height= 7, fig.width=4, fig.cap = "Simulation of power under different sample sizes and effect sizes. The top panel is under t-test assumptions, and the bottom panel is under linear mixed effect model assumptions. X-axis represents the number of particints in each condition. Y-axis represents the estimated power based on the effect sizes and the sample sizes. The horizontal gray dotted line on each plot represents 80\\% power. The two vertical lines, green and purple, represent the minimum sample size and the maximum sample size in our experiments, respectively."}
+```{r fig.height= 7, fig.width=4, fig.cap = "Simulation of power under different sample sizes and effect sizes. The top panel is under t-test assumptions, and the bottom panel is under linear mixed effect model assumptions. X-axis represents the number of particints in each condition. Y-axis represents the estimated power based on the effect sizes and the sample sizes. The horizontal gray dotted line on each plot represents 80\\% power. The two vertical lines, green and purple, represent the minimum sample size (N = 114) and the maximum sample size (N = 293) in our experiments, respectively."}
 plot_grid(t_p, lmer_p, nrow = 2, rel_heights = c(1,1.4))
 ```
 

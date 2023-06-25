@@ -16,7 +16,7 @@ In the exploratory analysis section, we explored how basic demographic variables
 
 ## Residential Mobility 
 
-Higher residential mobility has been found to be related to individual's stronger emphasis on the independent self over the inter-dependent self [@oishi2022socio; @ishii2020residential]. In our exploratory analysis's uncorrected models, residential mobility is a significant predictor to three task responses: U.S. participants' accuracy of Ebbinghaus Illusion task for U.S. participants, Chinese participants' proportion of first mention being focal objects in the Free Description task in Experiment 2, and U.S. participants' proportion of the taxonomic match selection in the Taxonomic-Thematic Similarity task. We reported the model results below. 
+Higher residential mobility has been found to be related to individual's stronger emphasis on the independent self over the inter-dependent self [@oishi2022socio; @ishii2020residential]. In our exploratory analysis's uncorrected models, residential mobility is a significant predictor to three task responses: U.S. participants' accuracy of Ebbinghaus Illusion task, Chinese participants' proportion of first mention being focal objects in the Free Description task in Experiment 2, and U.S. participants' proportion of the taxonomic match selection in the Taxonomic-Thematic Similarity task. We reported the model results below. 
 
 
 ```{r}
@@ -59,7 +59,7 @@ rm_table %>%
 
 ### MacArthur Ladder 
 
-The MacAuthur ladder scale is a subjective measure of socioeconomic status [@adler2000relationship]. This measurement has been found to show moderate relationship with the objective socioeconomic measurements, and it has even more robust relationship to individual's subjective well beings than objective socioeconomic measurements [@tan2020association]. Past work has used this measure to investigate the relationship between socioeconomic status and individual's independent versus interdependent orientation [e.g., @miyamoto2018culture]. In our current study, this measure was a significant predictor for five different tasks across two studies. In experiment 1,  MacArthur Ladder scale response was negatively correlated with the proportion of participants choosing the unique pen in the U.S. participants. In experiment 2,  this measure is negatively associated with the relational match Chinese participants selected in the Causal RMTS task, the score U.S. participants received in the Raven's Progressive Matrices, Chinese participants' reaction time in the Change Detection task, and the proportion of taxonomic-match Chinese participants selected in the Taxonomic-Thematic Similarity task. Theses results were summarized in the table below. 
+The MacArthur ladder scale is a subjective measure of socioeconomic status [@adler2000relationship]. This measurement has been found to show moderate relationship with the objective socioeconomic measurements, and it has even more robust relationship to individual's subjective well beings than objective socioeconomic measurements [@tan2020association]. Past work has used this measure to investigate the relationship between socioeconomic status and individual's independent versus interdependent orientation [e.g., @miyamoto2018culture]. In our current study, this measure was a significant predictor for five different tasks across two studies. In experiment 1,  MacArthur Ladder scale response was negatively correlated with the proportion of participants choosing the unique pen in the U.S. participants. In experiment 2,  this measure is negatively associated with the relational match Chinese participants selected in the Causal RMTS task, the score U.S. participants received in the Raven's Progressive Matrices, Chinese participants' reaction time in the Change Detection task, and the proportion of taxonomic-match Chinese participants selected in the Taxonomic-Thematic Similarity task. Theses results were summarized in the table below. 
 
 
 ```{r}
@@ -102,7 +102,7 @@ demog_print %>%
 
 ### Maternal Education
 
-Maternal education is often regarded as a proxy for socioeconomic status [@hauser1994measuring; @hoff2005socioeconomic]. In the exploratory analysis, we first treated maternal education as a continuous variable. There was only one significant result: Chinese participants reported having higher maternal education made less situational attribution in the Causal Attribution task. Following common practices in the literature, we also binned the maternal education into a binary variable -- whether participants have received college education or not. The binary variable was not significantly related to any task performance. 
+Maternal education is often regarded as a proxy for socioeconomic status [@hauser1994measuring; @hoff2005socioeconomic]. In the exploratory analysis, we first treated maternal education as a continuous variable. There was only one significant result: Chinese participants reported having higher maternal education made less situational attribution in the Causal Attribution task. Following common practices in the literature, we also binned the maternal education into a binary variable -- whether participants' mothers have completed college education or not. The binary variable was not significantly related to any task performance. 
 
 ```{r}
 demog_print %>% 
